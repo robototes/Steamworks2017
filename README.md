@@ -1,10 +1,10 @@
 # Steamworks2017
-Robot software for Steamworks
+Robot software for Steamworks.
 
-# AwesomeThings
-Java
-Timothy
-Alex
-Andrew
-Not Python
-Other Cool Things
+# AwesomeThings (commit practice)
+* Java
+* Timothy
+* Alex
+* Andrew
+* Not Python
+* Other Cool Things
