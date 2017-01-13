@@ -8,3 +8,7 @@ Robot software for Steamworks.
 * Andrew
 * Not Python
 * Other Cool Things
+
+# Dino game scores
+* Alex: 5861
+* Andrew: 4470
