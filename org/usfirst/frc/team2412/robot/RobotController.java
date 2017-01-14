@@ -4,14 +4,14 @@ public interface RobotController {
 	
 	/**
 	 * Processing only to be called in autonomousPeriodic()
-	 * Like stronghold's process()
+	 * Like stronghold's process() function
 	 */
 	public void processTeleop();
 	
 	
 	/**
 	 * Processing only to be called in teleopPeriodic()
-	 * Like stronghold's process()
+	 * Like stronghold's process() function
 	 */
 	public void processAutonomous();
 	
