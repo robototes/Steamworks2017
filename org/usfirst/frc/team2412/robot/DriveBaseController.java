@@ -1,17 +1,13 @@
 package org.usfirst.frc.team2412.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
-import edu.wpi.first.wpilibj.Joystick.ButtonType;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class DriveBaseController implements RobotController {
 
-	public static final boolean DRIVE_FORWARD = true, DRIVE_SIDEWAYS = !DRIVE_FORWARD;
 	private RobotDrive rd;
 	private Joystick js;
 	
-	private double lastRotation = 0.0;
 	public static double ROTATION_SPEED = 1.0;
 	public static double DRIVE_SPEED = 1.0;
 	
@@ -44,10 +40,9 @@ public class DriveBaseController implements RobotController {
 		
 		// process the direction
 
-		rd.mecanumDrive_Cartesian(x, y, rotation-lastRotation, 0.0);
+		rd.mecanumDrive_Cartesian(x, y, rotation, 0.0);
 		
 		
-		lastRotation += rotation;
 		
 	}
 
@@ -60,14 +55,5 @@ public class DriveBaseController implements RobotController {
 		}
 	}
 	
-	/**
-	 * Sets the speed and direction to drive at
-	 * @param speed - how fast you want to get the gear
-	 * @param rotation - how much to rotate at
-	 * @param direction - Constant DRIVE_FORWARD or DRIVE_SIDEWAYS
-	 */
-	public void setDrive(double speed, double rotation, boolean direction) {
-		
-	}
-
+	
 }
