@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2412.robot;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;

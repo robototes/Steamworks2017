@@ -1,14 +1,9 @@
 package org.usfirst.frc.team2412.robot;
 
-import static org.usfirst.frc.team2412.robot.Constants.AUTO_MSDELAY;
-import static org.usfirst.frc.team2412.robot.Constants.BUTTON_ID_DROP_GEAR;
-import static org.usfirst.frc.team2412.robot.Constants.BUTTON_ID_PICKUP_GEAR;
-import static org.usfirst.frc.team2412.robot.Constants.DROP_GEAR_MSTIME;
-import static org.usfirst.frc.team2412.robot.Constants.DROP_SPEED;
-import static org.usfirst.frc.team2412.robot.Constants.PICKUP_GEAR_MSTIME;
-import static org.usfirst.frc.team2412.robot.Constants.PICKUP_SPEED;
-import static org.usfirst.frc.team2412.robot.Constants.motors;
+import static org.usfirst.frc.team2412.robot.Constants.*;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 
 public class GearController implements RobotController {
@@ -50,7 +45,7 @@ public class GearController implements RobotController {
 		@Override
 		protected void execute() {
 			try {
-				Thread.sleep(AUTO_MSDELAY);
+				Thread.sleep(AUTO_MSDELAY_BEFORE_GEAR_DROP);
 				drop.run();
 			} catch (Exception e) {}
 		}
@@ -64,10 +59,12 @@ public class GearController implements RobotController {
 		t = new Talon(motors[4]);
 	}
 
+	@Override
 	public void processTeleop() {
 		autoDrop.start();
 	}
 
+	@Override
 	public void processAutonomous() {
 		if (stick.getRawButton(BUTTON_ID_PICKUP_GEAR)) {
 			pickup.start();
