@@ -32,6 +32,7 @@ public class DriveBaseController implements RobotController {
 	 * 
 	 * Trigger down = 
 	 */
+	
 	public void processTeleop() {
 		double x = (js.getX()-0.5)*DRIVE_SPEED;
 		double y = (js.getY()-0.5)*DRIVE_SPEED;
@@ -41,16 +42,10 @@ public class DriveBaseController implements RobotController {
 
 		rd.mecanumDrive_Cartesian(x, y, rotation, 0.0);
 		
-		
-		
 	}
 
 	public void processAutonomous() {
-		switch (Constants.AutoStatus.getCurrent()) {
-			default:{
-				
-			}break; // sorry, I put brackets here!
-		}
+		
 	}
 	
 	

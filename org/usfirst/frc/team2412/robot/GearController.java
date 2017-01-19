@@ -1,6 +1,10 @@
 package org.usfirst.frc.team2412.robot;
 
-import static org.usfirst.frc.team2412.robot.Constants.*;
+import static org.usfirst.frc.team2412.robot.Constants.AUTO_MSDELAY;
+import static org.usfirst.frc.team2412.robot.Constants.DROP_GEAR_MSTIME;
+import static org.usfirst.frc.team2412.robot.Constants.DROP_SPEED;
+import static org.usfirst.frc.team2412.robot.Constants.PICKUP_GEAR_MSTIME;
+import static org.usfirst.frc.team2412.robot.Constants.PICKUP_SPEED;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -10,8 +14,8 @@ public class GearController implements RobotController {
 	public Talon t;
 	private int pickupi, dropi;
 	
-	private final Script pickups = new Script() {
-
+	private final Script pickup = new Script() {
+	
 		@Override
 		protected void execute() {
 			try {
@@ -24,7 +28,7 @@ public class GearController implements RobotController {
 		}
 		
 	},
-	drops = new Script() {
+	drop = new Script() {
 
 		@Override
 		protected void execute() {
@@ -38,12 +42,14 @@ public class GearController implements RobotController {
 		}
 		
 	},
-	autoDrops = new Script() {
+	autoDrop = new Script() {
 		
 		@Override
 		protected void execute() {
 			try {
-				drops.run();
+				drop.run();
+				Thread.sleep(AUTO_MSDELAY);
+				drop.run();
 			} catch (Exception e) {}
 		}
 		
@@ -59,14 +65,14 @@ public class GearController implements RobotController {
 	}
 
 	public void processTeleop() {
-		autoDrops.start();
+		autoDrop.start();
 	}
 
 	public void processAutonomous() {
 		if (stick.getRawButton(pickupi)) {
-			pickups.start();
+			pickup.start();
 		} else if (stick.getRawButton(dropi)) {
-			drops.start();
+			drop.start();
 		}
 	}
 
