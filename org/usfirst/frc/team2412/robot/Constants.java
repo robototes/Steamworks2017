@@ -10,7 +10,8 @@ import java.time.Instant;
 import java.util.Locale;
 
 import edu.wpi.first.wpilibj.DriverStation;
-
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Constants {
 	
 	public static enum AutoStatus {
@@ -64,7 +65,7 @@ public class Constants {
 			//-----------//
 			//-----------//
 			//-----------//
-			2,/*        */3,
+			2,/*  5     */3,
 			//-----------//
 			 /* */4,/* */
 			 /* */  /* */
@@ -74,22 +75,38 @@ public class Constants {
 		   // 0			back-right
 		   // 1			back-left
 		   // 2			front-right
-		   // 3			fron-right  
-		   // 5			null motor
+		   // 3			front-right  
+		   // 5			moves the rotor clamp up and down
 		5
 	};
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
 	public static int BUTTON_ID_PICKUP_GEAR = -1, 
 			BUTTON_ID_DROP_GEAR = -1,
+			BUTTON_ID_ROTATE_CLAMP_UP = -1,
+			BUTTON_ID_ROTATE_CLAMP_DOWN = -1,
 			PICKUP_GEAR_MSTIME = 500,
 			DROP_GEAR_MSTIME = 500,
 			AUTO_MSDELAY_BEFORE_GEAR_DROP = 5000;
+			AUTO_MSDELAY = 500;
+	public static VisionController rcVision;
+	public static DriveBaseController rcDriveBase;
+	public static GearController rcClampGear, rcRotateClamp;
+	public static Joystick jsDriver, jsCoDriver;
 	
 	public static void init() {
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		constantsInitialized = true;
+		SmartDashboardUtils.init();
+		jsDriver = new Joystick(0);
+		jsCoDriver = new Joystick(1);
 		
+		rcDriveBase = new DriveBaseController(jsDriver, motors[0], motors[1], motors[2], motors[3]);
+		rcClampGear = new GearController(motors[4], jsCoDriver, BUTTON_ID_PICKUP_GEAR, BUTTON_ID_DROP_GEAR);
+		rcRotateClamp = new GearController(motors[5], jsCoDriver, BUTTON_ID_ROTATE_CLAMP_UP, BUTTON_ID_ROTATE_CLAMP_DOWN);
+	}
+
+	private static void applyPrintStreams() {
 		final PrintStream oldSysOut = System.out;
 		
 		try {
