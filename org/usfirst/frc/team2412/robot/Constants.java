@@ -49,7 +49,8 @@ public class Constants {
 	public static int BUTTON_ID_PICKUP_GEAR = -1, 
 			BUTTON_ID_DROP_GEAR = -1,
 			PICKUP_GEAR_MSTIME = 500,
-			DROP_GEAR_MSTIME = 500;
+			DROP_GEAR_MSTIME = 500,
+			AUTO_MSDELAY_BEFORE_GEAR_DROP = 5000;
 	
 	public static void init() {
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
