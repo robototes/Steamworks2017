@@ -32,7 +32,6 @@ public class DriveBaseController implements RobotController {
 	 * 
 	 * Trigger down = 
 	 */
-	@Override
 	public void processTeleop() {
 		double x = (js.getX()-0.5)*DRIVE_SPEED;
 		double y = (js.getY()-0.5)*DRIVE_SPEED;
@@ -46,7 +45,6 @@ public class DriveBaseController implements RobotController {
 		
 	}
 
-	@Override
 	public void processAutonomous() {
 		switch (Constants.AutoStatus.getCurrent()) {
 			default:{
