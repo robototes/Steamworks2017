@@ -2,7 +2,6 @@ package org.usfirst.frc.team2412.robot;
 
 import org.usfirst.frc.team2412.robot.RobotController;
 import org.usfirst.frc.team2412.robot.VisionController;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -89,7 +88,6 @@ public class Robot extends IterativeRobot {
 				rc.processTeleop();
 		}
 	}
-	
 	public void testInit() {
 		System.out.println("	==== TEST MODE STARTING ====");
 	}
