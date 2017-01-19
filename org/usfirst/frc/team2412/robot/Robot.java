@@ -1,4 +1,7 @@
+package org.usfirst.frc.team2412.robot;
 
+import org.usfirst.frc.team2412.robot.RobotController;
+import org.usfirst.frc.team2412.robot.VisionController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -10,9 +13,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * Improved IterativeRobot.
  * @author Team 2412 <https://robototes.com, github.com/robototes>
  */
-public class FRCRobot extends IterativeRobot {
+public class Robot extends IterativeRobot {
 	private boolean firstRun;
 	private boolean startup;
+	
+	private RobotController rcs[] = new RobotController[2];
 	
 	public void robotInit() {
 		DriverStation ds = DriverStation.getInstance();
@@ -44,6 +49,10 @@ public class FRCRobot extends IterativeRobot {
 		System.out.println("	==== ROBOT IS READY ===");
 		System.out.println("	=======================");
 			
+		//Initialize RobotControllers
+		rcs[0] = null;
+		rcs[1] = new VisionController();
+		
 		startup = true;
 	}
 	
@@ -57,13 +66,17 @@ public class FRCRobot extends IterativeRobot {
 			System.out.println("		No autonomous code.");
 			firstRun = false;
 		}
-		
+		for(RobotController rc : rcs) {
+			if(rc != null)
+				rc.processAutonomous();
+		}
 		Timer.delay(0.05);
 	}
 	
 	public void teleopInit() {
 		System.out.println("	==== STARTING TELE-OPERATED MODE ====");
 		firstRun = true;
+		
 	}
 	
 	public void teleopPeriodic() {
@@ -71,7 +84,10 @@ public class FRCRobot extends IterativeRobot {
 			System.out.println("		No tele-operated code.");
 			firstRun = false;
 		}
-		Timer.delay(0.05);
+		for(RobotController rc : rcs) {
+			if(rc != null)
+				rc.processTeleop();
+		}
 	}
 	
 	public void testInit() {
