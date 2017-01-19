@@ -2,6 +2,7 @@ package org.usfirst.frc.team2412.robot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,31 @@ public class Constants {
 	public static int STARTING_STATION;
 	public static boolean initialized = false, constantsInitialized = false;
 	public static double autoDelay = -1.0; // delay before any autonomous processing in milliseconds
-	
+	public static final int[] motors = new int[] {
+			//-----------//
+			0,/*        */1,
+			//-----------//
+			//-----------//
+			//-----------//
+			2,/*        */3,
+			//-----------//
+			 /* */4,/* */
+			 /* */  /* */
+		   //[Gear goes Here]
+		   // [index]	[descrption]
+		   // 4 		controls motor for picking up gear
+		   // 0			back-right
+		   // 1			back-left
+		   // 2			front-right
+		   // 3			fron-right  
+		   // 5			null motor
+		5
+	};
+	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
+	public static int BUTTON_ID_PICKUP_GEAR = -1, 
+			BUTTON_ID_DROP_GEAR = -1,
+			PICKUP_GEAR_MSTIME = 500,
+			DROP_GEAR_MSTIME = 500;
 	
 	public static void init() {
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
@@ -212,6 +237,7 @@ public class Constants {
 				
 				
 			};
+			
 			System.setOut(p);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

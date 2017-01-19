@@ -19,6 +19,6 @@ public abstract class Script extends Thread {
 		_running = false;
 	}
 	
-	public abstract void execute();
+	protected abstract void execute();
 	
 }
