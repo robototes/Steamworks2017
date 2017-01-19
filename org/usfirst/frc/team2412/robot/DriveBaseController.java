@@ -24,7 +24,14 @@ public class DriveBaseController implements RobotController {
 		js = j;
 	}
 	
-	
+	/**
+	 * Drives robot in coordination with controller.
+	 * Also, gets current rotation of robot and changes the magnitude of the
+	 * x and y vectors of the requested direction with that. It's something that
+	 * may not work, but will try
+	 * 
+	 * Trigger down = 
+	 */
 	@Override
 	public void processTeleop() {
 		double x = (js.getX()-0.5)*DRIVE_SPEED;
@@ -35,11 +42,17 @@ public class DriveBaseController implements RobotController {
 
 		rd.mecanumDrive_Cartesian(x, y, rotation, 0.0);
 		
+		
+		
 	}
 
 	@Override
 	public void processAutonomous() {
-		
+		switch (Constants.AutoStatus.getCurrent()) {
+			default:{
+				
+			}break; // sorry, I put brackets here!
+		}
 	}
 	
 	
