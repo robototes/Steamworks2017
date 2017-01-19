@@ -1,9 +1,14 @@
 package org.usfirst.frc.team2412.robot;
 
-import static org.usfirst.frc.team2412.robot.Constants.*;
-
+import static org.usfirst.frc.team2412.robot.Constants.AUTO_MSDELAY;
+import static org.usfirst.frc.team2412.robot.Constants.BUTTON_ID_DROP_GEAR;
+import static org.usfirst.frc.team2412.robot.Constants.BUTTON_ID_PICKUP_GEAR;
+import static org.usfirst.frc.team2412.robot.Constants.DROP_GEAR_MSTIME;
+import static org.usfirst.frc.team2412.robot.Constants.DROP_SPEED;
+import static org.usfirst.frc.team2412.robot.Constants.PICKUP_GEAR_MSTIME;
+import static org.usfirst.frc.team2412.robot.Constants.PICKUP_SPEED;
+import static org.usfirst.frc.team2412.robot.Constants.motors;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 
 public class GearController implements RobotController {
@@ -45,7 +50,7 @@ public class GearController implements RobotController {
 		@Override
 		protected void execute() {
 			try {
-				Thread.sleep(AUTO_MSDELAY_BEFORE_GEAR_DROP);
+				Thread.sleep(AUTO_MSDELAY);
 				drop.run();
 			} catch (Exception e) {}
 		}
