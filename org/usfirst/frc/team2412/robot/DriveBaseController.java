@@ -36,11 +36,11 @@ public class DriveBaseController implements RobotController {
 	public void processTeleop() {
 		double x = (js.getX()-0.5)*DRIVE_SPEED;
 		double y = (js.getY()-0.5)*DRIVE_SPEED;
-		double rotation = (js.getZ()-0.5)/ROTATION_SPEED;
+//		double rotation = (js.getZ()-0.5)/ROTATION_SPEED;
 		
-		// process the direction
-
-		rd.mecanumDrive_Cartesian(x, y, rotation, 0.0);
+		//Drive (without twist)
+		
+		rd.arcadeDrive(y, x, true);
 		
 	}
 
