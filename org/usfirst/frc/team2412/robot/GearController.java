@@ -59,12 +59,10 @@ public class GearController implements RobotController {
 		t = new Talon(motors[4]);
 	}
 
-	@Override
 	public void processTeleop() {
 		autoDrop.start();
 	}
 
-	@Override
 	public void processAutonomous() {
 		if (stick.getRawButton(BUTTON_ID_PICKUP_GEAR)) {
 			pickup.start();
