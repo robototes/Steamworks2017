@@ -4,6 +4,7 @@ public abstract class Script extends Thread {
 
 	private boolean _running = false;
 	private boolean _killed = false;
+	private boolean _disabled = false;
 	
 	@Override
 	public final void start() {
@@ -27,10 +28,21 @@ public abstract class Script extends Thread {
 		try {
 			// 9.22337204e18 minutes of sleeping
 			super.sleep(Long.MAX_VALUE);
+			super.yield();
 			_killed = true;
 		} catch (Exception e) {
 			_killed = false;
 		}
+	}
+	
+	public void disable() {
+		kill();
+		_running = true;
+		_disabled = true;
+	}
+	
+	public void enable() {
+		
 	}
 	
 }
