@@ -9,9 +9,14 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Locale;
 
+import javax.jws.WebService;
+
+import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+@WebService
 public class Constants {
 	
 	public static enum AutoStatus {
@@ -50,15 +55,19 @@ public class Constants {
 			BUTTON_ID_DROP_GEAR = -1,
 			PICKUP_GEAR_MSTIME = 500,
 			DROP_GEAR_MSTIME = 500,
-			AUTO_MSDELAY_BEFORE_GEAR_DROP = 5000;
+			AUTO_MSDELAY = 500;
 	
 	public static void init() {
+		applyPrintStreams();
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0)*1000;
 		if (autoDelay > 15.0 || autoDelay < 0.0) autoDelay = 0.0; // this way, we don't go for too long in auto to skip parts of teleop period
 		constantsInitialized = true;
-		
+		SmartDashboardUtils.init();
+	}
+
+	private static void applyPrintStreams() {
 		final PrintStream oldSysOut = System.out;
 		
 		try {
@@ -239,8 +248,189 @@ public class Constants {
 				
 			};
 			
+			final PrintStream oldSysErr = System.err;
+			
+			PrintStream p1 = new PrintStream(new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + new SimpleDateFormat("MM.dd.HH.mm.ss").format(Date.from(Instant.now())+".log.err.txt"))) {
+				
+				@Override
+				public void print(String s) {
+					super.print(s);
+					oldSysErr.print(s);
+				}
+				
+				@Override
+				public void print(int i) {
+					super.print(i);
+					oldSysErr.print(i);
+				}
+				
+				@Override
+				public void print(long l) {
+					super.print(l);
+					oldSysErr.print(l);
+				}
+				
+				@Override
+				public void print(double d) {
+					super.print(d);
+					oldSysErr.print(d);
+				}
+				
+				@Override
+				public void print(float f) {
+					super.print(f);
+					oldSysErr.print(f);
+				}
+				
+				@Override
+				public void print(char c) {
+					super.print(c);
+					oldSysErr.print(c);
+				}
+				
+				@Override
+				public void print(char[] c) {
+					super.print(c);
+					oldSysErr.print(c);
+				}
+				
+				@Override
+				public void print(Object o) {
+					super.print(o);
+					oldSysErr.print(o);
+					
+				}
+				
+				@Override
+				public void print(boolean b) {
+					super.print(b);
+					oldSysErr.print(b);
+					
+				}
+				
+				@Override
+				public void println(String s) {
+					super.println(s);
+					oldSysErr.println(s);
+				}
+				
+				@Override
+				public void println(int i) {
+					super.println(i);
+					oldSysErr.println(i);
+				}
+				
+				@Override
+				public void println(long l) {
+					super.println(l);
+					oldSysErr.println(l);
+				}
+				
+				@Override
+				public void println(double d) {
+					super.println(d);
+					oldSysErr.println(d);
+				}
+				
+				@Override
+				public void println(float f) {
+					super.println(f);
+					oldSysErr.println(f);
+				}
+				
+				@Override
+				public void println(char c) {
+					super.println(c);
+					oldSysErr.println(c);
+				}
+				
+				@Override
+				public void println(char[] c) {
+					super.println(c);
+					oldSysErr.println(c);
+				}
+				
+				@Override
+				public void println(Object o) {
+					super.println(o);
+					oldSysErr.println(o);
+					
+				}
+				
+				@Override
+				public void println(boolean b) {
+					super.println(b);
+					oldSysErr.println(b);
+					
+				}
+				
+				@Override
+				public PrintStream printf(String s, Object... args) {
+					oldSysErr.printf(s, args);
+					return super.printf(s, args);
+					
+				}
+				
+				@Override
+				public PrintStream printf(Locale l, String s, Object... o) {
+					oldSysErr.printf(l, s, o);
+					return super.printf(l, s, o);
+				}
+				
+				@Override
+				public PrintStream append(char c) {
+					oldSysErr.append(c);
+					return super.append(c);
+				}
+				
+				@Override
+				public PrintStream append(CharSequence c) {
+					oldSysErr.append(c);
+					return super.append(c);
+				}
+				
+				@Override
+				public void println() {
+					oldSysErr.println();
+					super.println();
+				}
+				
+				@Override
+				public void flush() {
+					oldSysErr.flush();
+					super.flush();
+				}
+				
+				@Override
+				public boolean checkError() {
+					return oldSysErr.checkError() || super.checkError();
+				}
+				
+				@Override
+				public void close() {
+					oldSysErr.close();
+					super.close();
+				}
+				
+				@Override
+				public String toString() {
+					return oldSysErr.toString() + " " + super.toString();
+				}
+				
+				@Override
+				public PrintStream append(CharSequence c, int arg1, int arg2) {
+					oldSysErr.append(c, arg1, arg2);
+		
+					return super.append(c, arg1, arg2);
+				}
+				
+				
+			};
+
+			
 			System.setOut(p);
-		} catch (FileNotFoundException e) {
+			System.setErr(p1);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
