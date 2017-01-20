@@ -1,11 +1,17 @@
 package org.usfirst.frc.team2412.robot;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.Scanner;
 
 import javax.jws.WebService;
 
@@ -59,6 +65,12 @@ public class Constants {
 			AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
 	public static void init() {
+		try {
+			applyPrintStreams();
+		} catch (Exception e) {
+			System.err.println(SmartDashboardUtils.getDriverStationIP());
+			e.printStackTrace();
+		}
 		//applyPrintStreams();
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
@@ -69,126 +81,130 @@ public class Constants {
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);
 		
+		
+		
 	}
 
-	private static void applyPrintStreams() {
+	private static void applyPrintStreams() throws Exception {
 		final PrintStream oldSysOut = System.out;
+		@SuppressWarnings("resource")
+		Socket s = new Socket(InetAddress.getByName(SmartDashboardUtils.getDriverStationIP()), 5800);
+		
+		final PrintStream ps_socket = new PrintStream(s.getOutputStream());
+		
 		
 		try {
-			File f = new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + 
-					new SimpleDateFormat("MM.dd.HH:mm:ss").format(Date.from(Instant.now()).getTime()).replace(':', '_')+".log.txt");
-			f.mkdirs();
-			f.createNewFile();
-			PrintStream p = new PrintStream(f) {
+			
+			PrintStream p = new PrintStream(s.getOutputStream()) {
 				
 				@Override
 				public void print(String s) {
-					super.print(s);
+					ps_socket.print(s);
 					oldSysOut.print(s);
 				}
 				
 				@Override
 				public void print(int i) {
-					super.print(i);
+					ps_socket.print(i);
 					oldSysOut.print(i);
 				}
 				
 				@Override
 				public void print(long l) {
-					super.print(l);
+					ps_socket.print(l);
 					oldSysOut.print(l);
 				}
 				
 				@Override
 				public void print(double d) {
-					super.print(d);
+					ps_socket.print(d);
 					oldSysOut.print(d);
 				}
 				
 				@Override
 				public void print(float f) {
-					super.print(f);
+					ps_socket.print(f);
 					oldSysOut.print(f);
 				}
 				
 				@Override
 				public void print(char c) {
-					super.print(c);
+					ps_socket.print(c);
 					oldSysOut.print(c);
 				}
 				
 				@Override
 				public void print(char[] c) {
-					super.print(c);
+					ps_socket.print(c);
 					oldSysOut.print(c);
 				}
 				
 				@Override
 				public void print(Object o) {
-					super.print(o);
+					ps_socket.print(o);
 					oldSysOut.print(o);
 					
 				}
 				
 				@Override
 				public void print(boolean b) {
-					super.print(b);
+					ps_socket.print(b);
 					oldSysOut.print(b);
 					
 				}
 				
 				@Override
 				public void println(String s) {
-					super.println(s);
+					ps_socket.println(s);
 					oldSysOut.println(s);
 				}
 				
 				@Override
 				public void println(int i) {
-					super.println(i);
+					ps_socket.println(i);
 					oldSysOut.println(i);
 				}
 				
 				@Override
 				public void println(long l) {
-					super.println(l);
+					ps_socket.println(l);
 					oldSysOut.println(l);
 				}
 				
 				@Override
 				public void println(double d) {
-					super.println(d);
+					ps_socket.println(d);
 					oldSysOut.println(d);
 				}
 				
 				@Override
 				public void println(float f) {
-					super.println(f);
+					ps_socket.println(f);
 					oldSysOut.println(f);
 				}
 				
 				@Override
 				public void println(char c) {
-					super.println(c);
+					ps_socket.println(c);
 					oldSysOut.println(c);
 				}
 				
 				@Override
 				public void println(char[] c) {
-					super.println(c);
+					ps_socket.println(c);
 					oldSysOut.println(c);
 				}
 				
 				@Override
 				public void println(Object o) {
-					super.println(o);
+					ps_socket.println(o);
 					oldSysOut.println(o);
 					
 				}
 				
 				@Override
 				public void println(boolean b) {
-					super.println(b);
+					ps_socket.println(b);
 					oldSysOut.println(b);
 					
 				}
@@ -196,61 +212,61 @@ public class Constants {
 				@Override
 				public PrintStream printf(String s, Object... args) {
 					oldSysOut.printf(s, args);
-					return super.printf(s, args);
+					return ps_socket.printf(s, args);
 					
 				}
 				
 				@Override
 				public PrintStream printf(Locale l, String s, Object... o) {
 					oldSysOut.printf(l, s, o);
-					return super.printf(l, s, o);
+					return ps_socket.printf(l, s, o);
 				}
 				
 				@Override
 				public PrintStream append(char c) {
 					oldSysOut.append(c);
-					return super.append(c);
+					return ps_socket.append(c);
 				}
 				
 				@Override
 				public PrintStream append(CharSequence c) {
 					oldSysOut.append(c);
-					return super.append(c);
+					return ps_socket.append(c);
 				}
 				
 				@Override
 				public void println() {
 					oldSysOut.println();
-					super.println();
+					ps_socket.println();
 				}
 				
 				@Override
 				public void flush() {
 					oldSysOut.flush();
-					super.flush();
+					ps_socket.flush();
 				}
 				
 				@Override
 				public boolean checkError() {
-					return oldSysOut.checkError() || super.checkError();
+					return oldSysOut.checkError() || ps_socket.checkError();
 				}
 				
 				@Override
 				public void close() {
 					oldSysOut.close();
-					super.close();
+					ps_socket.close();
 				}
 				
 				@Override
 				public String toString() {
-					return oldSysOut.toString() + " " + super.toString();
+					return oldSysOut.toString() + " " + ps_socket.toString();
 				}
 				
 				@Override
 				public PrintStream append(CharSequence c, int arg1, int arg2) {
 					oldSysOut.append(c, arg1, arg2);
 		
-					return super.append(c, arg1, arg2);
+					return ps_socket.append(c, arg1, arg2);
 				}
 				
 				
@@ -258,122 +274,117 @@ public class Constants {
 			
 			final PrintStream oldSysErr = System.err;
 			
-			File fErr = new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + 
-					new SimpleDateFormat("dd.HH.mm.ss")
-					.format(
-					Date.from(Instant.now()).getTime()).replace(':','_')+".log.err.txt");
-			fErr.mkdirs();
-			fErr.createNewFile();
-			PrintStream p1 = new PrintStream(fErr) {
+			
+			PrintStream p1 = new PrintStream(s.getOutputStream()) {
 				
 				@Override
 				public void print(String s) {
-					super.print(s);
+					ps_socket.print(s);
 					oldSysErr.print(s);
 				}
 				
 				@Override
 				public void print(int i) {
-					super.print(i);
+					ps_socket.print(i);
 					oldSysErr.print(i);
 				}
 				
 				@Override
 				public void print(long l) {
-					super.print(l);
+					ps_socket.print(l);
 					oldSysErr.print(l);
 				}
 				
 				@Override
 				public void print(double d) {
-					super.print(d);
+					ps_socket.print(d);
 					oldSysErr.print(d);
 				}
 				
 				@Override
 				public void print(float f) {
-					super.print(f);
+					ps_socket.print(f);
 					oldSysErr.print(f);
 				}
 				
 				@Override
 				public void print(char c) {
-					super.print(c);
+					ps_socket.print(c);
 					oldSysErr.print(c);
 				}
 				
 				@Override
 				public void print(char[] c) {
-					super.print(c);
+					ps_socket.print(c);
 					oldSysErr.print(c);
 				}
 				
 				@Override
 				public void print(Object o) {
-					super.print(o);
+					ps_socket.print(o);
 					oldSysErr.print(o);
 					
 				}
 				
 				@Override
 				public void print(boolean b) {
-					super.print(b);
+					ps_socket.print(b);
 					oldSysErr.print(b);
 					
 				}
 				
 				@Override
 				public void println(String s) {
-					super.println(s);
+					ps_socket.println(s);
 					oldSysErr.println(s);
 				}
 				
 				@Override
 				public void println(int i) {
-					super.println(i);
+					ps_socket.println(i);
 					oldSysErr.println(i);
 				}
 				
 				@Override
 				public void println(long l) {
-					super.println(l);
+					ps_socket.println(l);
 					oldSysErr.println(l);
 				}
 				
 				@Override
 				public void println(double d) {
-					super.println(d);
+					ps_socket.println(d);
 					oldSysErr.println(d);
 				}
 				
 				@Override
 				public void println(float f) {
-					super.println(f);
+					ps_socket.println(f);
 					oldSysErr.println(f);
 				}
 				
 				@Override
 				public void println(char c) {
-					super.println(c);
+					ps_socket.println(c);
 					oldSysErr.println(c);
 				}
 				
 				@Override
 				public void println(char[] c) {
-					super.println(c);
+					ps_socket.println(c);
 					oldSysErr.println(c);
 				}
 				
 				@Override
 				public void println(Object o) {
-					super.println(o);
+					ps_socket.println(o);
 					oldSysErr.println(o);
 					
 				}
 				
 				@Override
 				public void println(boolean b) {
-					super.println(b);
+					ps_socket.println(b);
 					oldSysErr.println(b);
 					
 				}
@@ -381,61 +392,61 @@ public class Constants {
 				@Override
 				public PrintStream printf(String s, Object... args) {
 					oldSysErr.printf(s, args);
-					return super.printf(s, args);
+					return ps_socket.printf(s, args);
 					
 				}
 				
 				@Override
 				public PrintStream printf(Locale l, String s, Object... o) {
 					oldSysErr.printf(l, s, o);
-					return super.printf(l, s, o);
+					return ps_socket.printf(l, s, o);
 				}
 				
 				@Override
 				public PrintStream append(char c) {
 					oldSysErr.append(c);
-					return super.append(c);
+					return ps_socket.append(c);
 				}
 				
 				@Override
 				public PrintStream append(CharSequence c) {
 					oldSysErr.append(c);
-					return super.append(c);
+					return ps_socket.append(c);
 				}
 				
 				@Override
 				public void println() {
 					oldSysErr.println();
-					super.println();
+					ps_socket.println();
 				}
 				
 				@Override
 				public void flush() {
 					oldSysErr.flush();
-					super.flush();
+					ps_socket.flush();
 				}
 				
 				@Override
 				public boolean checkError() {
-					return oldSysErr.checkError() || super.checkError();
+					return oldSysErr.checkError() || ps_socket.checkError();
 				}
 				
 				@Override
 				public void close() {
 					oldSysErr.close();
-					super.close();
+					ps_socket.close();
 				}
 				
 				@Override
 				public String toString() {
-					return oldSysErr.toString() + " " + super.toString();
+					return oldSysErr.toString() + " " + ps_socket.toString();
 				}
 				
 				@Override
 				public PrintStream append(CharSequence c, int arg1, int arg2) {
 					oldSysErr.append(c, arg1, arg2);
 		
-					return super.append(c, arg1, arg2);
+					return ps_socket.append(c, arg1, arg2);
 				}
 				
 				
