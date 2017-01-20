@@ -10,7 +10,11 @@ public abstract class Script extends Thread {
 	public final void start() {
 		if (!_running) {
 			_running = true;
-			super.start();
+			try {
+				super.start();
+			} catch (Exception e) {
+				
+			}
 		}
 	}
 	
@@ -32,6 +36,8 @@ public abstract class Script extends Thread {
 			super.yield();
 			_killed = true;
 		} catch (Exception e) {
+			System.err.println("It's ok. The robot won't fail because of this.");
+			e.printStackTrace();
 			_killed = false;
 		}
 	}
