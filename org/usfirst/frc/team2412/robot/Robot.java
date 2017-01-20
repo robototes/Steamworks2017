@@ -2,6 +2,7 @@ package org.usfirst.frc.team2412.robot;
 
 import org.usfirst.frc.team2412.robot.RobotController;
 import org.usfirst.frc.team2412.robot.VisionController;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -16,9 +17,10 @@ public class Robot extends IterativeRobot {
 	private boolean firstRun;
 	private boolean startup;
 	
-	private RobotController rcs[] = new RobotController[2];
+	private RobotController rcs[] = new RobotController[4];
 	
 	public void robotInit() {
+		Constants.init();
 		DriverStation ds = DriverStation.getInstance();
 		Alliance alliance = ds.getAlliance();
 		int location = ds.getLocation();
@@ -49,8 +51,10 @@ public class Robot extends IterativeRobot {
 		System.out.println("	=======================");
 			
 		//Initialize RobotControllers
-		rcs[0] = null;
-		rcs[1] = new VisionController();
+		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.motors[0], Constants.motors[1], Constants.motors[2], Constants.motors[3]);
+		rcs[1] = new GearController(Constants.motors[4], Constants.jsCoDriver, Constants.BUTTON_ID_PICKUP_GEAR, Constants.BUTTON_ID_DROP_GEAR);
+		rcs[2] = new GearController(Constants.motors[5], Constants.jsCoDriver, Constants.BUTTON_ID_ROTATE_CLAMP_UP, Constants.BUTTON_ID_ROTATE_CLAMP_DOWN);
+		rcs[3] = new VisionController();
 		
 		startup = true;
 	}
