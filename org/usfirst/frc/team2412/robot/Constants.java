@@ -1,17 +1,8 @@
 package org.usfirst.frc.team2412.robot;
 
-import java.io.File;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Locale;
-import java.util.Scanner;
 
 import javax.jws.WebService;
 
@@ -87,11 +78,8 @@ public class Constants {
 
 	private static void applyPrintStreams() throws Exception {
 		final PrintStream oldSysOut = System.out;
-		@SuppressWarnings("resource")
-		Socket s = new Socket(InetAddress.getByName(SmartDashboardUtils.getDriverStationIP()), 5800);
-		
+		Socket s = new Socket(SmartDashboardUtils.getDriverStationIP(), 5800);
 		final PrintStream ps_socket = new PrintStream(s.getOutputStream());
-		
 		
 		try {
 			
@@ -457,6 +445,8 @@ public class Constants {
 			System.setErr(p1);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			s.close();
 		}
 	}
 
