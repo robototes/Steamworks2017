@@ -57,12 +57,9 @@ public class Constants {
 			PICKUP_GEAR_MSTIME = 500,
 			DROP_GEAR_MSTIME = 500,
 			AUTO_MSDELAY = 500;
-	public static VisionController rcVision;
-	public static DriveBaseController rcDriveBase;
-	public static GearController rcClampGear, rcRotateClamp;
 	public static Joystick jsDriver, jsCoDriver;
 	public static void init() {
-		applyPrintStreams();
+		//applyPrintStreams();
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0)*1000;
@@ -72,16 +69,17 @@ public class Constants {
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);
 		
-		rcDriveBase = new DriveBaseController(jsDriver, motors[0], motors[1], motors[2], motors[3]);
-		rcClampGear = new GearController(motors[4], jsCoDriver, BUTTON_ID_PICKUP_GEAR, BUTTON_ID_DROP_GEAR);
-		rcRotateClamp = new GearController(motors[5], jsCoDriver, BUTTON_ID_ROTATE_CLAMP_UP, BUTTON_ID_ROTATE_CLAMP_DOWN);
 	}
 
 	private static void applyPrintStreams() {
 		final PrintStream oldSysOut = System.out;
 		
 		try {
-			PrintStream p = new PrintStream(new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + new SimpleDateFormat("MM.dd.HH.mm.ss").format(Date.from(Instant.now())+".log.txt"))) {
+			File f = new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + 
+					new SimpleDateFormat("MM.dd.HH:mm:ss").format(Date.from(Instant.now()).getTime()).replace(':', '_')+".log.txt");
+			f.mkdirs();
+			f.createNewFile();
+			PrintStream p = new PrintStream(f) {
 				
 				@Override
 				public void print(String s) {
@@ -260,7 +258,13 @@ public class Constants {
 			
 			final PrintStream oldSysErr = System.err;
 			
-			PrintStream p1 = new PrintStream(new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + new SimpleDateFormat("MM.dd.HH.mm.ss").format(Date.from(Instant.now())+".log.err.txt"))) {
+			File fErr = new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + 
+					new SimpleDateFormat("dd.HH.mm.ss")
+					.format(
+					Date.from(Instant.now()).getTime()).replace(':','_')+".log.err.txt");
+			fErr.mkdirs();
+			fErr.createNewFile();
+			PrintStream p1 = new PrintStream(fErr) {
 				
 				@Override
 				public void print(String s) {
