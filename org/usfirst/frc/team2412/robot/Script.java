@@ -42,7 +42,16 @@ public abstract class Script extends Thread {
 	}
 	
 	public void enable() {
-		
+		_running = false;
+		_disabled = true;
+	}
+	
+	public boolean isRunning() {
+		return _running & !_disabled;
+	}
+	
+	public boolean isDisabled() {
+		return _disabled;
 	}
 	
 }
