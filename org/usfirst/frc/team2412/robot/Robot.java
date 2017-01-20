@@ -1,4 +1,4 @@
-
+package org.usfirst.frc.team2412.robot;
 
 import org.usfirst.frc.team2412.robot.Constants;
 import org.usfirst.frc.team2412.robot.Script;
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * Improved IterativeRobot.
  * @author Team 2412 <https://robototes.com, github.com/robototes>
  */
-public class FRCRobot extends IterativeRobot {
+public class Robot extends IterativeRobot {
 	private boolean firstRun;
 	private boolean startup;
 	
