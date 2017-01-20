@@ -15,6 +15,7 @@ public class SmartDashboardUtils {
 			ALLIANCE_STATION = new SmartDashboardNoTag(),
 			TIME_REMAINING = new SmartDashboardNoTag(),
 			BATTERY = new SmartDashboardNoTag();
+	public static String DRIVERSTATION = "DriverStation IP";
 	
 	public static void init() {
 		if (!Constants.constantsInitialized) Constants.init();
@@ -24,6 +25,7 @@ public class SmartDashboardUtils {
 		BATTERY.putString("<unknown>% of battery remaining.");
 		SmartDashboard.putData("Grab Gear From Ground", createButton(SmartDashboardScript.GrabGearFromGround));
 		SmartDashboard.putData("Release Gear on Hook", createButton(SmartDashboardScript.ReleaseToHook));
+		if (SmartDashboard.getString(DRIVERSTATION, "<dynamic>").equals("<dynamic>")) SmartDashboard.putString(DRIVERSTATION, "<dynamic>");
 		TRU.start();
 	}
 	
@@ -75,5 +77,9 @@ public class SmartDashboardUtils {
 			}
 		}
 	};
+
+	public static String getDriverStationIP() {
+		return SmartDashboard.getString(DRIVERSTATION, "there was a problem retrieving the string apparently 2412 556");
+	}
 
 }
