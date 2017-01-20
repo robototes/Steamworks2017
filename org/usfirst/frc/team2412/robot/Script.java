@@ -23,6 +23,7 @@ public abstract class Script extends Thread {
 	
 	protected abstract void execute();
 
+	// Sounds like python (; <-- simly face!
 	public void kill() {
 		if (_killed) return;
 		try {
