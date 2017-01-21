@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2412.robot;
 
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Locale;
 
@@ -12,12 +13,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-@WebService
 public class Constants {
 	
-	public static enum AutoStatus {
-		
-	}
 	
 	/**
 	 * Color matters, since the field is asymetrical this year
@@ -56,6 +53,23 @@ public class Constants {
 			AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
 	public static void init() {
+		
+		int loops = 5;
+		String ip;
+		boolean ipOk = false;
+		
+		while (loops < 5 && !ipOk) {
+			loops--;
+			ip = SmartDashboardUtils.getDriverStationIP();
+			try {
+				ip = InetAddress.getByName(ip).getHostAddress();
+				ipOk = true;
+			} catch (Exception e) {
+				ipOk = false;
+			}
+		}
+		
+		
 		try {
 			applyPrintStreams();
 		} catch (Exception e) {
