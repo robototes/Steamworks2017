@@ -65,6 +65,11 @@ public class Constants {
 				ip = InetAddress.getByName(ip).getHostAddress();
 				ipOk = true;
 			} catch (Exception e) {
+				try {
+					Thread.sleep(500);
+				} catch (Exception ex) {
+					
+				}
 				ipOk = false;
 			}
 		}
