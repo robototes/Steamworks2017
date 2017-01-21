@@ -55,8 +55,9 @@ public class Constants {
 	public static void init() {
 		
 		int loops = 5;
-		String ip;
-		boolean ipOk = false;
+		String ip = "";
+		boolean ipOk = false, errorIP = false;
+		boolean applied = false;
 		
 		while (loops < 5 && !ipOk) {
 			loops--;
@@ -64,6 +65,7 @@ public class Constants {
 			try {
 				ip = InetAddress.getByName(ip).getHostAddress();
 				ipOk = true;
+				errorIP = true;
 			} catch (Exception e) {
 				try {
 					Thread.sleep(500);
@@ -77,8 +79,9 @@ public class Constants {
 		
 		try {
 			applyPrintStreams();
+			applied = true;
 		} catch (Exception e) {
-			System.err.println(SmartDashboardUtils.getDriverStationIP());
+			System.err.println((ip = SmartDashboardUtils.getDriverStationIP()));
 			e.printStackTrace();
 		}
 		//applyPrintStreams();
@@ -92,7 +95,34 @@ public class Constants {
 		jsCoDriver = new Joystick(1);
 		
 		
+		if (!applied) {
+		loops = 5;
+		ipOk = false;
 		
+		while (loops < 5 && !ipOk) {
+			loops--;
+			if (!errorIP) ip = SmartDashboardUtils.getDriverStationIP(); else errorIP = false;
+			try {
+				if (ip==null) ip = SmartDashboardUtils.getDriverStationIP();
+				ip = InetAddress.getByName(ip).getHostAddress();
+				ipOk = true;
+			} catch (Exception e) {
+				try {
+					Thread.sleep(500);
+				} catch (Exception ex) {
+					
+				}
+					ipOk = false;
+				}
+			}
+		
+			try {
+				applyPrintStreams();
+			} catch (Exception e) {
+				System.err.println(SmartDashboardUtils.getDriverStationIP());
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private static void applyPrintStreams() throws Exception {
