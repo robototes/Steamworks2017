@@ -28,39 +28,13 @@ public class SmartDashboardUtils {
 		STATION_NUMBER.putString((Constants.STARTING_STATION == 1? "1st" : Constants.STARTING_STATION == 2 ? "2nd" : Constants.STARTING_STATION==3?"3rd" : "Unknown") + " Station");
 		TIME_REMAINING.putString(((DriverStation.getInstance().getMatchTime()-5)/DriverStation.getInstance().getMatchTime()/12) + " gears left with "+formatTime(DriverStation.getInstance().getMatchTime())+" remaining.");
 		BATTERY.putString("<unknown>% of battery remaining.");
-		SmartDashboard.putData("Grab Gear From Ground", createButton(SmartDashboardScript.GrabGearFromGround));
-		SmartDashboard.putData("Release Gear on Hook", createButton(SmartDashboardScript.ReleaseToHook));
 		SmartDashboard.getString(DRIVERSTATION, "<dynamic>");
 		TRU.start();
 	}
 	
 	
 	
-	public static Button createButton(final SmartDashboardScript sds) {
-		return new Button() {
-			
-			boolean pressed = false;
-			
-			@Override
-			public void whenPressed(Command c) {
-				pressed = true;
-				sds.whenPressed();
-			}
-				
-			@Override
-			public void whenReleased(Command c) {
-				pressed = false;
-				sds.whenReleased();
-			}
 
-			@Override
-			public boolean get() {
-				return pressed;
-			}
-			
-		};
-		
-	}
 	
 	
 	public static String formatTime(double d) {

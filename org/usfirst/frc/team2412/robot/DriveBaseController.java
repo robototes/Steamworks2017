@@ -40,7 +40,7 @@ public class DriveBaseController implements RobotController {
 		
 		//Drive (without twist)
 		
-		rd.arcadeDrive(y, x, true);
+		rd.tankDrive(x, y, true);
 		
 	}
 

@@ -11,45 +11,45 @@ import edu.wpi.first.wpilibj.Talon;
 public class GearController implements RobotController {
 	
 	private Joystick stick;
-	public Talon t;
-	private int pickupi, dropi;
+	public Talon motor;
+	private int pickupGearButton, dropGearButton;
 	
-	private final Script pickup = new Script() {
+	private final Script pickupScript = new Script() {
 	
 		@Override
 		protected void execute() {
 			try {
-				t.set(PICKUP_SPEED);
+				motor.set(PICKUP_SPEED);
 				Thread.sleep(PICKUP_GEAR_MSTIME);
-				t.set(0.0);
+				motor.set(0.0);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
 	},
-	drop = new Script() {
+	dropScript = new Script() {
 
 		@Override
 		protected void execute() {
 			try {
-				t.set(DROP_SPEED);
+				motor.set(DROP_SPEED);
 				Thread.sleep(DROP_GEAR_MSTIME);
-				t.set(0.0);
+				motor.set(0.0);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
 	},
-	autoDrop = new Script() {
+	DropInAutonomous = new Script() {
 		
 		@Override
 		protected void execute() {
 			try {
-				drop.run();
+				dropScript.run();
 				Thread.sleep(AUTO_MSDELAY);
-				drop.run();
+				dropScript.run();
 			} catch (Exception e) {}
 		}
 		
@@ -59,20 +59,20 @@ public class GearController implements RobotController {
 	public GearController(int motor, Joystick stick, int pickup, int drop) {
 		this.stick = stick;
 		
-		t = new Talon(motor);
-		pickupi = pickup;
-		dropi = drop;
+		this.motor = new Talon(motor);
+		pickupGearButton = pickup;
+		dropGearButton = drop;
 	}
 
 	public void processTeleop() {
-		autoDrop.start();
+		DropInAutonomous.start();
 	}
 
 	public void processAutonomous() {
-		if (stick.getRawButton(pickupi)) {
-			pickup.start();
-		} else if (stick.getRawButton(dropi)) {
-			drop.start();
+		if (stick.getRawButton(pickupGearButton)) {
+			pickupScript.start();
+		} else if (stick.getRawButton(dropGearButton)) {
+			dropScript.start();
 		}
 	}
 
