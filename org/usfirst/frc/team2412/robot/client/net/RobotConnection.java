@@ -3,12 +3,15 @@
  */
 package org.usfirst.frc.team2412.robot.client.net;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * Connects to robot and executes on the Client (DS) side
@@ -57,10 +60,34 @@ public class RobotConnection {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		 ServerSocket s = new ServerSocket(5800);
+		 @SuppressWarnings("resource")
+		ServerSocket s = new ServerSocket(5800);
 		 Socket socket = s.accept();
 		 
 		 System.out.println(socket.getInetAddress().getHostAddress());
+		 
+		 
+		 
+		 while (socket.isConnected()) {
+			 try {
+				 System.out.println(read(socket));
+			 } catch (Exception e) {
+				 
+			 }
+		 }
+	}
+	
+	static Scanner s = null;
+	private static String read(Socket sock) throws IOException {
+		if (s==null) s = new Scanner(sock.getInputStream());
+		while (!s.hasNext()) {
+			try {
+				Thread.sleep(0, 25);
+			} catch (Exception e) {
+				
+			}
+		}
+		return s.nextLine();
 	}
 
 }
