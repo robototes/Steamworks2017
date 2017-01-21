@@ -49,7 +49,7 @@ public class RobotConnection {
 					oldAddress = InetAddress.getLocalHost();
 				if (!oldAddress.getHostAddress().equals("127.0.0.1"))
 					JOptionPane.showMessageDialog(null, "New IP Address, update the SmartDashboard variable!\n"
-							+ (oldAddress = InetAddress.getLocalHost()).getHostName());
+							+ (oldAddress = InetAddress.getLocalHost()).getHostAddress());
 			}
 			if (!oldAddress.getHostAddress().equals("127.0.0.1")) {
 				ServerSocket s = new ServerSocket(5800);
