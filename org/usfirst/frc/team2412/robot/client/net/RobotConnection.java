@@ -6,12 +6,18 @@ package org.usfirst.frc.team2412.robot.client.net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 /**
  * Connects to robot and executes on the Client (DS) side
@@ -20,71 +26,62 @@ import java.util.Scanner;
 public class RobotConnection {
 
 	/**
-	 * Run this method on the DS
-	 * roborio-2412-frc.local
+	 * Run this method on the DS roborio-2412-frc.local
 	 * 
-	 * or 
-	 * 10.24.12.2
+	 * or 10.24.12.2
 	 * 
-	 * http://wpilib.screenstepslive.com/s/4485/m/24193/l/319135?data-resolve-url=true&data-manual-id=24193
+	 * http://wpilib.screenstepslive.com/s/4485/m/24193/l/319135?data-resolve-
+	 * url=true&data-manual-id=24193
 	 * 
-	 * [type]	[port]		[For]
-	 * UDP/TCP	1180-1190	camera data
-	 * TCP		1735 		smart dashboard
-	 * UDP		1130		Dashboard-to-ROBOT
-	 * UDP		1140		ROBOT-to-Dashboard
-	 * HTTP		80			Camera connection
-	 * HTTP		443			Camera connection
-	 * UDP/TCP 	554			Realtime Streaming h.264
-	 * UDP/TCP	5800-5810	Team Use
+	 * [type] [port] [For] UDP/TCP 1180-1190 camera data TCP 1735 smart
+	 * dashboard UDP 1130 Dashboard-to-ROBOT UDP 1140 ROBOT-to-Dashboard HTTP 80
+	 * Camera connection HTTP 443 Camera connection UDP/TCP 554 Realtime
+	 * Streaming h.264 UDP/TCP 5800-5810 Team Use
 	 */
-	public static void main_1(String[] args) {
-		try {
-			DatagramSocket s = new DatagramSocket();
-			s.connect(InetAddress.getByName(args[0]), 5800);
-			byte[] data = new byte[8092];
-			DatagramPacket packet = new DatagramPacket(data, data.length);
-			while (true) {
-				try {
-					s.receive(packet);
-					String sData = new String(data).trim();
-					System.out.println(sData);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
 	
 	public static void main(String[] args) throws IOException {
-		 @SuppressWarnings("resource")
-		ServerSocket s = new ServerSocket(5800);
-		 Socket socket = s.accept();
-		 
-		 System.out.println(socket.getInetAddress().getHostAddress());
-		 
-		 
-		 
-		 while (socket.isConnected()) {
-			 try {
-				 System.out.println(read(socket));
-			 } catch (Exception e) {
-				 
-			 }
-		 }
+		InetAddress oldAddress = null;
+		while (true) {
+			s = null;
+			if (oldAddress==null||!InetAddress.getLocalHost().getHostAddress().equals(oldAddress.getHostAddress())) {
+				JOptionPane.showMessageDialog(null, "New IP Address, update the SmartDashboard variable!\n"+(oldAddress = InetAddress.getLocalHost()).getHostName());
+			}
+			ServerSocket s = new ServerSocket(5800);
+			Socket socket = s.accept();
+
+			System.out.println(socket.getInetAddress().getHostAddress());
+			PrintStream log = new PrintStream(System.getProperty("user.home") + "/Desktop/Logs/"
+					+ new SimpleDateFormat("MM.dd.hh.mm.ss").format(Date.from(Instant.now())) + ".txt");
+			log.println("log created");
+
+			while (socket.isConnected()) {
+				try {
+					String s1 = "";
+					System.out.println((s1 = read(socket)));
+					log.println(s1);
+				} catch (Exception e) {
+					
+				}
+			}
+			log.close();
+			try {
+				s.close();
+			} catch (Exception e) {
+				
+			}
+		}
 	}
-	
+
 	static Scanner s = null;
+
 	private static String read(Socket sock) throws IOException {
-		if (s==null) s = new Scanner(sock.getInputStream());
+		if (s == null)
+			s = new Scanner(sock.getInputStream());
 		while (!s.hasNext()) {
 			try {
 				Thread.sleep(0, 25);
 			} catch (Exception e) {
-				
+
 			}
 		}
 		return s.nextLine();
