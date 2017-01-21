@@ -1,5 +1,8 @@
 package org.usfirst.frc.team2412.robot.sd;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.usfirst.frc.team2412.robot.Constants;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -10,6 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class SmartDashboardUtils {
+
+	public static String IPROBOT = "IP of Robot",
+						IPDRIVERSTATION = "IP of Driver Station";
 	
 	public static SmartDashboardNoTag STATION_NUMBER = new SmartDashboardNoTag(),
 			ALLIANCE_STATION = new SmartDashboardNoTag(),
@@ -24,6 +30,12 @@ public class SmartDashboardUtils {
 		BATTERY.putString("<unknown>% of battery remaining.");
 		SmartDashboard.putData("Grab Gear From Ground", createButton(SmartDashboardScript.GrabGearFromGround));
 		SmartDashboard.putData("Release Gear on Hook", createButton(SmartDashboardScript.ReleaseToHook));
+		try {
+			SmartDashboard.putString(IPROBOT, InetAddress.getLocalHost().getHostAddress());
+			SmartDashboard.putString(IPDRIVERSTATION, "10.24.12.? (replace the ?)");
+		} catch (Exception e) {
+			
+		}
 		TRU.start();
 	}
 	
@@ -75,5 +87,23 @@ public class SmartDashboardUtils {
 			}
 		}
 	};
+	
+	public static InetAddress getRobotIP() {
+		try {
+			return InetAddress.getByName(SmartDashboard.getString(IPROBOT, InetAddress.getLocalHost().getHostAddress()));
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static InetAddress getDriverStationIP() {
+		try {
+			return InetAddress.getByName(SmartDashboard.getString(IPDRIVERSTATION, InetAddress.getLocalHost().getHostAddress()));
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 }
