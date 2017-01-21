@@ -1,13 +1,12 @@
 package org.usfirst.frc.team2412.robot;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
+import java.net.Socket;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Locale;
-import java.util.Scanner;
 
 import javax.jws.WebService;
 
@@ -71,28 +70,14 @@ public class Constants {
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);
 		
-		/**
-		 * Temporary. allows me to see all ports data being sent on
-		 * Also allows me to see ip address of Robot
-		 */
-		try {
-			Process p = Runtime.getRuntime().exec("netstat -a -b -n");
-			Scanner s = new Scanner(p.getInputStream());
-			while (s.hasNextLine()) System.out.println(s.nextLine());
-			p = Runtime.getRuntime().exec("ipconfig");
-			s.close();
-			s = new Scanner(p.getInputStream());
-			while (s.hasNextLine()) System.out.println(s.nextLine());
-			s.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 		
 	}
 
-	private static void applyPrintStreams() {
+	private static void applyPrintStreams() throws Exception {
 		final PrintStream oldSysOut = System.out;
+		Socket s = new Socket(SmartDashboardUtils.getDriverStationIP(), 5800);
+		
 		
 		try {
 			File f = new File(System.getProperty("user.home") + File.separatorChar + "Desktop" + File.separatorChar + "Logs" + File.separatorChar + 
