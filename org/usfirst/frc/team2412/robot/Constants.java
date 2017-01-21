@@ -78,10 +78,15 @@ public class Constants {
 		
 		
 		try {
-			applyPrintStreams();
+			applyPrintStreams(ip);
 			applied = true;
 		} catch (Exception e) {
 			System.err.println((ip = SmartDashboardUtils.getDriverStationIP()));
+			
+			try {
+				applyPrintStreams(ip);
+			} catch (Exception ex2) {}
+			
 			e.printStackTrace();
 		}
 		//applyPrintStreams();
@@ -95,39 +100,12 @@ public class Constants {
 		jsCoDriver = new Joystick(1);
 		
 		
-		if (!applied) {
-		loops = 5;
-		ipOk = false;
-		
-		while (loops < 5 && !ipOk) {
-			loops--;
-			if (!errorIP) ip = SmartDashboardUtils.getDriverStationIP(); else errorIP = false;
-			try {
-				if (ip==null) ip = SmartDashboardUtils.getDriverStationIP();
-				ip = InetAddress.getByName(ip).getHostAddress();
-				ipOk = true;
-			} catch (Exception e) {
-				try {
-					Thread.sleep(500);
-				} catch (Exception ex) {
-					
-				}
-					ipOk = false;
-				}
-			}
-		
-			try {
-				applyPrintStreams();
-			} catch (Exception e) {
-				System.err.println(SmartDashboardUtils.getDriverStationIP());
-				e.printStackTrace();
-			}
-		}
 	}
 
-	private static void applyPrintStreams() throws Exception {
+	private static void applyPrintStreams(String ip) throws Exception {
 		final PrintStream oldSysOut = System.out;
-		Socket s = new Socket(SmartDashboardUtils.getDriverStationIP(), 5800);
+		
+		Socket s = new Socket(ip.equals("")?SmartDashboardUtils.getDriverStationIP():ip, 5800);
 		final PrintStream ps_socket = new PrintStream(s.getOutputStream());
 		
 		try {
