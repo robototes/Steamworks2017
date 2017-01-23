@@ -4,6 +4,7 @@
 package org.usfirst.frc.team2412.robot.client.net;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -14,6 +15,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -40,47 +42,27 @@ public class RobotConnection {
 	 */
 
 	public static void main(String[] args) throws IOException {
-		InetAddress oldAddress = null;
+		new Thread() {
+			public void run() {
+				
+			}
+		}.start();
 		while (true) {
 			s = null;
-			if (oldAddress == null
-					|| !InetAddress.getLocalHost().getHostAddress().equals(oldAddress.getHostAddress())) {
-				if (oldAddress == null)
-					oldAddress = InetAddress.getLocalHost();
-				if (!oldAddress.getHostAddress().equals("127.0.0.1"))
-					JOptionPane.showMessageDialog(null, "New IP Address, update the SmartDashboard variable!\n"
-							+ (oldAddress = InetAddress.getLocalHost()).getHostAddress());
-			}
-			if (!oldAddress.getHostAddress().equals("127.0.0.1")) {
-				ServerSocket s = new ServerSocket(5800);
-				Socket socket = s.accept();
-
-				System.out.println(socket.getInetAddress().getHostAddress());
-				PrintStream log = new PrintStream(System.getProperty("user.home") + "/Desktop/Logs/"
-						+ new SimpleDateFormat("MM.dd.hh.mm.ss").format(Date.from(Instant.now())) + ".txt");
-				log.println("log created");
-
-				while (socket.isConnected()) {
-					try {
-						String s1 = "";
-						System.out.println((s1 = read(socket)));
-						log.println(s1);
-					} catch (Exception e) {
-
+			ServerSocket s = new ServerSocket(5800);
+			try {
+				Socket so = s.accept();
+				new Thread() {
+					public void run() {
+						try {
+							connected(so);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
 					}
-				}
-				log.close();
-				try {
-					s.close();
-				} catch (Exception e) {
+				}.start();
+			} catch (Exception e) {
 
-				}
-			} else {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -98,6 +80,42 @@ public class RobotConnection {
 			}
 		}
 		return s.nextLine();
+	}
+
+	private static void connected(Socket socket) throws FileNotFoundException {
+		System.out.println(socket.getInetAddress().getHostAddress());
+		PrintStream log = new PrintStream(System.getProperty("user.home") + "/Desktop/Logs/"
+				+ new SimpleDateFormat("MM.dd.hh.mm.ss").format(Date.from(Instant.now())) + ".txt");
+		log.println("log created");
+
+		boolean end = false;
+		while (socket.isConnected()) {
+			try {
+				String s1 = "";
+				try {
+					s1 = read(socket);
+					if (s1.equals("-end")) {
+						if (end)
+							socket.close();
+						else
+							end = true;
+					} else {
+						System.out.println(s1);
+						log.println(s1);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+		log.close();
+		try {
+			s.close();
+		} catch (Exception e) {
+
+		}
 	}
 
 }

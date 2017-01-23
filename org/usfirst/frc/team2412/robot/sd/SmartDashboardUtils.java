@@ -28,7 +28,6 @@ public class SmartDashboardUtils {
 		STATION_NUMBER.putString((Constants.STARTING_STATION == 1? "1st" : Constants.STARTING_STATION == 2 ? "2nd" : Constants.STARTING_STATION==3?"3rd" : "Unknown") + " Station");
 		TIME_REMAINING.putString(((DriverStation.getInstance().getMatchTime()-5)/DriverStation.getInstance().getMatchTime()/12) + " gears left with "+formatTime(DriverStation.getInstance().getMatchTime())+" remaining.");
 		BATTERY.putString("<unknown>% of battery remaining.");
-		SmartDashboard.getString(DRIVERSTATION, "<dynamic>");
 		TRU.start();
 	}
 	
