@@ -47,9 +47,9 @@ public class RobotConnection {
 				
 			}
 		}.start();
+		
+		ServerSocket s = new ServerSocket(5800);
 		while (true) {
-			s = null;
-			ServerSocket s = new ServerSocket(5800);
 			try {
 				Socket so = s.accept();
 				new Thread() {
@@ -62,23 +62,22 @@ public class RobotConnection {
 					}
 				}.start();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 	}
 
-	static Scanner s = null;
 
-	private static String read(Socket sock) throws IOException {
+	private static String read(Scanner s, Socket sock) throws IOException {
 		if (s == null)
 			s = new Scanner(sock.getInputStream());
 		while (!s.hasNext()) {
 			try {
 				Thread.sleep(0, 25);
 			} catch (Exception e) {
-
+				
 			}
-		}
+		} 
 		return s.nextLine();
 	}
 
@@ -89,16 +88,27 @@ public class RobotConnection {
 		log.println("log created");
 
 		boolean end = false;
-		while (socket.isConnected()) {
+		boolean endWhile = false;
+		Scanner s = null;
+		try {
+			s = new Scanner(socket.getInputStream());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		while (socket.isConnected() && !endWhile) {
 			try {
 				String s1 = "";
 				try {
-					s1 = read(socket);
+					s1 = read(s, socket);
 					if (s1.equals("-end")) {
-						if (end)
+						if (end) {
+							endWhile = true;
+							socket.getOutputStream().write("reconnect".getBytes());	
 							socket.close();
-						else
+							socket = null;
+						} else {
 							end = true;
+						}
 					} else {
 						System.out.println(s1);
 						log.println(s1);
@@ -111,11 +121,6 @@ public class RobotConnection {
 			}
 		}
 		log.close();
-		try {
-			s.close();
-		} catch (Exception e) {
-
-		}
 	}
 
 }

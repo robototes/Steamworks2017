@@ -31,9 +31,14 @@ public abstract class Script extends Thread {
 	public void kill() {
 		if (_killed) return;
 		try {
+			super.yield();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		try {
 			// 9.22337204e18 minutes of sleeping
 			super.sleep(Long.MAX_VALUE);
-			super.yield();
 			_killed = true;
 		} catch (Exception e) {
 			System.err.println("It's ok. The robot won't fail because of this.");
