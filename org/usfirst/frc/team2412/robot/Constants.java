@@ -57,6 +57,7 @@ public class Constants {
 				ex.printStackTrace();
 			}
 		}
+		
 	
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();

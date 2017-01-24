@@ -48,6 +48,7 @@ public class RobotConnection {
 			}
 		}.start();
 		
+		
 		ServerSocket s = new ServerSocket(5800);
 		while (true) {
 			try {

@@ -36,6 +36,7 @@ public abstract class Script extends Thread {
 			e.printStackTrace();
 			
 		}
+		
 		try {
 			// 9.22337204e18 minutes of sleeping
 			super.sleep(Long.MAX_VALUE);
