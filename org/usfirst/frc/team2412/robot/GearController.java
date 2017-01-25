@@ -1,79 +1,44 @@
 package org.usfirst.frc.team2412.robot;
 
-import static org.usfirst.frc.team2412.robot.Constants.AUTO_MSDELAY;
-import static org.usfirst.frc.team2412.robot.Constants.DROP_GEAR_MSTIME;
-import static org.usfirst.frc.team2412.robot.Constants.DROP_SPEED;
-import static org.usfirst.frc.team2412.robot.Constants.PICKUP_GEAR_MSTIME;
-import static org.usfirst.frc.team2412.robot.Constants.PICKUP_SPEED;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class GearController implements RobotController {
 	
 	private Joystick stick;
-	public Talon motor;
-	private int pickupGearButton, dropGearButton;
+	private Solenoid upDownGripper;
+	private Solenoid openCloseGripper;
+	private int raiseButton, lowerButton, openButton, closeButton;
 	
-	private final Script pickupScript = new Script() {
-	
-		@Override
-		protected void execute() {
-			try {
-				motor.set(PICKUP_SPEED);
-				Thread.sleep(PICKUP_GEAR_MSTIME);
-				motor.set(0.0);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-	},
-	dropScript = new Script() {
-
-		@Override
-		protected void execute() {
-			try {
-				motor.set(DROP_SPEED);
-				Thread.sleep(DROP_GEAR_MSTIME);
-				motor.set(0.0);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-	},
-	DropInAutonomous = new Script() {
-		
-		@Override
-		protected void execute() {
-			try {
-				dropScript.run();
-				Thread.sleep(AUTO_MSDELAY);
-				dropScript.run();
-			} catch (Exception e) {}
-		}
-		
-	};
-	
-	
-	public GearController(int motor, Joystick stick, int pickup, int drop) {
-		this.stick = stick;
-		
-		this.motor = new Talon(motor);
-		pickupGearButton = pickup;
-		dropGearButton = drop;
+	//Creates a GearController class.
+	//upDownGripper - Solenoid that raises/lowers the gear intake.
+	//openCloseGripper - Solenoid that makes the arms move in/out (left/right).
+	//Joystick stick - The codriver board to read values from.
+	//raiseButton/closeButton - buttons for raising/lowering the intake.
+	//openButton/closeButton - buttons for opening/closing the gear intake's arms.
+	public GearController(Solenoid upDownGripper, Solenoid openCloseGripper, Joystick stick, int raiseButton, int lowerButton, int openButton, int closeButton) {
+		//Set member variables.
+		this.upDownGripper = upDownGripper;
+		this.openCloseGripper = openCloseGripper;
+		this.raiseButton = raiseButton;
+		this.lowerButton = lowerButton;
+		this.openButton = openButton;
+		this.closeButton = closeButton;
 	}
-
+	
 	public void processTeleop() {
-		DropInAutonomous.start();
+		if (stick.getRawButton(raiseButton))
+			upDownGripper.set(true);
+		else if(stick.getRawButton(lowerButton))
+			upDownGripper.set(false);
+		else if(stick.getRawButton(openButton)) 
+			openCloseGripper.set(true);
+		else if(stick.getRawButton(closeButton))
+			openCloseGripper.set(false);
 	}
 
 	public void processAutonomous() {
-		if (stick.getRawButton(pickupGearButton)) {
-			pickupScript.start();
-		} else if (stick.getRawButton(dropGearButton)) {
-			dropScript.start();
-		}
+		
 	}
 
 }

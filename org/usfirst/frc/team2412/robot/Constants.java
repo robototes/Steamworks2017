@@ -8,6 +8,7 @@ import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Constants {
@@ -40,10 +41,10 @@ public class Constants {
 			// 5 moves the rotor clamp up and down
 			5 };
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
-	public static int BUTTON_ID_PICKUP_GEAR = -1, BUTTON_ID_DROP_GEAR = -1, BUTTON_ID_ROTATE_CLAMP_UP = -1,
-			BUTTON_ID_ROTATE_CLAMP_DOWN = -1, PICKUP_GEAR_MSTIME = 500, DROP_GEAR_MSTIME = 500, AUTO_MSDELAY = 500;
+	public static int BUTTON_ID_OPEN_CLAMP = -1, BUTTON_ID_CLOSE_CLAMP = -1, BUTTON_ID_ROTATE_CLAMP_UP = -1,
+			BUTTON_ID_ROTATE_CLAMP_DOWN = -1, SOLENOID_ID_UP_DOWN = 0, SOLENOID_ID_OPEN_CLOSE = 1, PICKUP_GEAR_MSTIME = 500, DROP_GEAR_MSTIME = 500, AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
-
+	public static Solenoid upDownGripper, openCloseGripper;
 	public static void init() {
 
 		try {
@@ -70,6 +71,8 @@ public class Constants {
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);
 
+		upDownGripper = new Solenoid(SOLENOID_ID_UP_DOWN);
+		openCloseGripper = new Solenoid(SOLENOID_ID_OPEN_CLOSE);
 	}
 
 	private static void applyPrintStreams(Socket s2) throws Exception {

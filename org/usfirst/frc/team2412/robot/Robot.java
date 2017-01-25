@@ -17,7 +17,7 @@ public class Robot extends IterativeRobot {
 	private boolean firstRun;
 	private boolean startup;
 	
-	private RobotController rcs[] = new RobotController[4];
+	private RobotController rcs[] = new RobotController[3];
 	
 	public void robotInit() {
 		Constants.init();
@@ -52,9 +52,8 @@ public class Robot extends IterativeRobot {
 			
 		//Initialize RobotControllers
 		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.motors[0], Constants.motors[1], Constants.motors[2], Constants.motors[3]);
-		rcs[1] = new GearController(Constants.motors[4], Constants.jsCoDriver, Constants.BUTTON_ID_PICKUP_GEAR, Constants.BUTTON_ID_DROP_GEAR);
-		rcs[2] = new GearController(Constants.motors[5], Constants.jsCoDriver, Constants.BUTTON_ID_ROTATE_CLAMP_UP, Constants.BUTTON_ID_ROTATE_CLAMP_DOWN);
-		rcs[3] = new VisionController();
+		rcs[1] = new GearController(Constants.upDownGripper, Constants.openCloseGripper, Constants.jsCoDriver, Constants.BUTTON_ID_ROTATE_CLAMP_UP, Constants.BUTTON_ID_ROTATE_CLAMP_DOWN, Constants.BUTTON_ID_OPEN_CLAMP, Constants.BUTTON_ID_CLOSE_CLAMP);
+		rcs[2] = new VisionController();
 		
 		startup = true;
 	}
