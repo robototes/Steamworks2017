@@ -23,7 +23,7 @@ public class Robot extends IterativeRobot {
 		Constants.init();
 		DriverStation ds = DriverStation.getInstance();
 		Alliance alliance = ds.getAlliance();
-		int location = ds.getLocation();
+		int location = ds.getLocation(); 
 		double voltage = ds.getBatteryVoltage();
 		
 		System.out.println("	==== STARTING INITIALIZATION PROCEDURES ====");

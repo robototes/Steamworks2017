@@ -58,12 +58,12 @@ public class Constants {
 				ex.printStackTrace();
 			}
 		}
+		
 	
-		// applyPrintStreams();
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0) * 1000;
-		if (autoDelay > 15.0 || autoDelay < 0.0)
+		if (autoDelay > 15000.0 || autoDelay < 0.0)
 			autoDelay = 0.0; // this way, we don't go for too long in auto to
 								// skip parts of teleop period
 		constantsInitialized = true;
