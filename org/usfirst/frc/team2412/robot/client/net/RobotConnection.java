@@ -42,12 +42,7 @@ public class RobotConnection {
 	 */
 
 	public static void main(String[] args) throws IOException {
-		new Thread() {
-			public void run() {
-				
-			}
-		}.start();
-		
+	
 		
 		ServerSocket s = new ServerSocket(5800);
 		while (true) {
