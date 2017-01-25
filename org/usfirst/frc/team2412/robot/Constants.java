@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -45,6 +46,7 @@ public class Constants {
 			BUTTON_ID_ROTATE_CLAMP_DOWN = -1, SOLENOID_ID_UP_DOWN = 0, SOLENOID_ID_OPEN_CLOSE = 1, PICKUP_GEAR_MSTIME = 500, DROP_GEAR_MSTIME = 500, AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
 	public static Solenoid upDownGripper, openCloseGripper;
+	public static Compressor compressor;
 	public static void init() {
 
 		try {
@@ -73,6 +75,7 @@ public class Constants {
 
 		upDownGripper = new Solenoid(SOLENOID_ID_UP_DOWN);
 		openCloseGripper = new Solenoid(SOLENOID_ID_OPEN_CLOSE);
+		compressor = new Compressor();
 	}
 
 	private static void applyPrintStreams(Socket s2) throws Exception {
