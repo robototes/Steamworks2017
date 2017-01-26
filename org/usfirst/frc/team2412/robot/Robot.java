@@ -50,7 +50,6 @@ public class Robot extends IterativeRobot {
 		System.out.println("	==== ROBOT IS READY ===");
 		System.out.println("	=======================");
 		
-		Constants.compressor.start(); //Startup the compressor when the robot starts.
 		
 		//Initialize RobotControllers
 		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.motors[0], Constants.motors[1], Constants.motors[2], Constants.motors[3]);
