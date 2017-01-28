@@ -57,7 +57,7 @@ public class SmartDashboardUtils {
 	 */
 	public static Thread TRU = new Thread() {
 		public void run() {
-			while (DriverStation.getInstance().getMatchTime()>0) {
+			while (true) {
 				Scheduler.getInstance().run();
 				
 				SmartDashboard.putString(TIMEREMAINING, (int) (DriverStation.getInstance().getMatchTime()/60) + ":" + (new String(""+ (DriverStation.getInstance().getMatchTime()%60)).length()==2 ? "" : "0") + (new String(""+ (DriverStation.getInstance().getMatchTime()%60))));
