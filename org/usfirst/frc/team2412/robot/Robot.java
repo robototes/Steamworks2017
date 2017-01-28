@@ -63,11 +63,7 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() {
 		System.out.println("	==== STARTING AUTONOMOUS MODE ====");
-		if (SmartDashboardUtils.getPrintHelloInAuto()) {
-			System.out.println("Hello!");
-		} else {
-			System.out.println("Goodbye!");
-		}
+		
 		firstRun = true;
 	}
 	

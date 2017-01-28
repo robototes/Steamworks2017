@@ -19,23 +19,43 @@ public class SmartDashboardUtils {
 			ALLIANCE_STATION = new SmartDashboardNoTag(),
 			TIME_REMAINING = new SmartDashboardNoTag(),
 			BATTERY = new SmartDashboardNoTag();
-	public static String DRIVERSTATION = "DriverStation IP", PRINTHELLO = "Print \"hello\" in autonomous mode: ";
+	public static String DRIVERSTATION = "DriverStation IP", ROBOTPOSITION = "Robot Station Number: ", ROBOTALLIANCE = "Robot is on the Red Alliance: ";
 	
 	public static void init() {
 		ALLIANCE_STATION.putString(DriverStation.getInstance().getAlliance().name());
 		STATION_NUMBER.putString((Constants.STARTING_STATION == 1? "1st" : Constants.STARTING_STATION == 2 ? "2nd" : Constants.STARTING_STATION==3?"3rd" : "Unknown") + " Station");
 		TIME_REMAINING.putString(((DriverStation.getInstance().getMatchTime()-5)/DriverStation.getInstance().getMatchTime()/12) + " gears left with "+formatTime(DriverStation.getInstance().getMatchTime())+" remaining.");
 		BATTERY.putString("<unknown>% of battery remaining.");
-		if (!getPrintHelloInAuto()) SmartDashboard.putBoolean(PRINTHELLO, true);
+		getRobotPosition(false);
+		getSpecifiedAlliance();
 		TRU.start();
 	}
-	
-	
-	
-	public static boolean getPrintHelloInAuto() {
-		return Boolean.valueOf(SmartDashboard.getBoolean(PRINTHELLO, false));
+	/**
+	 * @param startAt1 - if true, returns 1 - 3, otherwise, returns 0 - 2
+	 * @return Which station the robot is at, specified by the user
+	 * 
+	 */
+	public static int getRobotPosition(boolean startAt1) {
+		int i = (int) SmartDashboard.getNumber(ROBOTPOSITION, 1.0)-(startAt1 ? 0 : 1);
+		if ((i + (startAt1 ? 0 : 1)) != DriverStation.getInstance().getLocation()) {
+			System.err.println("The specified driver station, " + (i + (startAt1 ? 0 : 1)) + " doesn't match up with " + DriverStation.getInstance().getLocation() + ". Returning specified station anyways.");
+		}
+		
+		
+		return i;
 	}
 	
+	/**
+	 * A new method for simplicity.
+	 * @return getRobotPosition(true)
+	 */
+	public static int getRobotPosition() {
+		return getRobotPosition(true);
+	}
+	
+	public static DriverStation.Alliance getSpecifiedAlliance() {
+		return SmartDashboard.getBoolean(ROBOTALLIANCE, false) ? DriverStation.Alliance.Blue : DriverStation.Alliance.Red;
+	}
 	
 	public static String formatTime(double d) {
 		return ((int) d/60)+":"+((((int) d % 60)+"").length()==1 ? ("0"+((int) d % 60)) : (((int) d % 60)));
@@ -59,6 +79,7 @@ public class SmartDashboardUtils {
 		}
 	};
 	
+	@Deprecated
 	public static InetAddress getRobotIP() {
 		try {
 			return InetAddress.getByName(SmartDashboard.getString(IPROBOT, InetAddress.getLocalHost().getHostAddress()));
