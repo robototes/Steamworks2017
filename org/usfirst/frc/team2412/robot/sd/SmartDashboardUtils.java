@@ -12,24 +12,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardUtils {
 
-	public static String IPROBOT = "IP of Robot",
-						IPDRIVERSTATION = "IP of Driver Station";
-	
-	public static SmartDashboardNoTag STATION_NUMBER = new SmartDashboardNoTag(),
-			ALLIANCE_STATION = new SmartDashboardNoTag(),
-			TIME_REMAINING = new SmartDashboardNoTag(),
-			BATTERY = new SmartDashboardNoTag();
-	public static String DRIVERSTATION = "DriverStation IP", ROBOTPOSITION = "Robot Station Number: ", ROBOTALLIANCE = "Robot is on the Red Alliance: ";
+	public static String DRIVERSTATION = "DriverStation IP", ROBOTPOSITION = "Robot Station Number: ", ROBOTALLIANCE = "Robot is on the Red Alliance: ", TIMEREMAINING = "Time Remaining: ";
 	
 	public static void init() {
-		ALLIANCE_STATION.putString(DriverStation.getInstance().getAlliance().name());
-		STATION_NUMBER.putString((Constants.STARTING_STATION == 1? "1st" : Constants.STARTING_STATION == 2 ? "2nd" : Constants.STARTING_STATION==3?"3rd" : "Unknown") + " Station");
-		TIME_REMAINING.putString(((DriverStation.getInstance().getMatchTime()-5)/DriverStation.getInstance().getMatchTime()/12) + " gears left with "+formatTime(DriverStation.getInstance().getMatchTime())+" remaining.");
-		BATTERY.putString("<unknown>% of battery remaining.");
+		SmartDashboard.putString(TIMEREMAINING, "Initialization Seqence");
 		getRobotPosition(false);
-		getSpecifiedAlliance();
 		TRU.start();
 	}
+	
+	public static void firstTimeInit() {
+		SmartDashboard.putNumber(ROBOTPOSITION, 1.0);
+		SmartDashboard.putString(DRIVERSTATION, "default value");
+	}
+	
 	/**
 	 * @param startAt1 - if true, returns 1 - 3, otherwise, returns 0 - 2
 	 * @return Which station the robot is at, specified by the user
@@ -41,21 +36,17 @@ public class SmartDashboardUtils {
 			System.err.println("The specified driver station, " + (i + (startAt1 ? 0 : 1)) + " doesn't match up with " + DriverStation.getInstance().getLocation() + ". Returning specified station anyways.");
 		}
 		
-		
 		return i;
 	}
 	
 	/**
 	 * A new method for simplicity.
-	 * @return getRobotPosition(true)
+	 * @return getRobotPosition(true) (numbers 1 - 3)
 	 */
 	public static int getRobotPosition() {
 		return getRobotPosition(true);
 	}
 	
-	public static DriverStation.Alliance getSpecifiedAlliance() {
-		return SmartDashboard.getBoolean(ROBOTALLIANCE, false) ? DriverStation.Alliance.Blue : DriverStation.Alliance.Red;
-	}
 	
 	public static String formatTime(double d) {
 		return ((int) d/60)+":"+((((int) d % 60)+"").length()==1 ? ("0"+((int) d % 60)) : (((int) d % 60)));
@@ -67,9 +58,11 @@ public class SmartDashboardUtils {
 	public static Thread TRU = new Thread() {
 		public void run() {
 			while (DriverStation.getInstance().getMatchTime()>0) {
-				TIME_REMAINING.putString(((DriverStation.getInstance().getMatchTime()-5)/DriverStation.getInstance().getMatchTime()/12) + " gears left with "+formatTime(DriverStation.getInstance().getMatchTime())+" remaining.");
-				BATTERY.putString(DriverStation.getInstance().getBatteryVoltage()*8.333333333 + "% of battery remaining.");
 				Scheduler.getInstance().run();
+				
+				SmartDashboard.putString(TIMEREMAINING, (int) (DriverStation.getInstance().getMatchTime()/60) + ":" + (new String(""+ (DriverStation.getInstance().getMatchTime()%60)).length()==2 ? "" : "0") + (new String(""+ (DriverStation.getInstance().getMatchTime()%60))));
+
+				
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -82,7 +75,7 @@ public class SmartDashboardUtils {
 	@Deprecated
 	public static InetAddress getRobotIP() {
 		try {
-			return InetAddress.getByName(SmartDashboard.getString(IPROBOT, InetAddress.getLocalHost().getHostAddress()));
+			return InetAddress.getByName(SmartDashboard.getString("", InetAddress.getLocalHost().getHostAddress()));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			return null;

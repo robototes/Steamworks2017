@@ -6,7 +6,9 @@ import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -21,6 +23,7 @@ public class Robot extends IterativeRobot {
 	private RobotController rcs[] = new RobotController[3];
 	
 	public void robotInit() {
+		
 		Constants.init();
 		DriverStation ds = DriverStation.getInstance();
 		Alliance alliance = ds.getAlliance();
@@ -116,4 +119,5 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Timer.delay(0.1);
 	}
+	
 }
