@@ -24,6 +24,7 @@ public class GearController implements RobotController {
 		this.lowerButton = lowerButton;
 		this.openButton = openButton;
 		this.closeButton = closeButton;
+		this.stick = stick;
 	}
 	
 	public void processTeleop() {

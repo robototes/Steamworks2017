@@ -75,9 +75,13 @@ public class Robot extends IterativeRobot {
 			System.out.println("		No autonomous code.");
 			firstRun = false;
 		}
-		for(RobotController rc : rcs) {
-			if(rc != null)
-				rc.processAutonomous();
+		try {
+			for(RobotController rc : rcs) {
+				if(rc != null)
+					rc.processAutonomous();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		Timer.delay(0.05);
@@ -94,9 +98,13 @@ public class Robot extends IterativeRobot {
 			System.out.println("		No tele-operated code.");
 			firstRun = false;
 		}
-		for(RobotController rc : rcs) {
-			if(rc != null)
-				rc.processTeleop();
+		try {
+			for(RobotController rc : rcs) {
+				if(rc != null)
+					rc.processTeleop();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	public void testInit() {

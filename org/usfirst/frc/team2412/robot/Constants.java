@@ -50,6 +50,7 @@ public class Constants {
 	public static void init() {
 		Scheduler.getInstance().run();
 		Timer.delay(1d);
+		
 		try {
 			applyPrintStreams(new Socket(SmartDashboardUtils.getDriverStationIP(), 5800));
 		} catch (Exception e) {
@@ -62,7 +63,9 @@ public class Constants {
 			}
 		}
 		
-	
+		
+		
+		
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0) * 1000;
@@ -70,7 +73,7 @@ public class Constants {
 			autoDelay = 0.0; // this way, we don't go for too long in auto to
 								// skip parts of teleop period
 		constantsInitialized = true;
-		SmartDashboardUtils.firstTimeInit(true, false);
+		//SmartDashboardUtils.firstTimeInit(true, false);
 		SmartDashboardUtils.init();
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);
