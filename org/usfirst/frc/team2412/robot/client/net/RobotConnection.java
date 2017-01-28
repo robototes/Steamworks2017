@@ -73,7 +73,7 @@ public class RobotConnection {
 		System.out.println(socket.getInetAddress().getHostAddress());
 		PrintStream log = new PrintStream(System.getProperty("user.home") + "/Desktop/Logs/"
 				+ new SimpleDateFormat("MM.dd.hh.mm.ss").format(Date.from(Instant.now())) + ".txt");
-		log.println("log created");
+		log.println("Connected to: " + socket.getInetAddress().getHostAddress());
 
 		boolean end = false;
 		boolean endWhile = false;

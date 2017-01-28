@@ -9,6 +9,8 @@ import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Constants {
@@ -46,7 +48,8 @@ public class Constants {
 	public static Joystick jsDriver, jsCoDriver;
 	public static Solenoid upDownGripper, openCloseGripper;
 	public static void init() {
-
+		Scheduler.getInstance().run();
+		Timer.delay(1d);
 		try {
 			applyPrintStreams(new Socket(SmartDashboardUtils.getDriverStationIP(), 5800));
 		} catch (Exception e) {
@@ -67,6 +70,7 @@ public class Constants {
 			autoDelay = 0.0; // this way, we don't go for too long in auto to
 								// skip parts of teleop period
 		constantsInitialized = true;
+		SmartDashboardUtils.firstTimeInit(true, false);
 		SmartDashboardUtils.init();
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);

@@ -1,9 +1,9 @@
 package org.usfirst.frc.team2412.robot.sd;
 
+import static org.usfirst.frc.team2412.robot.Constants.*;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import org.usfirst.frc.team2412.robot.Constants;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -12,17 +12,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardUtils {
 
-	public static String DRIVERSTATION = "DriverStation IP", ROBOTPOSITION = "Robot Station Number: ", ROBOTALLIANCE = "Robot is on the Red Alliance: ", TIMEREMAINING = "Time Remaining: ";
+	public static String DRIVERSTATION = "DriverStation IP", ROBOTPOSITION = "Robot Station: ", ROBOTALLIANCE = "Robot is on the Red Alliance: ", TIMEREMAINING = "Time Remaining: ";
 	
 	public static void init() {
+		Scheduler.getInstance().run();
 		SmartDashboard.putString(TIMEREMAINING, "Initialization Seqence");
 		getRobotPosition(false);
 		TRU.start();
 	}
 	
 	public static void firstTimeInit() {
-		SmartDashboard.putNumber(ROBOTPOSITION, 1.0);
+		SmartDashboard.putString(ROBOTPOSITION, "center");
 		SmartDashboard.putString(DRIVERSTATION, "default value");
+	}
+	
+	/**
+	 * 
+	 * @param reset1 Reset Robot Position
+	 * @param reset2 Reset DriverStation IP
+	 */
+	public static void firstTimeInit(boolean reset1, boolean reset2) {
+		if (reset1) SmartDashboard.putString(ROBOTPOSITION, "center");
+		if (reset2) SmartDashboard.putString(DRIVERSTATION, "default value");
 	}
 	
 	/**
@@ -31,12 +42,35 @@ public class SmartDashboardUtils {
 	 * 
 	 */
 	public static int getRobotPosition(boolean startAt1) {
-		int i = (int) SmartDashboard.getNumber(ROBOTPOSITION, 1.0)-(startAt1 ? 0 : 1);
-		if ((i + (startAt1 ? 0 : 1)) != DriverStation.getInstance().getLocation()) {
-			System.err.println("The specified driver station, " + (i + (startAt1 ? 0 : 1)) + " doesn't match up with " + DriverStation.getInstance().getLocation() + ". Returning specified station anyways.");
+		String in = SmartDashboard.getString(ROBOTPOSITION, "The data was not returned").toLowerCase();
+		int i = -1;
+		
+		if (in.contains("left") && i == -1) {
+			i = 1;
 		}
 		
-		return i;
+		if (in.contains("center") && i == -1) {
+			i = 2;
+		}
+		
+		if (in.contains("right") && i == -1) {
+			i = 3;
+		}
+		
+		if (i < 1 || i > 3) {
+			System.err.println("int i wasn't in the specified values.");
+			System.err.println("");
+			System.err.println("Variables:");
+			System.err.println("i: " + i);
+			System.err.println("in: " + in);
+			return -1;
+		}
+		
+		if ((i) != DriverStation.getInstance().getLocation()) {
+			System.err.println("The specified driver station, " + (i) + " doesn't match up with " + DriverStation.getInstance().getLocation() + ". Returning specified station anyways.");
+		}
+		
+		return i + (startAt1 ? 0 : -1);
 	}
 	
 	/**
@@ -57,10 +91,10 @@ public class SmartDashboardUtils {
 	 */
 	public static Thread TRU = new Thread() {
 		public void run() {
-			while (DriverStation.getInstance().getMatchTime()>0) {
+			while (true) {
 				Scheduler.getInstance().run();
 				
-				SmartDashboard.putString(TIMEREMAINING, (int) (DriverStation.getInstance().getMatchTime()/60) + ":" + (new String(""+ (DriverStation.getInstance().getMatchTime()%60)).length()==2 ? "" : "0") + (new String(""+ (DriverStation.getInstance().getMatchTime()%60))));
+				SmartDashboard.putString(TIMEREMAINING, (int) (DriverStation.getInstance().getMatchTime()/60) + ":" + (new String(""+ ((int) DriverStation.getInstance().getMatchTime()%60)).length()==2 ? "" : "0") + (new String(""+ (DriverStation.getInstance().getMatchTime()%60))));
 
 				
 				try {
@@ -80,6 +114,7 @@ public class SmartDashboardUtils {
 			e.printStackTrace();
 			return null;
 		}
+		
 	}
 	
 
