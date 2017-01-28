@@ -2,6 +2,7 @@ package org.usfirst.frc.team2412.robot;
 
 import org.usfirst.frc.team2412.robot.RobotController;
 import org.usfirst.frc.team2412.robot.VisionController;
+import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -62,6 +63,11 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() {
 		System.out.println("	==== STARTING AUTONOMOUS MODE ====");
+		if (SmartDashboardUtils.getPrintHelloInAuto()) {
+			System.out.println("Hello!");
+		} else {
+			System.out.println("Goodbye!");
+		}
 		firstRun = true;
 	}
 	
@@ -74,6 +80,7 @@ public class Robot extends IterativeRobot {
 			if(rc != null)
 				rc.processAutonomous();
 		}
+		
 		Timer.delay(0.05);
 	}
 	
