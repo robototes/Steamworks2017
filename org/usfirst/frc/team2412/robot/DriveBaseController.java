@@ -45,6 +45,14 @@ public class DriveBaseController implements RobotController {
 	public void processAutonomous() {
 		
 	}
+
+	public void teleopInit() {
+
+	}
+
+	public void autonomousInit() {
+		
+	}
 	
 	
 }
