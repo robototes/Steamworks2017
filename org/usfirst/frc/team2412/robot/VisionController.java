@@ -64,5 +64,14 @@ public class VisionController implements RobotController {
 
 	public void processAutonomous() {
 	}
+
+	public void teleopInit() {
+		
+	}
+
+	public void autonomousInit() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
