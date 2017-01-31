@@ -26,24 +26,20 @@ public class DriveBaseController implements RobotController {
 	
 	/**
 	 * Drives robot in coordination with controller.
-	 * Also, gets current rotation of robot and changes the magnitude of the
-	 * x and y vectors of the requested direction with that. It's something that
-	 * may not work, but will try
-	 * 
-	 * Trigger down = 
 	 */
 	
 	public void processTeleop() {
-		double x = (js.getX()-0.5)*DRIVE_SPEED;
-		double z = (js.getZ()-0.5)*DRIVE_SPEED;
-		double y = (js.getY()-0.5)*DRIVE_SPEED;
-//		double rotation = (js.getZ()-0.5)/ROTATION_SPEED;
+		double jsY = js.getY();
+		double jsX = -js.getX();
 		
-		//Drive (without twist)
-		
-		rd.arcadeDrive(y, Math.abs(z) > Math.abs(x) ? z : x);
-//		rd.tankDrive(x, y, true);
-		
+		double jsTwist = -js.getTwist(); //getRawAxis(3) is for the new joystick, getTwist is for the logitech joystick.
+		if(js.getRawButton(5)) {
+			//Drive with twist
+			rd.arcadeDrive(jsY, jsTwist, true);
+		} else {
+			//Drive like airplane
+			rd.arcadeDrive(jsY, jsX, true);
+		}
 	}
 
 	public void processAutonomous() {
