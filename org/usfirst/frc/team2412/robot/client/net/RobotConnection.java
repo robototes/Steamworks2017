@@ -35,6 +35,7 @@ public class RobotConnection {
 
 	public static void main(String[] args) throws IOException {
 	
+		System.out.println(Thread.currentThread().getStackTrace()[Thread.currentThread().getStackTrace().length-2].toString());
 		
 		ServerSocket s = new ServerSocket(5800);
 		while (true) {
@@ -51,6 +52,8 @@ public class RobotConnection {
 				}.start();
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				s.close();
 			}
 		}
 	}
