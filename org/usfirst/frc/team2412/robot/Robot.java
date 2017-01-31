@@ -60,7 +60,14 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() {
 		System.out.println("	==== STARTING AUTONOMOUS MODE ====");
-		
+		try {
+			for(RobotController rc : rcs) {
+				if(rc != null)
+					rc.autonomousInit();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		firstRun = true;
 	}
 	
@@ -83,8 +90,15 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		System.out.println("	==== STARTING TELE-OPERATED MODE ====");
+		try {
+			for(RobotController rc : rcs) {
+				if(rc != null)
+					rc.teleopInit();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		firstRun = true;
-		
 	}
 	
 	public void teleopPeriodic() {
