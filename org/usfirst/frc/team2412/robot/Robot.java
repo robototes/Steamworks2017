@@ -1,14 +1,8 @@
 package org.usfirst.frc.team2412.robot;
 
-import org.usfirst.frc.team2412.robot.RobotController;
-import org.usfirst.frc.team2412.robot.VisionController;
-import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
