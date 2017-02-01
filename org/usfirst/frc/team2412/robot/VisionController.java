@@ -50,16 +50,21 @@ public class VisionController implements RobotController {
 		while True:
 		    time.sleep(1)
 	 */
-	private int x = 0;
 	private NetworkTable table = null;
 	public void processTeleop() {
 		if(table == null) {
 			//Initialize NetworkTable
 			table = NetworkTable.getTable("datatable");
 		}
-		table.putNumber("X", x);
-		x+=2;
-		System.out.println(table.getNumber("Y", -1));
+		boolean targetsFound = table.getBoolean("targetsFound", false);
+		if(targetsFound) {
+			double angle = table.getNumber("angle", -1);
+			double distance = table.getNumber("distance", -1);
+			System.out.println("Angle: " + angle);
+			System.out.println("Distance: " + distance);
+		} else {
+			System.out.println("No targets found!");
+		}
 	}
 
 	public void processAutonomous() {
