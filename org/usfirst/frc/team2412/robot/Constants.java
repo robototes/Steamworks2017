@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Constants {
@@ -43,10 +44,11 @@ public class Constants {
 			// 5 moves the rotor clamp up and down
 			5 };
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
-	public static int BUTTON_ID_OPEN_CLAMP = -1, BUTTON_ID_CLOSE_CLAMP = -1, BUTTON_ID_ROTATE_CLAMP_UP = -1,
-			BUTTON_ID_ROTATE_CLAMP_DOWN = -1, SOLENOID_ID_UP_DOWN = 0, SOLENOID_ID_OPEN_CLOSE = 1, PICKUP_GEAR_MSTIME = 500, DROP_GEAR_MSTIME = 500, AUTO_MSDELAY = 500;
+	public static int BUTTON_ID_OPEN_CLAMP = 1, BUTTON_ID_CLOSE_CLAMP = 2, BUTTON_ID_ROTATE_CLAMP_UP = 3,
+			BUTTON_ID_ROTATE_CLAMP_DOWN = 4, SOLENOID_ID_UP_DOWN = 2, SOLENOID_ID_OPEN_CLOSE = 1, PICKUP_GEAR_MSTIME = 500, DROP_GEAR_MSTIME = 500, AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
 	public static Solenoid upDownGripper, openCloseGripper;
+	public static NetworkTable visionTable = null;
 	public static void init() {
 		Scheduler.getInstance().run();
 		Timer.delay(1d);
@@ -63,9 +65,6 @@ public class Constants {
 			}
 		}
 		
-		
-		
-		
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0) * 1000;
@@ -80,6 +79,8 @@ public class Constants {
 
 		upDownGripper = new Solenoid(SOLENOID_ID_UP_DOWN);
 		openCloseGripper = new Solenoid(SOLENOID_ID_OPEN_CLOSE);
+		
+		visionTable = NetworkTable.getTable("datatable");
 	}
 
 	private static void applyPrintStreams(Socket s2) throws Exception {
