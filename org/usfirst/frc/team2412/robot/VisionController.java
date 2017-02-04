@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class VisionController implements RobotController {
 	
+	public static final String TABLENAME = "datatable";
+	
 	/* Raspberry Pi side, in python (sorry Alexander)
 		#!/usr/bin/env python3
 		#
@@ -51,7 +53,11 @@ public class VisionController implements RobotController {
 		    time.sleep(1)
 	 */
 	public void processTeleop() {
-		boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
+		if(table == null) {
+			//Initialize NetworkTable
+			table = NetworkTable.getTable(TABLENAME);
+		}
+		boolean targetsFound = table.getBoolean("targetsFound", false);
 		if(targetsFound) {
 			double angle = Constants.visionTable.getNumber("angle", -1);
 			double distance = Constants.visionTable.getNumber("distance", -1);
@@ -72,6 +78,14 @@ public class VisionController implements RobotController {
 	public void autonomousInit() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public double getAngle() {
+		return table==null ? Double.NaN : table.getNumber("angle", Double.NaN);
+	}
+	
+	public double getDist() {
+		return table == null ? Double.NaN: table.getNumber("distance", Double.NaN);
 	}
 	
 }
