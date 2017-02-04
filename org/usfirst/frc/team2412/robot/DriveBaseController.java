@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2412.robot;
 
+import static org.usfirst.frc.team2412.robot.Constants.AUTO_FINAL_DIST;
+
 import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -91,7 +93,7 @@ public class DriveBaseController implements RobotController {
 			break;
 		case 2:
 			try {
-				if (table.getNumber("distance", Double.NaN) < 0.5) {
+				if (table.getNumber("distance", Double.NaN) < AUTO_FINAL_DIST) {
 					done = true;
 					return;
 				} else {

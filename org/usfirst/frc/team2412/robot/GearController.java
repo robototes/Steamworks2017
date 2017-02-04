@@ -2,6 +2,7 @@ package org.usfirst.frc.team2412.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class GearController implements RobotController {
 	
@@ -38,8 +39,12 @@ public class GearController implements RobotController {
 			openCloseGripper.set(false);
 	}
 
+	private NetworkTable data;
+	
 	public void processAutonomous() {
-		
+		if ((data = (data == null ? NetworkTable.getTable(VisionController.TABLENAME) : data)).getNumber("distance", Double.NaN) <= Constants.AUTO_FINAL_DIST) {
+			hookOnPeg();
+		}
 	}
 	
 	public void teleopInit() {
