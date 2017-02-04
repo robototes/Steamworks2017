@@ -57,55 +57,73 @@ public class DriveBaseController implements RobotController {
 		}
 	}
 
-	private int last;
 	private int stage = 0;
 	private boolean done = false;
 	private double initDist = Double.NaN;
 	private NetworkTable table = NetworkTable.getTable(VisionController.TABLENAME);
+	private double lastD, lastA;
 
 	public void processAutonomous() {
 		if (done)
 			return;
 		if (encoder == null)
 			encoder = new Encoder(6, 7); // channel a and channel b
-
-		switch (stage) {
-		case 0:
-			rd.arcadeDrive(.8d, 0d, false);
-			if (encoder
-					.getDistance() >= 15d /** or other constant we determine **/
-			) {
-				stage = 1;
-			}
-			break;
-		case 1:
-			if (SmartDashboardUtils.getRobotPosition(false) == 0) {
-				rd.arcadeDrive(0d, .5d, false);
-				Timer.delay(.5d);
-				rd.arcadeDrive(0d, 0d, false);
-				stage = 2;
-			} else if (SmartDashboardUtils.getRobotPosition(false) == 2) {
-				rd.arcadeDrive(0d, .5d, false);
-				Timer.delay(.5d);
-				rd.arcadeDrive(0d, 0d, false);
-				stage = 2;
-			}
-			break;
-		case 2:
-			try {
-				if (table.getNumber("distance", Double.NaN) < AUTO_FINAL_DIST) {
+		try {
+			switch (stage) {
+			case 0:
+				rd.arcadeDrive(.8d, 0d, false);
+				if (encoder.getDistance() >= 15d /**
+													 * or other constant we determine
+													 **/
+				) {
+					stage = 1;
+				}
+				break;
+			case 1:
+				if (SmartDashboardUtils.getRobotPosition(false) == 0) {
+					rd.arcadeDrive(0d, .5d, false);
+					Timer.delay(.5d);
+					rd.arcadeDrive(0d, 0d, false);
+					stage = 2;
+				} else if (SmartDashboardUtils.getRobotPosition(false) == 2) {
+					rd.arcadeDrive(0d, .5d, false);
+					Timer.delay(.5d);
+					rd.arcadeDrive(0d, 0d, false);
+					stage = 2;
+				}
+				break;
+			case 2:
+				try {
+					if (table.getNumber("distance", Double.NaN) < Constants.AUTO_SECOND_STEP_DIST) {
+						stage = 3;
+						lastD = table.getNumber("distance", 2d);
+						lastA = table.getNumber("angle", -1d);
+						initDist = lastD;
+						return;
+					} else {
+						rd.arcadeDrive((initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist)) / table.getNumber("distance", Double.NaN) + 0.1d, .8d * table.getNumber("angle", Double.NaN), true);
+						table.putNumber("angle", table.getNumber("angle", 0d) - (.8d * table.getNumber("angle", 0) * .02d)); // So it doesn't keep turning
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			case 3:
+				if (table.getNumber("distance", lastD) == lastD || table.getNumber("angle", lastA) == lastA) {
+					Timer.delay(0.15d);
+					return;
+				}
+				if (table.getNumber("distance", 2) < Constants.AUTO_FINAL_DIST) {
 					done = true;
 					return;
 				} else {
-					rd.arcadeDrive(
-							(initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist))
-									/ table.getNumber("distance", Double.NaN) + 0.1d,
-							.8d * table.getNumber("angle", Double.NaN), true);
+					rd.arcadeDrive((initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist)) / (table.getNumber("distance", Double.NaN) * 2d) + 0.1d, .8d * table.getNumber("angle", Double.NaN), true);
+					table.putNumber("angle", table.getNumber("angle", 0d) - (.8d * table.getNumber("angle", 0) * .02d)); // See above.
+					break;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		Timer.delay(.15d);
