@@ -50,5 +50,11 @@ public class GearController implements RobotController {
 		
 	}
 
+	public void hookOnPeg() {
+		stick.setOutput(openButton, true);
+		processTeleop();
+		stick.setOutput(openButton, false);
+	}
+
 
 }

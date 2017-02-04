@@ -139,5 +139,9 @@ public class Robot extends IterativeRobot {
 	public VisionController getVisionController() {
 		return (VisionController) rcs[2];
 	}
+
+	public GearController getGearController() {
+		return (GearController) rcs[1];
+	}
 	
 }

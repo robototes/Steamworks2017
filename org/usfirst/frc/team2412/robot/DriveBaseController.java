@@ -80,6 +80,7 @@ public class DriveBaseController implements RobotController {
 		case 2:
 			if (Constants.robot.getVisionController().getDist() < 0.5) {
 				done = true;
+				Constants.robot.getGearController().hookOnPeg();
 				return;
 			}
 			else {
