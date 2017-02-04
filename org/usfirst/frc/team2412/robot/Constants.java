@@ -47,6 +47,8 @@ public class Constants {
 			BUTTON_ID_ROTATE_CLAMP_DOWN = -1, SOLENOID_ID_UP_DOWN = 0, SOLENOID_ID_OPEN_CLOSE = 1, PICKUP_GEAR_MSTIME = 500, DROP_GEAR_MSTIME = 500, AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
 	public static Solenoid upDownGripper, openCloseGripper;
+	public static Robot robot;
+	
 	public static void init() {
 		Scheduler.getInstance().run();
 		Timer.delay(1d);

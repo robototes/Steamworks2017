@@ -79,4 +79,12 @@ public class VisionController implements RobotController {
 		
 	}
 	
+	public double getAngle() {
+		return table==null ? Double.NaN : table.getNumber("angle", Double.NaN);
+	}
+	
+	public double getDist() {
+		return table == null ? Double.NaN: table.getNumber("distance", Double.NaN);
+	}
+	
 }

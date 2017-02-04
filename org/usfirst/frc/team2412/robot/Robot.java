@@ -17,7 +17,7 @@ public class Robot extends IterativeRobot {
 	private RobotController rcs[] = new RobotController[3];
 	
 	public void robotInit() {
-		
+		Constants.robot = this;
 		Constants.init();
 		DriverStation ds = DriverStation.getInstance();
 		Alliance alliance = ds.getAlliance();
@@ -134,6 +134,10 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {
 		Timer.delay(0.1);
+	}
+	
+	public VisionController getVisionController() {
+		return (VisionController) rcs[2];
 	}
 	
 }
