@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class VisionController implements RobotController {
 	
+	public static final String TABLENAME = "datatable";
+	
 	/* Raspberry Pi side, in python (sorry Alexander)
 		#!/usr/bin/env python3
 		#
@@ -54,7 +56,7 @@ public class VisionController implements RobotController {
 	public void processTeleop() {
 		if(table == null) {
 			//Initialize NetworkTable
-			table = NetworkTable.getTable("datatable");
+			table = NetworkTable.getTable(TABLENAME);
 		}
 		boolean targetsFound = table.getBoolean("targetsFound", false);
 		if(targetsFound) {
