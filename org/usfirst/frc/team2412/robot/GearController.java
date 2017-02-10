@@ -1,14 +1,14 @@
 package org.usfirst.frc.team2412.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class GearController implements RobotController {
 	
 	private Joystick stick;
-	private Solenoid upDownGripper;
-	private Solenoid openCloseGripper;
+	private DoubleSolenoid upDownGripper;
+	private DoubleSolenoid openCloseGripper;
 	private int raiseButton, lowerButton, openButton, closeButton;
 	
 	//Creates a GearController class.
@@ -17,7 +17,7 @@ public class GearController implements RobotController {
 	//Joystick stick - The codriver board to read values from.
 	//raiseButton/closeButton - buttons for raising/lowering the intake.
 	//openButton/closeButton - buttons for opening/closing the gear intake's arms.
-	public GearController(Solenoid upDownGripper, Solenoid openCloseGripper, Joystick stick, int raiseButton, int lowerButton, int openButton, int closeButton) {
+	public GearController(DoubleSolenoid upDownGripper, DoubleSolenoid openCloseGripper, Joystick stick, int raiseButton, int lowerButton, int openButton, int closeButton) {
 		//Set member variables.
 		this.upDownGripper = upDownGripper;
 		this.openCloseGripper = openCloseGripper;
@@ -30,13 +30,13 @@ public class GearController implements RobotController {
 	
 	public void processTeleop() {
 		if (stick.getRawButton(raiseButton))
-			upDownGripper.set(true);
+			upDownGripper.set(DoubleSolenoid.Value.kForward);
 		else if(stick.getRawButton(lowerButton))
-			upDownGripper.set(false);
+			upDownGripper.set(DoubleSolenoid.Value.kReverse);
 		else if(stick.getRawButton(openButton)) 
-			openCloseGripper.set(true);
+			openCloseGripper.set(DoubleSolenoid.Value.kForward);
 		else if(stick.getRawButton(closeButton))
-			openCloseGripper.set(false);
+			openCloseGripper.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	private NetworkTable data;
