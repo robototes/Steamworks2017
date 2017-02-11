@@ -2,6 +2,8 @@ package org.usfirst.frc.team2412.robot;
 
 import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -31,7 +33,7 @@ public class DriveBaseController implements RobotController {
 	 *            - back right motor
 	 */
 	public DriveBaseController(Joystick j, int l1, int l2, int r1, int r2) {
-		rd = new RobotDrive(l1, l2, r1, r2);
+		rd = new RobotDrive(new CANTalon(l1), new CANTalon(l2), new CANTalon(r1), new CANTalon(r2));
 		js = j;
 	}
 

@@ -49,8 +49,8 @@ public class Robot extends IterativeRobot {
 		
 		
 		//Initialize RobotControllers
-		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.motors[0], Constants.motors[1], Constants.motors[2], Constants.motors[3]);
-		rcs[1] = new GearController(Constants.upDownGripper, Constants.openCloseGripper, Constants.jsCoDriver, Constants.BUTTON_ID_ROTATE_CLAMP_UP, Constants.BUTTON_ID_ROTATE_CLAMP_DOWN, Constants.BUTTON_ID_OPEN_CLAMP, Constants.BUTTON_ID_CLOSE_CLAMP);
+		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.motors[0], Constants.motors[2], Constants.motors[1], Constants.motors[3]);
+//		rcs[1] = new GearController(Constants.upDownGripper, Constants.openCloseGripper, Constants.jsCoDriver, Constants.BUTTON_ID_ROTATE_CLAMP_UP, Constants.BUTTON_ID_ROTATE_CLAMP_DOWN, Constants.BUTTON_ID_OPEN_CLAMP, Constants.BUTTON_ID_CLOSE_CLAMP);
 		rcs[2] = new VisionController();
 		
 		

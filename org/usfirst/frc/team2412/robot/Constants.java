@@ -25,24 +25,21 @@ public class Constants {
 	public static double autoDelay = -1.0; // delay before any autonomous
 											// processing in milliseconds
 	public static final int[] motors = new int[] {
+			//    FRONT   //
 			// -----------//
-			0, /*        */1,
+			9, /*        */5,
 			// -----------//
 			// -----------//
 			// -----------//
-			2, /*        */3,
+			1, /*        */10,
 			// -----------//
-			/* */4, /* */
-			/* */ /* */
-			// [Gear goes Here]
-			// [index] [descrption]
-			// 4 controls motor for picking up gear
-			// 0 back-right
+			//     BACK   //
+			// [value] [descrption]
 			// 1 back-left
-			// 2 front-right
-			// 3 front-right
-			// 5 moves the rotor clamp up and down
-			5 };
+			// 10 back-right
+			// 9 front-left
+			// 5 front-right
+			};
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
 	public static int BUTTON_ID_OPEN_CLAMP = 1,
 			BUTTON_ID_CLOSE_CLAMP = 2,
@@ -87,8 +84,8 @@ public class Constants {
 		jsDriver = new Joystick(0);
 		jsCoDriver = new Joystick(1);
 
-		upDownGripper = new DoubleSolenoid(SOLENOID_ID_UP_DOWN, SOLENOID_ID_UP_DOWN_REVERSE);
-		openCloseGripper = new DoubleSolenoid(SOLENOID_ID_OPEN_CLOSE, SOLENOID_ID_OPEN_CLOSE_REVERSE);
+//		upDownGripper = new DoubleSolenoid(SOLENOID_ID_UP_DOWN, SOLENOID_ID_UP_DOWN_REVERSE);
+//		openCloseGripper = new DoubleSolenoid(SOLENOID_ID_OPEN_CLOSE, SOLENOID_ID_OPEN_CLOSE_REVERSE);
 		
 		visionTable = NetworkTable.getTable("datatable");
 	}
