@@ -42,7 +42,7 @@ public class DriveBaseController implements RobotController {
 	 */
 
 	public void processTeleop() {
-		double jsY = js.getY();
+		double jsY = -js.getY();
 		double jsX = -js.getX();
 
 		double jsTwist = -js.getTwist(); // getRawAxis(3) is for the new
