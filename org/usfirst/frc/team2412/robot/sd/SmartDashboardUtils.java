@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2412.robot.sd;
 
-import static org.usfirst.frc.team2412.robot.Constants.*;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2412.robot;
 
-import static org.usfirst.frc.team2412.robot.Constants.AUTO_FINAL_DIST;
-
 import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
 import edu.wpi.first.wpilibj.Encoder;
