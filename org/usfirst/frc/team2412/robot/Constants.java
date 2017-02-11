@@ -48,11 +48,13 @@ public class Constants {
 			SOLENOID_ID_UP_DOWN = 2, SOLENOID_ID_UP_DOWN_REVERSE = 8,
 			SOLENOID_ID_OPEN_CLOSE = 1,
 			SOLENOID_ID_OPEN_CLOSE_REVERSE = 9,
+			SOLENOID_ID_OPEN_CLOSE_R = 11,
+			SOLENOID_ID_OPEN_CLOSE__REVERSE_R = 12,
 			PICKUP_GEAR_MSTIME = 500,
 			DROP_GEAR_MSTIME = 500,
 			AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
-	public static DoubleSolenoid upDownGripper, openCloseGripper;
+	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	
@@ -86,6 +88,7 @@ public class Constants {
 
 //		upDownGripper = new DoubleSolenoid(SOLENOID_ID_UP_DOWN, SOLENOID_ID_UP_DOWN_REVERSE);
 //		openCloseGripper = new DoubleSolenoid(SOLENOID_ID_OPEN_CLOSE, SOLENOID_ID_OPEN_CLOSE_REVERSE);
+//		openCloseGripperR = new DoubleSolenoid(SOLENOID_ID_OPEN_CLOSE_R, SOLENOID_ID_OPEN_CLOSE_REVERSE_R);
 		
 		visionTable = NetworkTable.getTable("datatable");
 	}

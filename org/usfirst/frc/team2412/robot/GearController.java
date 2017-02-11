@@ -8,7 +8,7 @@ public class GearController implements RobotController {
 	
 	private Joystick stick;
 	private DoubleSolenoid upDownGripper;
-	private DoubleSolenoid openCloseGripper;
+	private DoubleSolenoid openCloseGripperL, openCloseGripperR;
 	private int raiseButton, lowerButton, openButton, closeButton;
 	
 	//Creates a GearController class.
@@ -17,10 +17,11 @@ public class GearController implements RobotController {
 	//Joystick stick - The codriver board to read values from.
 	//raiseButton/closeButton - buttons for raising/lowering the intake.
 	//openButton/closeButton - buttons for opening/closing the gear intake's arms.
-	public GearController(DoubleSolenoid upDownGripper, DoubleSolenoid openCloseGripper, Joystick stick, int raiseButton, int lowerButton, int openButton, int closeButton) {
+	public GearController(DoubleSolenoid upDownGripper, DoubleSolenoid openCloseGripper, DoubleSolenoid openCloseGripperR, Joystick stick, int raiseButton, int lowerButton, int openButton, int closeButton) {
 		//Set member variables.
 		this.upDownGripper = upDownGripper;
-		this.openCloseGripper = openCloseGripper;
+		this.openCloseGripperL = openCloseGripper;
+		this.openCloseGripperR = openCloseGripperR;
 		this.raiseButton = raiseButton;
 		this.lowerButton = lowerButton;
 		this.openButton = openButton;
@@ -33,10 +34,14 @@ public class GearController implements RobotController {
 			upDownGripper.set(DoubleSolenoid.Value.kForward);
 		else if(stick.getRawButton(lowerButton))
 			upDownGripper.set(DoubleSolenoid.Value.kReverse);
-		else if(stick.getRawButton(openButton)) 
-			openCloseGripper.set(DoubleSolenoid.Value.kForward);
-		else if(stick.getRawButton(closeButton))
-			openCloseGripper.set(DoubleSolenoid.Value.kReverse);
+		else if(stick.getRawButton(openButton))  {
+			openCloseGripperL.set(DoubleSolenoid.Value.kForward);
+			openCloseGripperR.set(DoubleSolenoid.Value.kForward);
+		}
+		else if(stick.getRawButton(closeButton)) {
+			openCloseGripperL.set(DoubleSolenoid.Value.kReverse);
+			openCloseGripperR.set(DoubleSolenoid.Value.kReverse);
+		}
 	}
 
 	private NetworkTable data;
