@@ -39,6 +39,7 @@ public class GearController implements RobotController {
 			openCloseGripperR.set(DoubleSolenoid.Value.kForward);
 		}
 		else if(stick.getRawButton(closeButton)) {
+			System.out.println("Trying to close");
 			openCloseGripperL.set(DoubleSolenoid.Value.kReverse);
 			openCloseGripperR.set(DoubleSolenoid.Value.kReverse);
 		}

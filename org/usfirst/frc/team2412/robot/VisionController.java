@@ -58,7 +58,7 @@ public class VisionController implements RobotController {
 			System.out.println("Angle: " + angle);
 			System.out.println("Distance: " + distance);
 		} else {
-			System.out.println("No targets found!");
+//			System.out.println("No targets found!");
 		}
 	}
 
