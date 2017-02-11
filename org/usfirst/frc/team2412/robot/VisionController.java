@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2412.robot;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
 public class VisionController implements RobotController {
 	
 	public static final String TABLENAME = "datatable";
@@ -53,11 +51,7 @@ public class VisionController implements RobotController {
 		    time.sleep(1)
 	 */
 	public void processTeleop() {
-		if(table == null) {
-			//Initialize NetworkTable
-			table = NetworkTable.getTable(TABLENAME);
-		}
-		boolean targetsFound = table.getBoolean("targetsFound", false);
+		boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
 		if(targetsFound) {
 			double angle = Constants.visionTable.getNumber("angle", -1);
 			double distance = Constants.visionTable.getNumber("distance", -1);
@@ -81,11 +75,11 @@ public class VisionController implements RobotController {
 	}
 	
 	public double getAngle() {
-		return table==null ? Double.NaN : table.getNumber("angle", Double.NaN);
+		return Constants.visionTable == null ? Double.NaN : Constants.visionTable.getNumber("angle", Double.NaN);
 	}
 	
 	public double getDist() {
-		return table == null ? Double.NaN: table.getNumber("distance", Double.NaN);
+		return Constants.visionTable == null ? Double.NaN: Constants.visionTable.getNumber("distance", Double.NaN);
 	}
 	
 }

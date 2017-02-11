@@ -9,7 +9,6 @@ import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -57,6 +56,7 @@ public class Constants {
 			AUTO_MSDELAY = 500;
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper;
+	public static NetworkTable visionTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	
 	public static void init() {
