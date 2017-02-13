@@ -72,6 +72,7 @@ public class DriveBaseController implements RobotController {
 			switch (stage) {
 			case 0:
 				rd.arcadeDrive(.8d, 0d, false);
+				System.out.println(encoder.getDistance());
 				if (encoder.getDistance() >= 15d /** or other constant we determine **/) {
 					stage = 1;
 				}
@@ -91,6 +92,7 @@ public class DriveBaseController implements RobotController {
 				break;
 			case 2:
 				try {
+					if(table.getBoolean("targetsFound", false) == false) break; //No targets found
 					if (table.getNumber("distance", Double.NaN) < Constants.AUTO_SECOND_STEP_DIST) {
 						stage = 3;
 						lastD = table.getNumber("distance", 2d);
@@ -105,6 +107,7 @@ public class DriveBaseController implements RobotController {
 				}
 				break;
 			case 3:
+				if(table.getBoolean("targetsFound", false) == false) break; //No targets found
 				if (table.getNumber("distance", lastD) == lastD || table.getNumber("angle", lastA) == lastA) {
 					Timer.delay(0.15d);
 					return;
