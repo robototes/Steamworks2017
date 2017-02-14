@@ -59,6 +59,7 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() {
 		System.out.println("	==== STARTING AUTONOMOUS MODE ====");
+		Constants.startuptime = System.nanoTime();
 		try {
 			for(RobotController rc : rcs) {
 				if(rc != null)

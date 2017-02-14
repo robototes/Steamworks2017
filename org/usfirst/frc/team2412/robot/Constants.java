@@ -57,7 +57,7 @@ public class Constants {
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
-	
+	public static long startuptime;
 	public static void init() {
 		Scheduler.getInstance().run();
 		Timer.delay(1d);

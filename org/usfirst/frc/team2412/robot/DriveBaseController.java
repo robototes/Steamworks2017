@@ -64,7 +64,6 @@ public class DriveBaseController implements RobotController {
 	private double initDist = Double.NaN;
 	private NetworkTable table = NetworkTable.getTable(VisionController.TABLENAME);
 	private double lastD, lastA = Double.NaN;
-	private long startuptime = -1;
 	private int position;
 	
 	public void processAutonomous() {
@@ -75,12 +74,12 @@ public class DriveBaseController implements RobotController {
 			switch (stage) {
 			case 0:
 				rd.arcadeDrive(.3d, 0d, false);
-				if(System.nanoTime() - startuptime > 1E8) {
+				if(System.nanoTime() - Constants.startuptime > 1E8) {
 					stage = 1;
 				}
 				break;
 			case 1:
-				if(System.nanoTime() - startuptime > 2E8) {
+				if(System.nanoTime() - Constants.startuptime > 2E8) {
 					stage = 2;
 				}
 				if (position == 1) {
@@ -132,7 +131,6 @@ public class DriveBaseController implements RobotController {
 	}
 
 	public void autonomousInit() {
-		startuptime = System.nanoTime();
 		stage = 0;
 		position = SmartDashboardUtils.getRobotPosition(true);
 	}
