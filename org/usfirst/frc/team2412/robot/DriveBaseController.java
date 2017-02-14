@@ -51,11 +51,11 @@ public class DriveBaseController implements RobotController {
 											// joystick, getTwist is for the
 											// logitech joystick.
 		if (js.getRawButton(5)) {
-			// Drive with twist
-			rd.arcadeDrive(jsY, jsTwist, true);					
-		} else {
 			// Drive like airplane
-			rd.arcadeDrive(jsY, jsX, true);
+			rd.arcadeDrive(jsY, jsX, true);					
+		} else {
+			// Drive with twist
+			rd.arcadeDrive(jsY, jsTwist, true);
 		}
 	}
 
