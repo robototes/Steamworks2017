@@ -4,7 +4,6 @@ import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
 import com.ctre.CANTalon;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
@@ -14,11 +13,12 @@ public class DriveBaseController implements RobotController {
 
 	private RobotDrive rd;
 	private Joystick js;
-	private Encoder encoder;
+	private CANTalon left;
+	private CANTalon right;
 
 	public static double ROTATION_SPEED = 1.0;
 	public static double DRIVE_SPEED = 1.0;
-
+	
 	/**
 	 * 
 	 * @param j
@@ -33,7 +33,9 @@ public class DriveBaseController implements RobotController {
 	 *            - back right motor
 	 */
 	public DriveBaseController(Joystick j, int l1, int l2, int r1, int r2) {
-		rd = new RobotDrive(new CANTalon(l1), new CANTalon(l2), new CANTalon(r1), new CANTalon(r2));
+		left = new CANTalon(l1);
+		right = new CANTalon(r1);
+		rd = new RobotDrive(left, new CANTalon(l2), right, new CANTalon(r2));
 		js = j;
 	}
 
@@ -49,45 +51,43 @@ public class DriveBaseController implements RobotController {
 											// joystick, getTwist is for the
 											// logitech joystick.
 		if (js.getRawButton(5)) {
-			// Drive like airplane
-			rd.arcadeDrive(jsY, jsX, true);			
-		} else {
 			// Drive with twist
-			rd.arcadeDrive(jsY, jsTwist, true);
+			rd.arcadeDrive(jsY, jsTwist, true);					
+		} else {
+			// Drive like airplane
+			rd.arcadeDrive(jsY, jsX, true);
 		}
 	}
 
-	private int stage = 0;
+	private int stage;
 	private boolean done = false;
 	private double initDist = Double.NaN;
 	private NetworkTable table = NetworkTable.getTable(VisionController.TABLENAME);
 	private double lastD, lastA = Double.NaN;
-
+	private long startuptime = -1;
+	
 	public void processAutonomous() {
-		if (done)
-			return;
-		if (encoder == null)
-			encoder = new Encoder(6, 7); // channel a and channel b
+		if (done) {
+			stage = 0;
+		}
 		try {
 			switch (stage) {
 			case 0:
-				rd.arcadeDrive(.8d, 0d, false);
-				System.out.println(encoder.getDistance());
-				if (encoder.getDistance() >= 15d /** or other constant we determine **/) {
+				rd.arcadeDrive(.5d, 0d, false);
+				if(System.nanoTime() - startuptime > 1E8) {
 					stage = 1;
 				}
 				break;
 			case 1:
+				if(System.nanoTime() - startuptime > 2E8) {
+					stage = 2;
+				}
 				if (SmartDashboardUtils.getRobotPosition(false) == 0) {
-					rd.arcadeDrive(0d, .5d, false);
-					Timer.delay(.5d);
-					rd.arcadeDrive(0d, 0d, false);
-					stage = 2;
+					rd.arcadeDrive(0d, .3d, false);
 				} else if (SmartDashboardUtils.getRobotPosition(false) == 2) {
-					rd.arcadeDrive(0d, .5d, false);
-					Timer.delay(.5d);
-					rd.arcadeDrive(0d, 0d, false);
-					stage = 2;
+					rd.arcadeDrive(0d, .3d, false);
+				} else {
+					stage = 2; //Robot is in center position
 				}
 				break;
 			case 2:
@@ -124,8 +124,6 @@ public class DriveBaseController implements RobotController {
 			e.printStackTrace();
 		}
 
-		Timer.delay(.15d);
-
 	}
 
 	public void teleopInit() {
@@ -133,7 +131,9 @@ public class DriveBaseController implements RobotController {
 	}
 
 	public void autonomousInit() {
-
+		startuptime = System.nanoTime();
+		stage = 0;
+		System.out.println("Hello");
 	}
 
 }
