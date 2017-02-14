@@ -41,8 +41,8 @@ public class Constants {
 			// 5 front-right
 			};
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
-	public static int BUTTON_ID_OPEN_CLAMP = 4,
-			BUTTON_ID_CLOSE_CLAMP = 5,
+	public static int BUTTON_ID_OPEN_CLAMP = 3,
+			BUTTON_ID_CLOSE_CLAMP = 8,
 			BUTTON_ID_ROTATE_CLAMP_UP = 2,
 			BUTTON_ID_ROTATE_CLAMP_DOWN = 1,
 			SOLENOID_ID_UP_DOWN = 3, SOLENOID_ID_UP_DOWN_REVERSE = 6,
