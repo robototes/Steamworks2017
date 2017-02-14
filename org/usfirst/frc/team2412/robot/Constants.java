@@ -40,7 +40,7 @@ public class Constants {
 			// 9 front-left
 			// 5 front-right
 			};
-	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.8;
+	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.7;
 	public static int BUTTON_ID_OPEN_CLAMP = 3,
 			BUTTON_ID_CLOSE_CLAMP = 8,
 			BUTTON_ID_ROTATE_CLAMP_UP = 2,
@@ -59,6 +59,7 @@ public class Constants {
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	public static long startuptime;
 	public static void init() {
+		SmartDashboardUtils.firstTimeInit();
 		Scheduler.getInstance().run();
 		Timer.delay(1d);
 		

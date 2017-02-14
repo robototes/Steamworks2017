@@ -44,7 +44,7 @@ public class DriveBaseController implements RobotController {
 	 */
 
 	public void processTeleop() {
-		double jsY = -js.getY();
+		double jsY = -js.getY()*Constants.DRIVE_SPEED;
 		double jsX = -js.getX();
 
 		double jsTwist = -js.getTwist(); // getRawAxis(3) is for the new
@@ -52,10 +52,10 @@ public class DriveBaseController implements RobotController {
 											// logitech joystick.
 		if (js.getRawButton(5)) {
 			// Drive like airplane
-			rd.arcadeDrive(jsY, jsX, true);					
+			rd.arcadeDrive(jsY, jsX*Constants.DRIVE_ROTATE_SPEED, true);					
 		} else {
 			// Drive with twist
-			rd.arcadeDrive(jsY, jsTwist, true);
+			rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
 		}
 	}
 
