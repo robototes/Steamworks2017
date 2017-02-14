@@ -3,6 +3,8 @@ package org.usfirst.frc.team2412.robot.sd;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.usfirst.frc.team2412.robot.Constants;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,12 +58,8 @@ public class SmartDashboardUtils {
 		}
 		
 		if (i < 1 || i > 3) {
-			System.err.println("int i wasn't in the specified values.");
-			System.err.println("");
-			System.err.println("Variables:");
-			System.err.println("i: " + i);
-			System.err.println("in: " + in);
-			return -1;
+			//Read from getAlliance() instead.
+			i = Constants.STARTING_STATION;
 		}
 		
 		if ((i) != DriverStation.getInstance().getLocation()) {
