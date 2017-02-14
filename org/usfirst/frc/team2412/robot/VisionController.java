@@ -55,8 +55,8 @@ public class VisionController implements RobotController {
 		if(targetsFound) {
 			double angle = Constants.visionTable.getNumber("angle", -1);
 			double distance = Constants.visionTable.getNumber("distance", -1);
-			System.out.println("Angle: " + angle);
-			System.out.println("Distance: " + distance);
+//			System.out.println("Angle: " + angle);
+//			System.out.println("Distance: " + distance);
 		} else {
 //			System.out.println("No targets found!");
 		}
