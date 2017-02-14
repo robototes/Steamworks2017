@@ -34,14 +34,19 @@ public class GearController implements RobotController {
 			upDownGripper.set(DoubleSolenoid.Value.kForward);
 		else if(stick.getRawButton(lowerButton))
 			upDownGripper.set(DoubleSolenoid.Value.kReverse);
-		else if(stick.getRawButton(openButton))  {
+		else
+			upDownGripper.set(DoubleSolenoid.Value.kOff);
+		if(stick.getRawButton(openButton))  {
 			openCloseGripperL.set(DoubleSolenoid.Value.kForward);
 			openCloseGripperR.set(DoubleSolenoid.Value.kForward);
 		}
 		else if(stick.getRawButton(closeButton)) {
-			System.out.println("Trying to close");
 			openCloseGripperL.set(DoubleSolenoid.Value.kReverse);
 			openCloseGripperR.set(DoubleSolenoid.Value.kReverse);
+		}
+		else {
+			openCloseGripperL.set(DoubleSolenoid.Value.kOff);
+			openCloseGripperR.set(DoubleSolenoid.Value.kOff);
 		}
 	}
 
