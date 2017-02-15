@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2412.robot;
 
-import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
-
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -70,13 +68,12 @@ public class DriveBaseController implements RobotController {
 	private double initDist = Double.NaN;
 	private NetworkTable table = NetworkTable.getTable(VisionController.TABLENAME);
 	private double lastD, lastA = Double.NaN;
-	private int position;
 	
 	public void processAutonomous() {
 		if (done) {
 			stage = 0;
 		}
-		if(position == 2) {
+		if(Constants.STARTING_STATION == 2) {
 			driveForward();
 		}
 		try {
@@ -88,9 +85,9 @@ public class DriveBaseController implements RobotController {
 				if(System.nanoTime() - Constants.startuptime > 2E8) {
 					stage = 2;
 				}
-				if (position == 1) {
+				if (Constants.STARTING_STATION == 1) {
 					rd.arcadeDrive(0d, .3d, false);
-				} else if (position == 3) {
+				} else if (Constants.STARTING_STATION == 3) {
 					rd.arcadeDrive(0d, .3d, false);
 				} else {
 					stage = 2; //Robot is in center position
@@ -144,7 +141,6 @@ public class DriveBaseController implements RobotController {
 
 	public void autonomousInit() {
 		stage = 0;
-		position = SmartDashboardUtils.getRobotPosition(true);
 	}
 
 }
