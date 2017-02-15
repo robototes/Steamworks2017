@@ -32,11 +32,17 @@ public class DriveBaseController implements RobotController {
 	 * @param r2
 	 *            - back right motor
 	 */
+	
 	public DriveBaseController(Joystick j, int l1, int l2, int r1, int r2) {
 		left = new CANTalon(l1);
 		right = new CANTalon(r1);
 		rd = new RobotDrive(left, new CANTalon(l2), right, new CANTalon(r2));
 		js = j;
+	}
+	
+	@Override
+	public void debug() {
+		
 	}
 
 	/**
@@ -125,7 +131,7 @@ public class DriveBaseController implements RobotController {
 		}
 
 	}
-
+	
 	public void teleopInit() {
 
 	}

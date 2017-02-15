@@ -24,5 +24,11 @@ public interface RobotController {
 	 */
 	public void processAutonomous();
 	
+	
+	/**
+	 * Does things in debug mode
+	 * Only called if Constants.debug = true
+	 */
+	public default void debug() {}
 
 }

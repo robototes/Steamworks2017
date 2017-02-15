@@ -14,6 +14,8 @@ public class SmartDashboardUtils {
 
 	public static String DRIVERSTATION = "DriverStation IP", ROBOTPOSITION = "Robot Station: ", ROBOTALLIANCE = "Robot is on the Red Alliance: ", TIMEREMAINING = "Time Remaining: ";
 	
+	
+	
 	public static void init() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putString(TIMEREMAINING, "Initialization Seqence");
@@ -91,7 +93,10 @@ public class SmartDashboardUtils {
 				Scheduler.getInstance().run();
 				
 				SmartDashboard.putString(TIMEREMAINING, (int) (DriverStation.getInstance().getMatchTime()/60) + ":" + (new String(""+ ((int) DriverStation.getInstance().getMatchTime()%60)).length()==2 ? "" : "0") + (new String(""+ (DriverStation.getInstance().getMatchTime()%60))));
-
+				Constants.debug = SmartDashboard.getBoolean("debug", false);
+				
+				if (!Constants.debug) SmartDashboard.putBoolean("debug", false);
+				
 				
 				try {
 					Thread.sleep(100);

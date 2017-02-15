@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2412.robot;
 
+import static org.usfirst.frc.team2412.robot.Constants.*;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -80,6 +82,9 @@ public class Robot extends IterativeRobot {
 			for(RobotController rc : rcs) {
 				if(rc != null)
 					rc.processAutonomous();
+				if (rc != null && debug) {
+					rc.debug();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,6 +115,9 @@ public class Robot extends IterativeRobot {
 			for(RobotController rc : rcs) {
 				if(rc != null)
 					rc.processTeleop();
+				if(rc != null && debug) {
+					rc.debug();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

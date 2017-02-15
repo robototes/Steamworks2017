@@ -53,11 +53,16 @@ public class Constants {
 			PICKUP_GEAR_MSTIME = 500,
 			DROP_GEAR_MSTIME = 500,
 			AUTO_MSDELAY = 500;
+	
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	public static long startuptime;
+	
+	public static boolean debug = false; // Can change, so note that
+	
+	
 	public static void init() {
 		SmartDashboardUtils.firstTimeInit();
 		Scheduler.getInstance().run();
