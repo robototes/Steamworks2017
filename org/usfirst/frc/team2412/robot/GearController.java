@@ -2,7 +2,6 @@ package org.usfirst.frc.team2412.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class GearController implements RobotController {
 	
@@ -10,6 +9,7 @@ public class GearController implements RobotController {
 	private DoubleSolenoid upDownGripper;
 	private DoubleSolenoid openCloseGripperL, openCloseGripperR;
 	private int raiseButton, lowerButton, openButton, closeButton;
+	private boolean gearPlaced;
 	
 	//Creates a GearController class.
 	//upDownGripper - Solenoid that raises/lowers the gear intake.
@@ -50,11 +50,11 @@ public class GearController implements RobotController {
 		}
 	}
 
-	private NetworkTable data;
-	
 	public void processAutonomous() {
-		if ((data = (data == null ? NetworkTable.getTable(VisionController.TABLENAME) : data)).getNumber("distance", Double.NaN) <= Constants.AUTO_FINAL_DIST) {
-			hookOnPeg();
+		if(Constants.STARTING_STATION == 2 && System.nanoTime() - Constants.startuptime > 23E8) {
+			openCloseGripperL.set(DoubleSolenoid.Value.kForward);
+			openCloseGripperR.set(DoubleSolenoid.Value.kForward);
+			gearPlaced = true;
 		}
 	}
 	
@@ -63,13 +63,14 @@ public class GearController implements RobotController {
 	}
 
 	public void autonomousInit() {
-		
+		gearPlaced = false;
 	}
 
 	public void hookOnPeg() {
+		boolean oldvalue = stick.getRawButton(openButton);
 		stick.setOutput(openButton, true);
 		processTeleop();
-		stick.setOutput(openButton, false);
+		stick.setOutput(openButton, oldvalue);
 	}
 
 

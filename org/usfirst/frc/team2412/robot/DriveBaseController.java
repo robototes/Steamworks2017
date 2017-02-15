@@ -74,8 +74,9 @@ public class DriveBaseController implements RobotController {
 			stage = 0;
 		}
 		if(Constants.STARTING_STATION == 2) {
-			driveForward();
-		}
+			driveForTime(rd, 0.3d, 0d, Constants.startuptime, 13E8);
+			driveForTime(rd, -0.3d, 0d, Constants.startuptime + 7E9, 5E9);
+		} else {
 		try {
 			switch (stage) {
 			case 0:
@@ -123,18 +124,24 @@ public class DriveBaseController implements RobotController {
 					break;
 				}
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		}
 	}
 
-	//Drive forward (assumes robot is lined up with peg)
-	private void driveForward() {
-		if(System.nanoTime() - Constants.startuptime > 9.5E8) return;
-		rd.arcadeDrive(0.3d, 0, false);
+//	//Drive forward (assumes robot is lined up with peg)
+//	private void driveForward() {
+//		if(System.nanoTime() - Constants.startuptime > 13E8) return;
+//		rd.arcadeDrive(0.3d, 0, false);
+//	}
+	//Drives for a specified amount of time
+	private void driveForTime(RobotDrive rd, double move, double rotate, double startuptime, double duration) {
+		double deltaTime = System.nanoTime() - startuptime; 
+		if(deltaTime < 0 || deltaTime > duration) return;
+		rd.arcadeDrive(move, rotate, false);
 	}
-
 	public void teleopInit() {
 
 	}
