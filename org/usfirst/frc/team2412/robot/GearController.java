@@ -9,7 +9,6 @@ public class GearController implements RobotController {
 	private DoubleSolenoid upDownGripper;
 	private DoubleSolenoid openCloseGripperL, openCloseGripperR;
 	private int raiseButton, lowerButton, openButton, closeButton;
-	private boolean gearPlaced;
 	
 	//Creates a GearController class.
 	//upDownGripper - Solenoid that raises/lowers the gear intake.
@@ -66,12 +65,6 @@ public class GearController implements RobotController {
 		gearPlaced = false;
 	}
 
-	public void hookOnPeg() {
-		boolean oldvalue = stick.getRawButton(openButton);
-		stick.setOutput(openButton, true);
-		processTeleop();
-		stick.setOutput(openButton, oldvalue);
-	}
 
 
 }
