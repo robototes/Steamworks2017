@@ -75,7 +75,7 @@ public class DriveBaseController implements RobotController {
 		}
 		if(Constants.STARTING_STATION == 2) {
 			driveForTime(rd, 0.3d, 0d, Constants.startuptime, 13E8);
-			driveForTime(rd, -0.3d, 0d, Constants.startuptime + 7E9, 5E9);
+			driveForTime(rd, -0.3d, 0d, Constants.startuptime + 5.5E9, 5E9);
 		} else {
 		try {
 			switch (stage) {
