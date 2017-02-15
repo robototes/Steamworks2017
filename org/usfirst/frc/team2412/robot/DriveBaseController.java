@@ -81,7 +81,7 @@ public class DriveBaseController implements RobotController {
 			case 0:
 				rd.arcadeDrive(.3d, 0d, false);
 				if(System.nanoTime() - Constants.startuptime > 1E8) {
-					stage = 1;
+					
 				}
 				break;
 			case 1:
