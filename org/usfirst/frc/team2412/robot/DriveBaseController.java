@@ -76,13 +76,13 @@ public class DriveBaseController implements RobotController {
 		if (done) {
 			stage = 0;
 		}
+		if(position == 2) {
+			driveForward();
+		}
 		try {
 			switch (stage) {
 			case 0:
-				rd.arcadeDrive(.3d, 0d, false);
-				if(System.nanoTime() - Constants.startuptime > 1E8) {
-					
-				}
+				rd.arcadeDrive(.5d, 0d, false);
 				break;
 			case 1:
 				if(System.nanoTime() - Constants.startuptime > 2E8) {
@@ -131,7 +131,13 @@ public class DriveBaseController implements RobotController {
 		}
 
 	}
-	
+
+	//Drive forward (assumes robot is lined up with peg)
+	private void driveForward() {
+		if(System.nanoTime() - Constants.startuptime > 9.5E8) return;
+		rd.arcadeDrive(0.3d, 0, false);
+	}
+
 	public void teleopInit() {
 
 	}
