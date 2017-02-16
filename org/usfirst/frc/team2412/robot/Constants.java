@@ -56,7 +56,7 @@ public class Constants {
 	public static double DRIVE_FORWARD_DURATION = 13E8;
 	//Driving in reverse
 	public static double DRIVE_REVERSE_START;
-	public static double DRIVE_REVERSE_DURATION = 5E9;
+	public static double DRIVE_REVERSE_DURATION = 1E9;
 	
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
