@@ -64,6 +64,9 @@ public class Robot extends IterativeRobot {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//Set Constants to values because they're not Constants
+		Constants.DRIVE_FORWARD_START = Constants.startuptime;
+		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 5.5E9;
 		firstRun = true;
 	}
 	

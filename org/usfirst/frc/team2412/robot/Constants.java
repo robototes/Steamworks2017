@@ -52,11 +52,11 @@ public class Constants {
 	
 	/** Constants for driving straight forward (center)*/
 	//Driving forward
-	public static final double DRIVE_FORWARD_START = Constants.startuptime;
-	public static final double DRIVE_FORWARD_DURATION = 13E8;
+	public static double DRIVE_FORWARD_START;
+	public static double DRIVE_FORWARD_DURATION = 13E8;
 	//Driving in reverse
-	public static final double DRIVE_REVERSE_START = DRIVE_FORWARD_START + 5.5E9;
-	public static final double DRIVE_REVERSE_DURATION = 5E9;
+	public static double DRIVE_REVERSE_START;
+	public static double DRIVE_REVERSE_DURATION = 5E9;
 	
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
