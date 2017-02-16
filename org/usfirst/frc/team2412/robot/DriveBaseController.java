@@ -73,8 +73,8 @@ public class DriveBaseController implements RobotController {
 			stage = 0;
 		}
 		if(Constants.STARTING_STATION == 2) {
-			driveForTime(rd, 0.3d, 0d, Constants.startuptime, 13E8);
-			driveForTime(rd, -0.3d, 0d, Constants.startuptime + 5.5E9, 5E9);
+			driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
+			driveForTime(rd, -0.3d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
 		} else {
 		try {
 			switch (stage) {

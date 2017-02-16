@@ -48,10 +48,15 @@ public class Constants {
 			SOLENOID_ID_OPEN_CLOSE = 1,
 			SOLENOID_ID_OPEN_CLOSE_REVERSE = 4,
 			SOLENOID_ID_OPEN_CLOSE_R = 2,
-			SOLENOID_ID_OPEN_CLOSE_REVERSE_R = 5,
-			PICKUP_GEAR_MSTIME = 500,
-			DROP_GEAR_MSTIME = 500,
-			AUTO_MSDELAY = 500;
+			SOLENOID_ID_OPEN_CLOSE_REVERSE_R = 5;
+	
+	/** Constants for driving straight forward (center)*/
+	//Driving forward
+	public static final double DRIVE_FORWARD_START = Constants.startuptime;
+	public static final double DRIVE_FORWARD_DURATION = 13E8;
+	//Driving in reverse
+	public static final double DRIVE_REVERSE_START = DRIVE_FORWARD_START + 5.5E9;
+	public static final double DRIVE_REVERSE_DURATION = 5E9;
 	
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
