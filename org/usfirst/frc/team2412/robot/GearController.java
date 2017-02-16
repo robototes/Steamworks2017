@@ -9,7 +9,6 @@ public class GearController implements RobotController {
 	private DoubleSolenoid upDownGripper;
 	private DoubleSolenoid openCloseGripperL, openCloseGripperR;
 	private int raiseButton, lowerButton, openButton, closeButton;
-	private boolean gearPlaced;
 	
 	//Creates a GearController class.
 	//upDownGripper - Solenoid that raises/lowers the gear intake.
@@ -51,10 +50,9 @@ public class GearController implements RobotController {
 	}
 
 	public void processAutonomous() {
-		if(Constants.STARTING_STATION == 2 && System.nanoTime() - Constants.startuptime > 23E8 && !gearPlaced) {
+		if(Constants.STARTING_STATION == 2 && System.nanoTime() - Constants.startuptime > 23E8 && openCloseGripperL.get() != DoubleSolenoid.Value.kForward && openCloseGripperR.get() != DoubleSolenoid.Value.kForward) {
 			openCloseGripperL.set(DoubleSolenoid.Value.kForward);
 			openCloseGripperR.set(DoubleSolenoid.Value.kForward);
-			gearPlaced = true;
 		}
 	}
 	
@@ -63,7 +61,6 @@ public class GearController implements RobotController {
 	}
 
 	public void autonomousInit() {
-		gearPlaced = false;
 	}
 
 
