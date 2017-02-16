@@ -4,7 +4,6 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class DriveBaseController implements RobotController {
@@ -113,7 +112,6 @@ public class DriveBaseController implements RobotController {
 			case 3:
 				if(table.getBoolean("targetsFound", false) == false) break; //No targets found
 				if (table.getNumber("distance", lastD) == lastD || table.getNumber("angle", lastA) == lastA) {
-					Timer.delay(0.15d);
 					return;
 				}
 				if (table.getNumber("distance", 2) < Constants.AUTO_FINAL_DIST) {

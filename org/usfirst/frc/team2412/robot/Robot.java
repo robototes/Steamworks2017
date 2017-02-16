@@ -1,11 +1,10 @@
 package org.usfirst.frc.team2412.robot;
 
-import static org.usfirst.frc.team2412.robot.Constants.*;
+import static org.usfirst.frc.team2412.robot.Constants.debug;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -26,16 +25,11 @@ public class Robot extends IterativeRobot {
 		double voltage = ds.getBatteryVoltage();
 		
 		System.out.println("	==== STARTING INITIALIZATION PROCEDURES ====");
-			Timer.delay(0.15);
 		System.out.println("		" + alliance.toString().toUpperCase() + " ALLIANCE, POSITION " + location);
-			Timer.delay(0.2);
 		System.out.println("		RUNNING SYSTEM CHECKS");
-			Timer.delay(0.1);
 		System.out.println("			VOLTAGE: " + voltage);
-			Timer.delay(0.05);
 		if (ds.isFMSAttached()) {
 			System.out.println("			FMS ATTACHED");
-			Timer.delay(0.2);
 		}
 		
 		if (voltage < 12.0) {
@@ -90,7 +84,6 @@ public class Robot extends IterativeRobot {
 			e.printStackTrace();
 		}
 		
-		Timer.delay(0.05);
 	}
 	
 	public void teleopInit() {
@@ -129,7 +122,6 @@ public class Robot extends IterativeRobot {
 	
 	public void testPeriodic() {
 		LiveWindow.run();
-		Timer.delay(0.005);
 	}
 	
 	public void disabledInit() {
@@ -141,7 +133,6 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void disabledPeriodic() {
-		Timer.delay(0.1);
 	}
 	
 	

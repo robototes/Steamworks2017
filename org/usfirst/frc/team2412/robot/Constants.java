@@ -9,7 +9,6 @@ import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,7 +65,6 @@ public class Constants {
 	public static void init() {
 		SmartDashboardUtils.firstTimeInit();
 		Scheduler.getInstance().run();
-		Timer.delay(1d);
 		
 		try {
 			applyPrintStreams(new Socket(SmartDashboardUtils.getDriverStationIP(), 5800));
