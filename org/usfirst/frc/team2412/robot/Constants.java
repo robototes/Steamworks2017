@@ -50,6 +50,13 @@ public class Constants {
 			SOLENOID_ID_OPEN_CLOSE_R = 2,
 			SOLENOID_ID_OPEN_CLOSE_REVERSE_R = 5;
 	
+	/** Encoder IDs **/
+	public static int
+		ENCODER_ID_LEFT_IN = 9,
+		ENCODER_ID_LEFT_OUT = 9,
+		ENCODER_ID_RIGHT_IN = 5,
+		ENCODER_ID_RIGHT_OUT = 5;
+	
 	/** Constants for driving straight forward (center)*/
 	//Driving forward
 	public static double DRIVE_FORWARD_START;
@@ -58,6 +65,11 @@ public class Constants {
 	public static double DRIVE_REVERSE_START;
 	public static double DRIVE_REVERSE_DURATION = 1E9;
 	
+	/** Constants for driving when the robot is not in the center station */
+	//Turning
+	public static double TURN_START;
+	public static double TURN_DURATION = 5E8;
+
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;

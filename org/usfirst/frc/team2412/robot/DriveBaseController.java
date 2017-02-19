@@ -1,10 +1,12 @@
 package org.usfirst.frc.team2412.robot;
 
+import static org.usfirst.frc.team2412.robot.Constants.*;
+
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class DriveBaseController implements RobotController {
 
@@ -12,9 +14,12 @@ public class DriveBaseController implements RobotController {
 	private Joystick js;
 	private CANTalon left;
 	private CANTalon right;
-
+	private int rotateOffset = 0;
+	private Encoder encoderLeft, encoderRight;
+	
 	public static double ROTATION_SPEED = 1.0;
 	public static double DRIVE_SPEED = 1.0;
+	
 	
 	/**
 	 * 
@@ -34,12 +39,25 @@ public class DriveBaseController implements RobotController {
 		left = new CANTalon(l1);
 		right = new CANTalon(r1);
 		rd = new RobotDrive(left, new CANTalon(l2), right, new CANTalon(r2));
+		
+		// TIM and ALEX! This seems to have helped fix the intermittent connection issue.
+		rd.setSafetyEnabled(false);
 		js = j;
+		
+//		encoderLeft = new Encoder(ENCODER_ID_LEFT_IN, ENCODER_ID_LEFT_OUT);
+//		encoderRight = new Encoder(ENCODER_ID_RIGHT_IN, ENCODER_ID_RIGHT_OUT);
+//		
+//		encoderLeft.reset();
+//		encoderRight.reset();
 	}
 	
 	@Override
 	public void debug() {
-		
+		try {
+			System.out.println("Encoder Data: Rate: " + (encoderLeft.getRate()) +"/" + encoderRight.getRate() + " Distance: " + encoderLeft.getDistance()+"/"+encoderRight.getDistance());
+		} catch (Exception e) {
+			
+		}
 	}
 
 	/**
@@ -47,6 +65,9 @@ public class DriveBaseController implements RobotController {
 	 */
 
 	public void processTeleop() {
+		Constants.DRIVE_SPEED = js.getRawButton(1) ? 0.6 : 0.8;
+		Constants.DRIVE_ROTATE_SPEED = js.getRawButton(1) ? 0.456 : 0.7;
+		
 		double jsY = -js.getY()*Constants.DRIVE_SPEED;
 		double jsX = -js.getX();
 
@@ -58,74 +79,24 @@ public class DriveBaseController implements RobotController {
 			rd.arcadeDrive(jsY, jsX*Constants.DRIVE_ROTATE_SPEED, true);					
 		} else {
 			// Drive with twist
+//			rd.arcadeDrive(1.0d, 0d, true);
+
 			rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
 		}
 	}
 
-	private int stage;
-	private boolean done = false;
-	private double initDist = Double.NaN;
-	private NetworkTable table = NetworkTable.getTable(VisionController.TABLENAME);
-	private double lastD, lastA = Double.NaN;
-	
 	public void processAutonomous() {
-		if (done) {
-			stage = 0;
-		}
+		//Drive forward, no matter what station we're at
+		driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
+		//Do some more driving, depending on what station we're at
 		if(Constants.STARTING_STATION == 2) {
-			driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
+			//Drive backwards after a short delay
 			driveForTime(rd, -0.3d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
 		} else {
-		try {
-			switch (stage) {
-			case 0:
-				rd.arcadeDrive(.5d, 0d, false);
-				break;
-			case 1:
-				if(System.nanoTime() - Constants.startuptime > 2E8) {
-					stage = 2;
-				}
-				if (Constants.STARTING_STATION == 1) {
-					rd.arcadeDrive(0d, .3d, false);
-				} else if (Constants.STARTING_STATION == 3) {
-					rd.arcadeDrive(0d, .3d, false);
-				} else {
-					stage = 2; //Robot is in center position
-				}
-				break;
-			case 2:
-				try {
-					if(table.getBoolean("targetsFound", false) == false) break; //No targets found
-					if (table.getNumber("distance", Double.NaN) < Constants.AUTO_SECOND_STEP_DIST) {
-						stage = 3;
-						lastD = table.getNumber("distance", 2d);
-						lastA = table.getNumber("angle", -1d);
-						initDist = lastD;
-						return;
-					} else {
-						rd.arcadeDrive((initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist)) / table.getNumber("distance", Double.NaN) + 0.1d, .8d * table.getNumber("angle", Double.NaN), true);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			case 3:
-				if(table.getBoolean("targetsFound", false) == false) break; //No targets found
-				if (table.getNumber("distance", lastD) == lastD || table.getNumber("angle", lastA) == lastA) {
-					return;
-				}
-				if (table.getNumber("distance", 2) < Constants.AUTO_FINAL_DIST) {
-					done = true;
-					return;
-				} else {
-					rd.arcadeDrive((initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist)) / (table.getNumber("distance", Double.NaN) * 2d) + 0.1d, .8d * table.getNumber("angle", Double.NaN), true);
-					break;
-				}
-			}
+			int direction = (Constants.STARTING_STATION == 1) ? -1 : 1;
+			//Turn based on the station
+			driveForTime(rd, 0d, 0.1d * direction, Constants.TURN_START, Constants.TURN_DURATION);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		}
 	}
 
@@ -146,7 +117,7 @@ public class DriveBaseController implements RobotController {
 	}
 
 	public void autonomousInit() {
-		stage = 0;
 	}
-
+	
+	
 }

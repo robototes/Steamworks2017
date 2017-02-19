@@ -5,6 +5,7 @@ import static org.usfirst.frc.team2412.robot.Constants.debug;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -67,6 +68,8 @@ public class Robot extends IterativeRobot {
 		//Set Constants to values because they're not Constants
 		Constants.DRIVE_FORWARD_START = Constants.startuptime;
 		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 3E9;
+		Constants.TURN_START = Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION;
+		
 		firstRun = true;
 	}
 	
@@ -139,4 +142,8 @@ public class Robot extends IterativeRobot {
 	}
 	
 	
+	@Override
+	public void robotPeriodic() {
+		Constants.debug =  Constants.jsCoDriver.getRawButton(6) || Constants.jsCoDriver.getRawButton(7);
+	}
 }
