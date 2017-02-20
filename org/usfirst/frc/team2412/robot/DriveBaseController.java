@@ -137,6 +137,7 @@ public class DriveBaseController implements RobotController {
 	}
 
 	public void autonomousInit() {
+		rd.setSafetyEnabled(false);
 	}
 
 }
