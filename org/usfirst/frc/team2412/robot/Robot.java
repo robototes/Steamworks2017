@@ -56,6 +56,9 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		System.out.println("	==== STARTING AUTONOMOUS MODE ====");
 		Constants.startuptime = System.nanoTime();
+		//Set Constants to values because they're not Constants
+		Constants.DRIVE_FORWARD_START = Constants.startuptime;
+		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 5E9;
 		try {
 			for(RobotController rc : rcs) {
 				if(rc != null)
@@ -64,9 +67,6 @@ public class Robot extends IterativeRobot {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//Set Constants to values because they're not Constants
-		Constants.DRIVE_FORWARD_START = Constants.startuptime;
-		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 5E9;
 		firstRun = true;
 	}
 	
