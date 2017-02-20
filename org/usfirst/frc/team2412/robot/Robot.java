@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot {
 		Constants.startuptime = System.nanoTime();
 		//Set Constants to values because they're not Constants
 		Constants.DRIVE_FORWARD_START = Constants.startuptime;
-		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 5E9;
+		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION;
 		try {
 			for(RobotController rc : rcs) {
 				if(rc != null)
