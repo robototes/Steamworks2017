@@ -72,10 +72,10 @@ public class DriveBaseController implements RobotController {
 		if (done) {
 			stage = 0;
 		}
-		if(Constants.STARTING_STATION == 2) {
+//		if(Constants.STARTING_STATION == 2) {
 			driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
 			driveForTime(rd, -0.3d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
-		} else {
+		/*} else {
 		try {
 			switch (stage) {
 			case 0:
@@ -126,7 +126,7 @@ public class DriveBaseController implements RobotController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		}
+		}*/
 	}
 
 //	//Drive forward (assumes robot is lined up with peg)

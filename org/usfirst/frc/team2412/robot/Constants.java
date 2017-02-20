@@ -26,11 +26,11 @@ public class Constants {
 	public static final int[] motors = new int[] {
 			//    FRONT   //
 			// -----------//
-			9, /*        */5,
+			12, /*        */3,
 			// -----------//
 			// -----------//
 			// -----------//
-			1, /*        */10,
+			6, /*        */8,
 			// -----------//
 			//     BACK   //
 			// [value] [descrption]
@@ -53,7 +53,7 @@ public class Constants {
 	/** Constants for driving straight forward (center)*/
 	//Driving forward
 	public static double DRIVE_FORWARD_START;
-	public static double DRIVE_FORWARD_DURATION = 13E8;
+	public static double DRIVE_FORWARD_DURATION = 1.5E9;
 	//Driving in reverse
 	public static double DRIVE_REVERSE_START;
 	public static double DRIVE_REVERSE_DURATION = 1E9;
