@@ -53,7 +53,7 @@ public class Constants {
 	/** Constants for driving straight forward (center)*/
 	//Driving forward
 	public static double DRIVE_FORWARD_START;
-	public static double DRIVE_FORWARD_DURATION = 1.5E9;
+	public static double DRIVE_FORWARD_DURATION = 4E9;
 	//Driving in reverse
 	public static double DRIVE_REVERSE_START;
 	public static double DRIVE_REVERSE_DURATION = 1E9;

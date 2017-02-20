@@ -66,7 +66,7 @@ public class Robot extends IterativeRobot {
 		}
 		//Set Constants to values because they're not Constants
 		Constants.DRIVE_FORWARD_START = Constants.startuptime;
-		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 3E9;
+		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + 5E9;
 		firstRun = true;
 	}
 	
