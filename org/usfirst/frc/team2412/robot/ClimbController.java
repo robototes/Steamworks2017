@@ -30,6 +30,8 @@ public class ClimbController implements RobotController {
 			climbTalon.set(1.0);
 		else if(stick.getRawButton(bakButton))
 			climbTalon.set(-1.0);
+		else
+			climbTalon.set(0.0);
 	}
 
 	@Override
