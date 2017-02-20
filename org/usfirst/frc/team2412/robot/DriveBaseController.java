@@ -4,7 +4,6 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class DriveBaseController implements RobotController {
 
@@ -62,16 +61,8 @@ public class DriveBaseController implements RobotController {
 		}
 	}
 
-	private int stage;
-	private boolean done = false;
-	private double initDist = Double.NaN;
-	private NetworkTable table = NetworkTable.getTable(VisionController.TABLENAME);
-	private double lastD, lastA = Double.NaN;
 	
 	public void processAutonomous() {
-		if (done) {
-			stage = 0;
-		}
 //		if(Constants.STARTING_STATION == 2) {
 			driveForTime(rd, 0.15d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
 			driveForTime(rd, -0.15d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
@@ -146,7 +137,6 @@ public class DriveBaseController implements RobotController {
 	}
 
 	public void autonomousInit() {
-		stage = 0;
 	}
 
 }
