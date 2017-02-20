@@ -26,11 +26,11 @@ public class Constants {
 	public static final int[] motors = new int[] {
 			//    FRONT   //
 			// -----------//
-			12, /*        */3,
+			9, /*        */5,
 			// -----------//
 			// -----------//
 			// -----------//
-			6, /*        */8,
+			1, /*        */10,
 			// -----------//
 			//     BACK   //
 			// [value] [descrption]
