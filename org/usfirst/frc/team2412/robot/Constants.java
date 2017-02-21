@@ -61,6 +61,11 @@ public class Constants {
 	public static double DRIVE_REVERSE_START;
 	public static double DRIVE_REVERSE_DURATION = 1E9;
 	
+	/** Constants for turning (left + right)*/
+	//Turning
+	public static double TURN_START;
+	public static double TURN_DURATION = 1E8;
+	
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
