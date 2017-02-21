@@ -11,6 +11,10 @@ public class DriveBaseController implements RobotController {
 	private Joystick js;
 	private CANTalon left;
 	private CANTalon right;
+	
+	//Variables for detecting whether targets weren't found three times in a row.
+	private boolean targetsFoundLast;
+	private boolean targetsFoundSecondLast;
 
 	public static double ROTATION_SPEED = 1.0;
 	public static double DRIVE_SPEED = 1.0;
@@ -66,28 +70,32 @@ public class DriveBaseController implements RobotController {
 		driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
 		if(Constants.STARTING_STATION == 2) {
 			driveForTime(rd, -0.3d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
+			Constants.dropGear = System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION;
 		} else if(Constants.STARTING_STATION == 1 || Constants.STARTING_STATION == 3) {
 			//Check if we've finished turning blindly (above driveForTime() call)
 			if(System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION + 1E9) {
 				//Turn if the robot isn't lined up with the peg
 				boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
-				if(targetsFound) {
+				if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
 					double angle = Constants.visionTable.getNumber("angle", -1);
 					double distance = Constants.visionTable.getNumber("distance", -1);
 					System.out.println("Angle: " + angle);
 					System.out.println("Distance: " + distance);
 					if(Math.abs(angle) < 0.1) {
 						//Robot is lined up, drive forward
-						rd.arcadeDrive(0.1d, 0d, false);
+						rd.arcadeDrive(0.2d, 0d, false);
 					} else {
 						//Line up robot
 						double visionDirection = Math.signum(angle);
-						rd.arcadeDrive(0d, 0.2*visionDirection, false);
+						rd.arcadeDrive(0d, 0.3*visionDirection, false);
+						System.out.println("Turning");
 					}
-				} else {
-					System.out.println("No targets found!");
-					rd.arcadeDrive(0d, 0d);
+				} else { //Targets haven't been found for three times in a row.
+//					System.out.println("No targets found!");
 				}
+				//Update targetsFoundLast and targetsFoundSeconLast
+				targetsFoundSecondLast = targetsFoundLast;
+				targetsFoundLast = targetsFound;
 			}
 		}
 	}
@@ -110,6 +118,8 @@ public class DriveBaseController implements RobotController {
 
 	public void autonomousInit() {
 		rd.setSafetyEnabled(false);
+		targetsFoundLast = true;
+		targetsFoundSecondLast = true;
 	}
 
 }
