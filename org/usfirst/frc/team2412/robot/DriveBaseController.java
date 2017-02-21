@@ -63,61 +63,33 @@ public class DriveBaseController implements RobotController {
 
 	
 	public void processAutonomous() {
-		driveForTime(rd, 0.15d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
+		driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
 		if(Constants.STARTING_STATION == 2) {
-			driveForTime(rd, -0.15d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
-		}/* else {
-		try {
-			switch (stage) {
-			case 0:
-				rd.arcadeDrive(.5d, 0d, false);
-				break;
-			case 1:
-				if(System.nanoTime() - Constants.startuptime > 2E8) {
-					stage = 2;
-				}
-				if (Constants.STARTING_STATION == 1) {
-					rd.arcadeDrive(0d, .3d, false);
-				} else if (Constants.STARTING_STATION == 3) {
-					rd.arcadeDrive(0d, .3d, false);
-				} else {
-					stage = 2; //Robot is in center position
-				}
-				break;
-			case 2:
-				try {
-					if(table.getBoolean("targetsFound", false) == false) break; //No targets found
-					if (table.getNumber("distance", Double.NaN) < Constants.AUTO_SECOND_STEP_DIST) {
-						stage = 3;
-						lastD = table.getNumber("distance", 2d);
-						lastA = table.getNumber("angle", -1d);
-						initDist = lastD;
-						return;
+			driveForTime(rd, -0.3d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
+		} else if(Constants.STARTING_STATION == 1 || Constants.STARTING_STATION == 3) {
+			//Check if we've finished turning blindly (above driveForTime() call)
+			if(System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION + 1E9) {
+				//Turn if the robot isn't lined up with the peg
+				boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
+				if(targetsFound) {
+					double angle = Constants.visionTable.getNumber("angle", -1);
+					double distance = Constants.visionTable.getNumber("distance", -1);
+					System.out.println("Angle: " + angle);
+					System.out.println("Distance: " + distance);
+					if(Math.abs(angle) < 0.1) {
+						//Robot is lined up, drive forward
+						rd.arcadeDrive(0.1d, 0d, false);
 					} else {
-						rd.arcadeDrive((initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist)) / table.getNumber("distance", Double.NaN) + 0.1d, .8d * table.getNumber("angle", Double.NaN), true);
+						//Line up robot
+						double visionDirection = Math.signum(angle);
+						rd.arcadeDrive(0d, 0.2*visionDirection, false);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			case 3:
-				if(table.getBoolean("targetsFound", false) == false) break; //No targets found
-				if (table.getNumber("distance", lastD) == lastD || table.getNumber("angle", lastA) == lastA) {
-					return;
-				}
-				if (table.getNumber("distance", 2) < Constants.AUTO_FINAL_DIST) {
-					done = true;
-					return;
 				} else {
-					rd.arcadeDrive((initDist = (Double.isNaN(initDist) ? table.getNumber("distance", Double.NaN) : initDist)) / (table.getNumber("distance", Double.NaN) * 2d) + 0.1d, .8d * table.getNumber("angle", Double.NaN), true);
-					break;
+					System.out.println("No targets found!");
+					rd.arcadeDrive(0d, 0d);
 				}
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		}*/
 	}
 
 //	//Drive forward (assumes robot is lined up with peg)
@@ -133,7 +105,7 @@ public class DriveBaseController implements RobotController {
 	}
 	
 	public void teleopInit() {
-
+		rd.setSafetyEnabled(false);
 	}
 
 	public void autonomousInit() {
