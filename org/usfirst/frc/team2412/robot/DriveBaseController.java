@@ -68,10 +68,7 @@ public class DriveBaseController implements RobotController {
 	
 	public void processAutonomous() {
 		driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
-		if(Constants.STARTING_STATION == 2) {
-			driveForTime(rd, -0.3d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
-			Constants.dropGear = System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION;
-		} else if(Constants.STARTING_STATION == 1 || Constants.STARTING_STATION == 3) {
+		if(!Constants.dropGear) {
 			//Check if we've finished turning blindly (above driveForTime() call)
 			if(System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION + 1E9) {
 				//Turn if the robot isn't lined up with the peg
@@ -96,6 +93,7 @@ public class DriveBaseController implements RobotController {
 				//Update targetsFoundLast and targetsFoundSeconLast
 				targetsFoundSecondLast = targetsFoundLast;
 				targetsFoundLast = targetsFound;
+				Constants.dropGear = Constants.visionTable.getBoolean("pegclose", false);
 			}
 		}
 	}
