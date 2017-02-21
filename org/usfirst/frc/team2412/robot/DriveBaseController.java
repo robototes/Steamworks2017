@@ -15,9 +15,6 @@ public class DriveBaseController implements RobotController {
 	//Variables for detecting whether targets weren't found three times in a row.
 	private boolean targetsFoundLast;
 	private boolean targetsFoundSecondLast;
-
-	public static double ROTATION_SPEED = 1.0;
-	public static double DRIVE_SPEED = 1.0;
 	
 	/**
 	 * 
