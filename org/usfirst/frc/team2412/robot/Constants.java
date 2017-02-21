@@ -56,7 +56,7 @@ public class Constants {
 	/** Constants for driving straight forward (center)*/
 	//Driving forward
 	public static double DRIVE_FORWARD_START;
-	public static double DRIVE_FORWARD_DURATION = 2E9;
+	public static double DRIVE_FORWARD_DURATION = 1E9;
 	//Driving in reverse
 	public static double DRIVE_REVERSE_START;
 	public static double DRIVE_REVERSE_DURATION = 1E9;
@@ -66,6 +66,8 @@ public class Constants {
 	public static NetworkTable visionTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	public static long startuptime;
+	
+	public static boolean dropGear = false;
 	
 	public static boolean debug = false; // Can change, so note that
 	
