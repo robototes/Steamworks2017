@@ -98,6 +98,9 @@ public class DriveBaseController implements RobotController {
 				}
 				System.out.println(pegclosetime);
 				Constants.dropGear = System.nanoTime() - pegclosetime > delay;
+			} else {
+				//We've already dropped the gear, back up
+				rd.arcadeDrive(-0.5d, 0d);
 			}
 		}
 	}
