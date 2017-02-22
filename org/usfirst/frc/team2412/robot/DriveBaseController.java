@@ -16,6 +16,9 @@ public class DriveBaseController implements RobotController {
 	private boolean targetsFoundLast;
 	private boolean targetsFoundSecondLast;
 	
+	//When we were first close to the peg
+	private double pegclosetime;
+	private double delay; //The delay between pegclosetime and when we actually let go of the gear
 	/**
 	 * 
 	 * @param j
@@ -65,9 +68,9 @@ public class DriveBaseController implements RobotController {
 	
 	public void processAutonomous() {
 		driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
-		if(!Constants.dropGear) {
-			//Check if we've finished turning blindly (above driveForTime() call)
-			if(System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION + 1E9) {
+		//Check if we've finished turning blindly (above driveForTime() call)
+		if(System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION + 1E9) {
+			if(!Constants.dropGear) {
 				//Turn if the robot isn't lined up with the peg
 				boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
 				if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
@@ -85,12 +88,16 @@ public class DriveBaseController implements RobotController {
 						System.out.println("Turning");
 					}
 				} else { //Targets haven't been found for three times in a row.
-//					System.out.println("No targets found!");
+					//System.out.println("No targets found!");
 				}
 				//Update targetsFoundLast and targetsFoundSeconLast
 				targetsFoundSecondLast = targetsFoundLast;
 				targetsFoundLast = targetsFound;
-				Constants.dropGear = Constants.visionTable.getBoolean("pegclose", false);
+				if(Constants.visionTable.getBoolean("pegclose", false) && pegclosetime == Double.MAX_VALUE) {
+					pegclosetime = System.nanoTime();
+				}
+				System.out.println(pegclosetime);
+				Constants.dropGear = System.nanoTime() - pegclosetime > delay;
 			}
 		}
 	}
@@ -115,6 +122,8 @@ public class DriveBaseController implements RobotController {
 		rd.setSafetyEnabled(false);
 		targetsFoundLast = true;
 		targetsFoundSecondLast = true;
+		pegclosetime = Double.MAX_VALUE;
+		delay = 1.5E9;
 	}
 
 }
