@@ -84,7 +84,7 @@ public class DriveBaseController implements RobotController {
 					} else {
 						//Line up robot
 						double visionDirection = Math.signum(angle);
-						rd.arcadeDrive(0d, 0.3*visionDirection, false);
+						rd.arcadeDrive(0d, 0.2*visionDirection, false);
 						System.out.println("Turning");
 					}
 				} else { //Targets haven't been found for three times in a row.
