@@ -122,7 +122,7 @@ public class DriveBaseController implements RobotController {
 		targetsFoundLast = true;
 		targetsFoundSecondLast = true;
 		pegclosetime = Double.MAX_VALUE;
-		delay = 1.5E9;
+		delay = 2E8;
 	}
 
 }
