@@ -18,6 +18,7 @@ public class DriveBaseController implements RobotController {
 	
 	//When we were first close to the peg
 	private double pegclosetime;
+	
 	private double delay; //The delay between pegclosetime and when we actually let go of the gear
 	/**
 	 * 
@@ -95,9 +96,12 @@ public class DriveBaseController implements RobotController {
 			}
 			System.out.println(pegclosetime);
 			Constants.dropGear = System.nanoTime() - pegclosetime > delay;
+			if(Constants.dropGear && Constants.DRIVE_REVERSE_START == Double.MAX_VALUE) {
+				Constants.DRIVE_REVERSE_START = System.nanoTime();
+			}
 		} else {
 			//We've already dropped the gear, back up
-			rd.arcadeDrive(-0.5d, 0d);
+			driveForTime(rd, -0.2d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
 		}
 	}
 
@@ -122,6 +126,7 @@ public class DriveBaseController implements RobotController {
 		targetsFoundLast = true;
 		targetsFoundSecondLast = true;
 		pegclosetime = Double.MAX_VALUE;
+		Constants.DRIVE_REVERSE_START = Double.MAX_VALUE;
 		delay = 2E8;
 	}
 
