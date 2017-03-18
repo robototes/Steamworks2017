@@ -78,15 +78,24 @@ public class DriveBaseController implements RobotController {
 					double distance = Constants.visionTable.getNumber("distance", -1);
 					System.out.println("Angle: " + angle);
 					System.out.println("Distance: " + distance);
+//					if(Math.abs(angle) < 0.1) {
+//						//Robot is lined up, drive forward
+//						rd.arcadeDrive(0.2d, 0d, false);
+//					} else {
+//						//Line up robot
+//						double visionDirection = Math.signum(angle);
+//						rd.arcadeDrive(0d, 0.2*visionDirection, false);
+//						System.out.println("Turning");
+//					}
+					double angleToTurn;
 					if(Math.abs(angle) < 0.1) {
-						//Robot is lined up, drive forward
-						rd.arcadeDrive(0.2d, 0d, false);
+						angleToTurn = 0d;
 					} else {
-						//Line up robot
 						double visionDirection = Math.signum(angle);
-						rd.arcadeDrive(0d, 0.2*visionDirection, false);
-						System.out.println("Turning");
+						angleToTurn = 0.2*visionDirection;
 					}
+					rd.arcadeDrive(0.2d, angleToTurn, false);
+					
 				} else { //Targets haven't been found for three times in a row.
 					//System.out.println("No targets found!");
 				}
