@@ -67,50 +67,37 @@ public class DriveBaseController implements RobotController {
 
 	
 	public void processAutonomous() {
-		driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION);
-		//Check if we've finished turning blindly (above driveForTime() call)
-		if(System.nanoTime() > Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION + 1E9) {
-			if(!Constants.dropGear) {
-				//Turn if the robot isn't lined up with the peg
-				boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
-				if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
-					double angle = Constants.visionTable.getNumber("angle", -1);
-					double distance = Constants.visionTable.getNumber("distance", -1);
-					System.out.println("Angle: " + angle);
-					System.out.println("Distance: " + distance);
-//					if(Math.abs(angle) < 0.1) {
-//						//Robot is lined up, drive forward
-//						rd.arcadeDrive(0.2d, 0d, false);
-//					} else {
-//						//Line up robot
-//						double visionDirection = Math.signum(angle);
-//						rd.arcadeDrive(0d, 0.2*visionDirection, false);
-//						System.out.println("Turning");
-//					}
-					double angleToTurn;
-					if(Math.abs(angle) < 0.1) {
-						angleToTurn = 0d;
-					} else {
-						double visionDirection = Math.signum(angle);
-						angleToTurn = 0.2*visionDirection;
-					}
-					rd.arcadeDrive(0.2d, angleToTurn, false);
-					
-				} else { //Targets haven't been found for three times in a row.
-					//System.out.println("No targets found!");
+		if(!Constants.dropGear) {
+			//Turn if the robot isn't lined up with the peg
+			boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
+			if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
+				double angle = Constants.visionTable.getNumber("angle", -1);
+				double distance = Constants.visionTable.getNumber("distance", -1);
+				System.out.println("Angle: " + angle);
+				System.out.println("Distance: " + distance);
+				double angleToTurn;
+				if(Math.abs(angle) < 0.1) {
+					angleToTurn = 0d;
+				} else {
+					double visionDirection = Math.signum(angle);
+					angleToTurn = 0.2*visionDirection;
 				}
-				//Update targetsFoundLast and targetsFoundSeconLast
-				targetsFoundSecondLast = targetsFoundLast;
-				targetsFoundLast = targetsFound;
-				if(Constants.visionTable.getBoolean("pegclose", false) && pegclosetime == Double.MAX_VALUE) {
-					pegclosetime = System.nanoTime();
-				}
-				System.out.println(pegclosetime);
-				Constants.dropGear = System.nanoTime() - pegclosetime > delay;
-			} else {
-				//We've already dropped the gear, back up
-				rd.arcadeDrive(-0.5d, 0d);
+				rd.arcadeDrive(0.3d, angleToTurn, false);
+				
+			} else { //Targets haven't been found for three times in a row.
+				//System.out.println("No targets found!");
 			}
+			//Update targetsFoundLast and targetsFoundSeconLast
+			targetsFoundSecondLast = targetsFoundLast;
+			targetsFoundLast = targetsFound;
+			if(Constants.visionTable.getBoolean("pegclose", false) && pegclosetime == Double.MAX_VALUE) {
+				pegclosetime = System.nanoTime();
+			}
+			System.out.println(pegclosetime);
+			Constants.dropGear = System.nanoTime() - pegclosetime > delay;
+		} else {
+			//We've already dropped the gear, back up
+			rd.arcadeDrive(-0.5d, 0d);
 		}
 	}
 
