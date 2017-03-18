@@ -76,8 +76,8 @@ public class DriveBaseController implements RobotController {
 				double distance = Constants.visionTable.getNumber("distance", -1);
 				System.out.println("Angle: " + angle);
 				System.out.println("Distance: " + distance);
-				double angleToTurn;
-				if(Math.abs(angle) < 0.1) {
+				double angleToTurn = Math.min(angle, 1.0d);
+				if(Math.abs(angle) < 0.03) {
 					angleToTurn = 0d;
 				} else {
 					double visionDirection = Math.signum(angle);
