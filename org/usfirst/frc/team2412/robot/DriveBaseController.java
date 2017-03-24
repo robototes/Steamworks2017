@@ -52,18 +52,28 @@ public class DriveBaseController implements RobotController {
 
 	public void processTeleop() {
 		double jsY = -js.getY()*Constants.DRIVE_SPEED;
-		double jsX = -js.getX();
-
 		double jsTwist = -js.getTwist(); // getRawAxis(3) is for the new
 											// joystick, getTwist is for the
 											// logitech joystick.
-		if (js.getRawButton(5)) {
-			// Drive like airplane
-			rd.arcadeDrive(jsY, jsX*Constants.DRIVE_ROTATE_SPEED, true);					
+		//Set forward speed based on which joystick buttons are being pressed.
+		if(js.getRawButton(Constants.BUTTON_ID_FAST_FORWARD)) {
+			Constants.DRIVE_SPEED = 1.0;
+		} else if(js.getRawButton(Constants.BUTTON_ID_SLOW_FORWARD)) {
+			Constants.DRIVE_SPEED = 0.5;
 		} else {
-			// Drive with twist
-			rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
+			Constants.DRIVE_SPEED = 0.8; //Default speed
 		}
+
+		//Set forward speed based on which joystick buttons are being pressed.
+		if(js.getRawButton(Constants.BUTTON_ID_FAST_TURN)) {
+			Constants.DRIVE_ROTATE_SPEED = 1.0;
+		} else if(js.getRawButton(Constants.BUTTON_ID_SLOW_TURN)) {
+			Constants.DRIVE_ROTATE_SPEED = 0.5;
+		} else {
+			Constants.DRIVE_ROTATE_SPEED = 0.7; //Default speed
+		}
+		
+		rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
 	}
 
 	
