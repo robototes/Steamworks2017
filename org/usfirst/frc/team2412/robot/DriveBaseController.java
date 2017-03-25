@@ -73,6 +73,28 @@ public class DriveBaseController implements RobotController {
 			Constants.DRIVE_ROTATE_SPEED = 0.7; //Default speed
 		}
 		
+		//Drive towards the peg using vison processing when the trigger is pressed
+		if(js.getRawButton(Constants.BUTTON_ID_VISION_TRACKING)) {
+			//Turn if the robot isn't lined up with the peg
+			boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
+			if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
+				double angle = Constants.visionTable.getNumber("angle", -1);
+				double distance = Constants.visionTable.getNumber("distance", -1);
+				System.out.println("Angle: " + angle);
+				System.out.println("Distance: " + distance);
+				double angleToTurn = Math.min(angle, 1.0d);
+				if(Math.abs(angle) < 0.03) {
+					angleToTurn = 0d;
+				} else {
+					double visionDirection = Math.signum(angle);
+					angleToTurn = 0.2*visionDirection;
+				}
+				rd.arcadeDrive(0.3d, angleToTurn, false);
+				
+			} else { //Targets haven't been found for three times in a row.
+				//System.out.println("No targets found!");
+			}
+		}
 		rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
 	}
 
