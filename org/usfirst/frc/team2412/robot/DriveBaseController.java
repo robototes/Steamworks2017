@@ -94,8 +94,9 @@ public class DriveBaseController implements RobotController {
 			} else { //Targets haven't been found for three times in a row.
 				//System.out.println("No targets found!");
 			}
+		} else {
+			rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
 		}
-		rd.arcadeDrive(jsY, jsTwist*Constants.DRIVE_ROTATE_SPEED, true);
 	}
 
 	
