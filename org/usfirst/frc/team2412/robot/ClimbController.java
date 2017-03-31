@@ -27,9 +27,9 @@ public class ClimbController implements RobotController {
 	@Override
 	public void processTeleop() {
 		if(stick.getRawButton(fwdButton))
-			climbTalon.set(1.0);
-		else if(stick.getRawButton(bakButton))
 			climbTalon.set(-1.0);
+		else if(stick.getRawButton(bakButton))
+			climbTalon.set(1.0);
 		else
 			climbTalon.set(0.0);
 	}
