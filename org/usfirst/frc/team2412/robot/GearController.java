@@ -50,7 +50,8 @@ public class GearController implements RobotController {
 	}
 
 	public void processAutonomous() {
-		if(Constants.dropGear && upDownGripper.get() != DoubleSolenoid.Value.kReverse && openCloseGripperL.get() != DoubleSolenoid.Value.kForward && openCloseGripperR.get() != DoubleSolenoid.Value.kForward) {
+		double deltaTime = System.nanoTime() - Constants.startuptime;
+		if(deltaTime > 1E9 && Constants.dropGear && upDownGripper.get() != DoubleSolenoid.Value.kReverse && openCloseGripperL.get() != DoubleSolenoid.Value.kForward && openCloseGripperR.get() != DoubleSolenoid.Value.kForward) {
 			upDownGripper.set(DoubleSolenoid.Value.kReverse);
 			openCloseGripperL.set(DoubleSolenoid.Value.kForward);
 			openCloseGripperR.set(DoubleSolenoid.Value.kForward);
