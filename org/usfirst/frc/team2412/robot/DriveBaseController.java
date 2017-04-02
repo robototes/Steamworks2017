@@ -101,10 +101,12 @@ public class DriveBaseController implements RobotController {
 
 	
 	public void processAutonomous() {
-		
+		double deltaTime = System.nanoTime() - Constants.startuptime;
 //		driveForTime(rd, 0.3d, 0d, Constants.startuptime, 100000L);
-		
-		if(!Constants.dropGear) {
+		if(deltaTime < 400000L) {
+			//Drive foward blindly
+			rd.arcadeDrive(0.3d, 0d, false);
+		} else if(!Constants.dropGear) {
 			//Turn if the robot isn't lined up with the peg
 			boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
 			if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
