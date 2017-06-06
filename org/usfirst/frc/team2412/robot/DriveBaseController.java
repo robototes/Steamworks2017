@@ -137,7 +137,7 @@ public class DriveBaseController implements RobotController {
 			}
 		} else {
 			//We've already dropped the gear, back up
-			driveForTime(rd, -0.2d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION);
+			driveForTime(rd, -0.2d, 0d, Constants.DRIVE_REVERSE_START, Constants.DRIVE_REVERSE_DURATION, true);
 		}
 	}
 
@@ -147,9 +147,13 @@ public class DriveBaseController implements RobotController {
 //		rd.arcadeDrive(0.3d, 0, false);
 //	}
 	//Drives for a specified amount of time
-	private void driveForTime(RobotDrive rd, double move, double rotate, double startuptime, double duration) {
+	//If stopafterwards is true, stops the robot after the specified amount of time has passed, otherwise do nothing
+	private void driveForTime(RobotDrive rd, double move, double rotate, double startuptime, double duration, boolean stopafterwards) {
 		double deltaTime = System.nanoTime() - startuptime; 
-		if(deltaTime < 0 || deltaTime > duration) return;
+		if(deltaTime < 0 || deltaTime > duration) {
+			if(stopafterwards) rd.arcadeDrive(0.0d, 0.0d, false);
+			return;
+		}
 		rd.arcadeDrive(move, rotate, false);
 	}
 	
