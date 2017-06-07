@@ -110,12 +110,12 @@ public class DriveBaseController implements RobotController {
 		//Drive and set timebased based on if time has run out	
 		if(robotposition == 0) { //Left position
 			// Drive forward 
-			timebased = driveForTime(rd, 0d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION, false);
+			timebased = driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION, false);
 			//Turn right
 			timebased = timebased || driveForTime(rd, 0d, 0.3d, Constants.TURN_START, Constants.TURN_DURATION, false);
 		} else if(robotposition == 2) { //Right position
 			// Drive forward 
-			timebased = driveForTime(rd, 0d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION, false);
+			timebased = driveForTime(rd, 0.3d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION, false);
 			//Turn left
 			timebased = timebased || driveForTime(rd, 0d, -0.3d, Constants.TURN_START, Constants.TURN_DURATION, false);
 		}
