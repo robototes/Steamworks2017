@@ -58,7 +58,6 @@ public class Constants {
 			SOLENOID_ID_OPEN_CLOSE_REVERSE_R = 5,
 			MOTOR_ID_CLIMB = 11;
 	
-	/** Constants for driving straight forward (center)*/
 	//Driving forward
 	public static double DRIVE_FORWARD_START;
 	public static double DRIVE_FORWARD_DURATION = 5E8;
@@ -66,6 +65,11 @@ public class Constants {
 	public static double DRIVE_REVERSE_START;
 	public static double DRIVE_REVERSE_DURATION = 1E9;
 	
+	//Turning (for side auto).
+	//Turning will start at the same time and have the same duration regardless if the robot is turning left or right.
+	public static double TURN_START;
+	public static double TURN_DURATION=1E8;
+
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;

@@ -20,6 +20,10 @@ public class DriveBaseController implements RobotController {
 	private double pegclosetime;
 	
 	private double delay; //The delay between pegclosetime and when we actually let go of the gear
+	
+	private int robotposition;
+
+	private boolean timebased = true; //If we're using time or vision for autonomous guidance
 	/**
 	 * 
 	 * @param j
@@ -101,10 +105,22 @@ public class DriveBaseController implements RobotController {
 
 	
 	public void processAutonomous() {
-		
 //		driveForTime(rd, 0.3d, 0d, Constants.startuptime, 100000L);
 		
-		if(!Constants.dropGear) {
+		//Drive and set timebased based on if time has run out	
+		if(robotposition == 0) { //Left position
+			// Drive forward 
+			timebased = driveForTime(rd, 0d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION, false);
+			//Turn right
+			timebased = timebased || driveForTime(rd, 0d, 0.3d, Constants.TURN_START, Constants.TURN_DURATION, false);
+		} else if(robotposition == 2) { //Right position
+			// Drive forward 
+			timebased = driveForTime(rd, 0d, 0d, Constants.DRIVE_FORWARD_START, Constants.DRIVE_FORWARD_DURATION, false);
+			//Turn left
+			timebased = timebased || driveForTime(rd, 0d, -0.3d, Constants.TURN_START, Constants.TURN_DURATION, false);
+		}
+
+		if(!Constants.dropGear && !timebased) {
 			//Turn if the robot isn't lined up with the peg
 			boolean targetsFound = Constants.visionTable.getBoolean("targetsFound", false);
 			if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
@@ -148,13 +164,15 @@ public class DriveBaseController implements RobotController {
 //	}
 	//Drives for a specified amount of time
 	//If stopafterwards is true, stops the robot after the specified amount of time has passed, otherwise do nothing
+	//Returns whether rd was actually driven or not
 	private void driveForTime(RobotDrive rd, double move, double rotate, double startuptime, double duration, boolean stopafterwards) {
 		double deltaTime = System.nanoTime() - startuptime; 
 		if(deltaTime < 0 || deltaTime > duration) {
 			if(stopafterwards) rd.arcadeDrive(0.0d, 0.0d, false);
-			return;
+			return false;
 		}
 		rd.arcadeDrive(move, rotate, false);
+		return true;
 	}
 	
 	public void teleopInit() {
@@ -168,6 +186,7 @@ public class DriveBaseController implements RobotController {
 		pegclosetime = Double.MAX_VALUE;
 		Constants.DRIVE_REVERSE_START = Double.MAX_VALUE;
 		delay = 2E8;
+		robotposition = SmartDashboardUtils.getRobotPosition(false);
 	}
 
 }
