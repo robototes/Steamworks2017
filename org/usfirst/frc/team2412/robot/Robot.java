@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousPeriodic() {
 		if(Constants.currentStage > Constants.stages.size()) return;
-		if(Constants.selectedCommand != null) {
+		if(Constants.selectedCommand != null && Constants.selectedCommand != Constants.gc) {
 			Constants.selectedCommand.execute();
 			System.out.println(Constants.selectedCommand);
 		}

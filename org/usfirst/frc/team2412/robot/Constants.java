@@ -164,33 +164,31 @@ public class Constants {
 		visionTable = NetworkTable.getTable("datatable");
 		pydashboardTable = NetworkTable.getTable("PyDashboard");
 		
-		rd = new RobotDrive(talons[0], talons[2], talons[1], talons[3]);
-		
 		/** Autonomous commands */
 		for(CANTalon talon : talons) {
 			talon.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		}
 		
-		rd = new RobotDrive(talons[0], talons[1], talons[2], talons[3]);
+		rd = new RobotDrive(talons[0], talons[2], talons[1], talons[3]);
 		rd.setSafetyEnabled(false);
 		for(CANTalon talon : talons) {
 			talon.enable();
 		}
 		//Setup Step2 Commands.
-		CANTalon slaves[] = {talons[0], talons[1], talons[2]};
+		CANTalon slaves[] = {talons[0], talons[2], talons[3]};
 
-		mpc = new MotionProfileCommand(talons[3], slaves);
-		ec = new EncoderCommand(talons[3], slaves, rd, 2.3, false);
+		mpc = new MotionProfileCommand(talons[1], slaves);
+		ec = new EncoderCommand(talons[1], slaves, rd, 2.3, false);
 		dftc = new DriveForTimeCommand(1, rd, 0.3d, 0.0d, 2.4E9);
 		
 		//Setup Step3 Commands.
-		gc = new GyroCommand(new ADXRS450_Gyro(), talons[3], slaves, 0.2d, 60, pydashboardTable);
+		gc = new GyroCommand(new ADXRS450_Gyro(), talons[1], slaves, 0.2d, 60, pydashboardTable);
 		vc = new VisionCommand(rd, visionTable);
 		dftc2 = new DriveForTimeCommand(2, rd, 0.0d, 0.3d, 0.3E9);
 
 		//Setup Step4 Commands.
 		vc2 = new VisionCommand(rd, visionTable);
-		ec2 = new EncoderCommand(talons[3], slaves, rd, 0.975, false);
+		ec2 = new EncoderCommand(talons[1], slaves, rd, 0.975, false);
 		dftc3 = new DriveForTimeCommand(3, rd, 0.3d, 0.0d, 1.70E9);
 		
 		//End of autonomous commands

@@ -80,13 +80,10 @@ public class GyroCommand extends Command2 {
 	 * Called periodically when the command is running.
 	 */
 	public void execute() {
+		/*
 		System.out.println("GyroCommand!");
 		System.out.println("Angle: " + gyro.getAngle());
-		master.enable();
-		for(CANTalon talon : slaves) {
-			talon.enable();
-		}
-		System.out.println("Enabled: " + master.isEnabled());
+		*/
 		/**
 		times++;
 		error = (angleToTurn - Math.abs(gyro.getAngle()));
@@ -103,8 +100,10 @@ public class GyroCommand extends Command2 {
 	 * Called when the command ends.
 	 */
 	public void end() {
+		System.out.println(master.getControlMode());
 		turncontrol.disable();
 		//rd.arcadeDrive(0.0d, 0.0d, false); //Stop driving
+		while(turncontrol.isEnabled());
 		master.changeControlMode(TalonControlMode.PercentVbus);
 		master.set(0);
 		//Don't make all talons follow master
