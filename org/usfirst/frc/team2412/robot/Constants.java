@@ -2,13 +2,26 @@ package org.usfirst.frc.team2412.robot;
 
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Locale;
 
+import org.usfirst.frc.team2412.robot.autonomous.AutonomousStage;
+import org.usfirst.frc.team2412.robot.autonomous.Command2;
+import org.usfirst.frc.team2412.robot.autonomous.DriveForTimeCommand;
+import org.usfirst.frc.team2412.robot.autonomous.EncoderCommand;
+import org.usfirst.frc.team2412.robot.autonomous.GyroCommand;
+import org.usfirst.frc.team2412.robot.autonomous.MotionProfileCommand;
+import org.usfirst.frc.team2412.robot.autonomous.PlaceGearCommand;
+import org.usfirst.frc.team2412.robot.autonomous.VisionCommand;
 import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
+import com.ctre.CANTalon;
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +36,7 @@ public class Constants {
 	public static boolean initialized = false, constantsInitialized = false;
 	public static double autoDelay = -1.0; // delay before any autonomous
 											// processing in milliseconds
+	
 	public static final int[] motors = new int[] {
 			//    FRONT   //
 			// -----------//
@@ -39,6 +53,7 @@ public class Constants {
 			// 9 front-left
 			// 5 front-right
 			};
+	public static final CANTalon[] talons = new CANTalon[motors.length];
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.7;
 	public static int BUTTON_ID_OPEN_CLAMP = 2,
 			BUTTON_ID_CLOSE_CLAMP = 1,
@@ -69,15 +84,52 @@ public class Constants {
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
+	public static NetworkTable pydashboardTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	public static long startuptime;
+	
+	public static RobotDrive rd;
 	
 	public static boolean dropGear;
 	
 	public static boolean debug = false; // Can change, so note that
 	
+	/**Autonomous commands*/
+	//Variables for selecting autonomous stages
+	public static int currentStage = 0;
+
+	//Step 2 Commands.
+	public static MotionProfileCommand mpc;
+	public static EncoderCommand ec;
+	public static DriveForTimeCommand dftc;
+
+	//Step 3 Commands.
+	public static GyroCommand gc;
+	public static VisionCommand vc;
+	public static DriveForTimeCommand dftc2;
+
+	//Step 4 Commands.
+	public static VisionCommand vc2;
+	public static EncoderCommand ec2;
+	public static DriveForTimeCommand dftc3;
+	
+	public static PlaceGearCommand pgc;
+	
+	public static AutonomousStage as2;
+	public static AutonomousStage as3;
+	public static AutonomousStage as4;
+
+	public static ArrayList<AutonomousStage> stages;
+	 
+	public static Command2 selectedCommand;
+	
+	public static String step1;
 	
 	public static void init() {
+		for(int i = 0; i < talons.length; i++) {
+			talons[i] = new CANTalon(motors[i]);
+		}
+		
 		SmartDashboardUtils.firstTimeInit();
 		Scheduler.getInstance().run();
 		
@@ -110,6 +162,58 @@ public class Constants {
 		openCloseGripperR = new DoubleSolenoid(SOLENOID_ID_OPEN_CLOSE_R, SOLENOID_ID_OPEN_CLOSE_REVERSE_R);
 		
 		visionTable = NetworkTable.getTable("datatable");
+		pydashboardTable = NetworkTable.getTable("PyDashboard");
+		
+		rd = new RobotDrive(talons[0], talons[2], talons[1], talons[3]);
+		
+		/** Autonomous commands */
+		for(CANTalon talon : talons) {
+			talon.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		}
+		
+		rd = new RobotDrive(talons[0], talons[1], talons[2], talons[3]);
+		rd.setSafetyEnabled(false);
+		for(CANTalon talon : talons) {
+			talon.enable();
+		}
+		//Setup Step2 Commands.
+		CANTalon slaves[] = {talons[0], talons[1], talons[2]};
+
+		mpc = new MotionProfileCommand(talons[3], slaves);
+		ec = new EncoderCommand(talons[3], slaves, rd, 2.3, false);
+		dftc = new DriveForTimeCommand(1, rd, 0.3d, 0.0d, 2.4E9);
+		
+		//Setup Step3 Commands.
+		gc = new GyroCommand(new ADXRS450_Gyro(), talons[3], slaves, 0.2d, 60, pydashboardTable);
+		vc = new VisionCommand(rd, visionTable);
+		dftc2 = new DriveForTimeCommand(2, rd, 0.0d, 0.3d, 0.3E9);
+
+		//Setup Step4 Commands.
+		vc2 = new VisionCommand(rd, visionTable);
+		ec2 = new EncoderCommand(talons[3], slaves, rd, 0.975, false);
+		dftc3 = new DriveForTimeCommand(3, rd, 0.3d, 0.0d, 1.70E9);
+		
+		//End of autonomous commands
+		pgc = new PlaceGearCommand(upDownGripper, openCloseGripper, openCloseGripperR);
+		
+		//Setup autonomous stages
+		as2 = new AutonomousStage(pydashboardTable);
+		as2.addDefaultCommand("Motion Profiling", mpc);
+		as2.addCommand("Encoders", ec);
+		as2.addCommand("Time-Based", dftc);
+		as2.sendCommands("Step2");
+		
+		as3 = new AutonomousStage(pydashboardTable);
+		as3.addDefaultCommand("Gyroscope", gc);
+		as3.addCommand("Vision Processing", vc);
+		as3.addCommand("Time-Based", dftc2);
+		as3.sendCommands("Step3");
+
+		as4 = new AutonomousStage(pydashboardTable);
+		as4.addDefaultCommand("Vision Processing", vc2);
+		as4.addCommand("Encoders", ec2);
+		as4.addCommand("Time-Based", dftc3);
+		as4.sendCommands("Step4");
 	}
 
 	private static void applyPrintStreams(Socket s2) throws Exception {

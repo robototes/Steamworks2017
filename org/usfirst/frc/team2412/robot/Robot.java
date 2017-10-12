@@ -2,6 +2,10 @@ package org.usfirst.frc.team2412.robot;
 
 import static org.usfirst.frc.team2412.robot.Constants.debug;
 
+import java.util.ArrayList;
+
+import org.usfirst.frc.team2412.robot.autonomous.AutonomousStage;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -45,7 +49,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		//Initialize RobotControllers
-		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.motors[0], Constants.motors[2], Constants.motors[1], Constants.motors[3]);
+		rcs[0] = new DriveBaseController(Constants.jsDriver, Constants.rd);
 		rcs[1] = new GearController(Constants.upDownGripper, Constants.openCloseGripper, Constants.openCloseGripperR, Constants.jsCoDriver, Constants.BUTTON_ID_ROTATE_CLAMP_UP, Constants.BUTTON_ID_ROTATE_CLAMP_DOWN, Constants.BUTTON_ID_OPEN_CLAMP, Constants.BUTTON_ID_CLOSE_CLAMP);
 		rcs[2] = new VisionController();
 		rcs[3] = new ClimbController(Constants.MOTOR_ID_CLIMB, Constants.jsCoDriver, Constants.BUTTON_ID_CLIMB_UP, Constants.BUTTON_ID_CLIMB_DOWN);
@@ -55,39 +59,48 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() {
 		System.out.println("	==== STARTING AUTONOMOUS MODE ====");
-		Constants.dropGear = false;
-		Constants.startuptime = System.nanoTime();
-		//Set Constants to values because they're not Constants
-		Constants.DRIVE_FORWARD_START = Constants.startuptime;
-		Constants.DRIVE_REVERSE_START = Constants.DRIVE_FORWARD_START + Constants.DRIVE_FORWARD_DURATION;
-		try {
-			for(RobotController rc : rcs) {
-				if(rc != null)
-					rc.autonomousInit();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Constants.stages = new ArrayList<AutonomousStage>();
+		Constants.stages.add(Constants.as2);
+		Constants.stages.add(Constants.as3);
+		Constants.stages.add(Constants.as4);
+		
+		Constants.currentStage = 0;
+		System.out.println(Constants.currentStage);
+		Constants.selectedCommand = Constants.stages.get(Constants.currentStage).getSelected();
+		if(Constants.selectedCommand != null) {
+			Constants.selectedCommand.initialize();
+			Constants.selectedCommand.start();
 		}
-		firstRun = true;
 	}
 	
 	public void autonomousPeriodic() {
-		if (firstRun) {
-			System.out.println("		No autonomous code.");
-			firstRun = false;
+		if(Constants.currentStage > Constants.stages.size()) return;
+		if(Constants.selectedCommand != null) {
+			Constants.selectedCommand.execute();
+			System.out.println(Constants.selectedCommand);
 		}
-		try {
-			for(RobotController rc : rcs) {
-				if(rc != null)
-					rc.processAutonomous();
-				if (rc != null && debug) {
-					rc.debug();
+			
+		if(Constants.selectedCommand == null || Constants.selectedCommand.isFinished()) {
+			//Current command is finished, move on to the next one.
+			Constants.currentStage++;
+			if(Constants.selectedCommand != null) {
+				Constants.selectedCommand.end();
+			}
+			if(Constants.currentStage < Constants.stages.size()) {
+				Constants.selectedCommand = Constants.stages.get(Constants.currentStage).getSelected();
+				if(Constants.selectedCommand != null) {
+					Constants.selectedCommand.initialize();
+					Constants.selectedCommand.start();
+				}
+			} else if(Constants.currentStage == Constants.stages.size()) {
+				Constants.selectedCommand = Constants.pgc;
+				if(Constants.selectedCommand != null) {
+					System.out.println("Starting...");
+					Constants.selectedCommand.initialize();
+					Constants.selectedCommand.start();
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		
 	}
 	
 	public void teleopInit() {

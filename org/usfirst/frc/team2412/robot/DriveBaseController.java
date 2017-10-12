@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2412.robot;
 
-import com.ctre.CANTalon;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 
@@ -9,8 +7,6 @@ public class DriveBaseController implements RobotController {
 
 	private RobotDrive rd;
 	private Joystick js;
-	private CANTalon left;
-	private CANTalon right;
 	
 	//Variables for detecting whether targets weren't found three times in a row.
 	private boolean targetsFoundLast;
@@ -34,10 +30,8 @@ public class DriveBaseController implements RobotController {
 	 *            - back right motor
 	 */
 	
-	public DriveBaseController(Joystick j, int l1, int l2, int r1, int r2) {
-		left = new CANTalon(l1);
-		right = new CANTalon(r1);
-		rd = new RobotDrive(left, new CANTalon(l2), right, new CANTalon(r2));
+	public DriveBaseController(Joystick j, RobotDrive _rd) {
+		rd = _rd;
 		js = j;
 	}
 	
