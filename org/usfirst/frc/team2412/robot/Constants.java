@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Constants {
@@ -84,6 +84,7 @@ public class Constants {
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
+	NetworkTable table;
 	public static NetworkTable pydashboardTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	public static long startuptime;
@@ -132,7 +133,7 @@ public class Constants {
 		
 		SmartDashboardUtils.firstTimeInit();
 		Scheduler.getInstance().run();
-		
+		/*
 		try {
 			applyPrintStreams(new Socket(SmartDashboardUtils.getDriverStationIP(), 5800));
 		} catch (Exception e) {
@@ -144,7 +145,7 @@ public class Constants {
 				ex.printStackTrace();
 			}
 		}
-		
+		*/
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0) * 1000;
@@ -178,7 +179,7 @@ public class Constants {
 		CANTalon slaves[] = {talons[0], talons[2], talons[3]};
 
 		mpc = new MotionProfileCommand(talons[1], slaves);
-		ec = new EncoderCommand(talons[1], slaves, rd, 2.3, false);
+		ec = new EncoderCommand(talons[1], slaves, rd, 2.052, false);
 		dftc = new DriveForTimeCommand(1, rd, 0.3d, 0.0d, 2.4E9);
 		
 		//Setup Step3 Commands.
@@ -188,11 +189,11 @@ public class Constants {
 
 		//Setup Step4 Commands.
 		vc2 = new VisionCommand(rd, visionTable);
-		ec2 = new EncoderCommand(talons[1], slaves, rd, 0.975, false);
+		ec2 = new EncoderCommand(talons[1], slaves, rd, 2.052, false);
 		dftc3 = new DriveForTimeCommand(3, rd, 0.3d, 0.0d, 1.70E9);
 		
 		//End of autonomous commands
-		pgc = new PlaceGearCommand(upDownGripper, openCloseGripper, openCloseGripperR);
+		pgc = new PlaceGearCommand(upDownGripper, openCloseGripper, openCloseGripperR, pydashboardTable);
 		
 		//Setup autonomous stages
 		as2 = new AutonomousStage(pydashboardTable);

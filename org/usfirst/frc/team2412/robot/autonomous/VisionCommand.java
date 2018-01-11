@@ -27,6 +27,7 @@ public class VisionCommand extends Command2 {
 	 */
 	public void execute() {
 		//Turn if the robot isn't lined up with the peg
+		System.out.println("Hello, world!");
 		boolean targetsFound = visionTable.getBoolean("targetsFound", false);
 		if(targetsFound || targetsFoundLast || targetsFoundSecondLast) {
 			double angle = visionTable.getNumber("angle", -1);

@@ -6,6 +6,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class GyroCommand extends Command2 {
@@ -57,6 +58,8 @@ public class GyroCommand extends Command2 {
 			talon.changeControlMode(CANTalon.TalonControlMode.Follower);
 			talon.set(master.getDeviceID());
 		}
+		master.set(0);
+//		Timer.delay(0.1);
 		String step1 = pydashboardTable.getString("Step1", "");
 		if(step1.equals("Left Peg")) {
 			direction = 1;
@@ -80,6 +83,8 @@ public class GyroCommand extends Command2 {
 	 * Called periodically when the command is running.
 	 */
 	public void execute() {
+		System.out.println("GyroCommand!");
+		System.out.println("Error: " + turncontrol.getError());
 		/*
 		System.out.println("GyroCommand!");
 		System.out.println("Angle: " + gyro.getAngle());
