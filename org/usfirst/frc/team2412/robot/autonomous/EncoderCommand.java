@@ -1,14 +1,15 @@
 package org.usfirst.frc.team2412.robot.autonomous;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class EncoderCommand extends Command2 {
 	
-	private CANTalon talon;
-	private CANTalon slaves[];
+	private WPI_TalonSRX talon;
+	private WPI_TalonSRX slaves[];
 	private RobotDrive rd;
 	private boolean reverseSensor;
 	private final double encodertocmconv = 0.0239534386;
@@ -17,10 +18,10 @@ public class EncoderCommand extends Command2 {
 	int _loops = 0;
 	
 	private double error = 0;
-	public EncoderCommand(CANTalon talon, CANTalon[] _slaves, RobotDrive _rd, double _targetPositionRotations, boolean _reverseSensor) {
+	public EncoderCommand(WPI_TalonSRX talon, WPI_TalonSRX[] _slaves, RobotDrive _rd, double _targetPositionRotations, boolean _reverseSensor) {
 		this.talon = talon;
-		//Copy CANTalon array.
-		slaves = new CANTalon[_slaves.length];
+		//Copy WPI_TalonSRX array.
+		slaves = new WPI_TalonSRX[_slaves.length];
 		for(int i = 0; i < _slaves.length; i++) {
 			slaves[i] = _slaves[i];
 		}
@@ -35,20 +36,18 @@ public class EncoderCommand extends Command2 {
 	public void start() {
 
 		//Make sure all of the Talons are in PercentVbus mode.
-		for(CANTalon talon : slaves) {
-			talon.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-			talon.enable();
+		for(WPI_TalonSRX talon : slaves) {
+			talon.set(ControlMode.PercentOutput, 0);
 		}
-		talon.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		talon.enable();
+		talon.set(ControlMode.PercentOutput, 0);
 		
 //		int absolutePosition = talon.getPulseWidthPosition() & 0xFFF; /* mask out the bottom12 bits, we don't care about the wrap arounds */
 		/* use the low level API to set the quad encoder signal */
 //        talon.setPosition(absolutePosition);
-		talon.setPosition(0);
+		talon.setSelectedSensorPosition(0, 0, 0);
         
         /* choose the sensor and sensor direction */
-        talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+        talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         talon.reverseSensor(this.reverseSensor);
         talon.configEncoderCodesPerRev(2048); // if using FeedbackDevice.QuadEncoder
 

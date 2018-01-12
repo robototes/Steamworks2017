@@ -1,11 +1,11 @@
 package org.usfirst.frc.team2412.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class DriveBaseController implements RobotController {
 
-	private RobotDrive rd;
+	private DifferentialDrive rd;
 	private Joystick js;
 	
 	//Variables for detecting whether targets weren't found three times in a row.
@@ -30,7 +30,7 @@ public class DriveBaseController implements RobotController {
 	 *            - back right motor
 	 */
 	
-	public DriveBaseController(Joystick j, RobotDrive _rd) {
+	public DriveBaseController(Joystick j, DifferentialDrive _rd) {
 		rd = _rd;
 		js = j;
 	}
@@ -142,7 +142,7 @@ public class DriveBaseController implements RobotController {
 //	}
 	//Drives for a specified amount of time
 	//If stopafterwards is true, stops the robot after the specified amount of time has passed, otherwise do nothing
-	private void driveForTime(RobotDrive rd, double move, double rotate, double startuptime, double duration, boolean stopafterwards) {
+	private void driveForTime(DifferentialDrive rd, double move, double rotate, double startuptime, double duration, boolean stopafterwards) {
 		double deltaTime = System.nanoTime() - startuptime; 
 		if(deltaTime < 0 || deltaTime > duration) {
 			if(stopafterwards) rd.arcadeDrive(0.0d, 0.0d, false);

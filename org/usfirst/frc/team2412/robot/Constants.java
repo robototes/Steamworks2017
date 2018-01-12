@@ -15,16 +15,19 @@ import org.usfirst.frc.team2412.robot.autonomous.PlaceGearCommand;
 import org.usfirst.frc.team2412.robot.autonomous.VisionCommand;
 import org.usfirst.frc.team2412.robot.sd.SmartDashboardUtils;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.ControlMode;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Joystick;;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Constants {
 
@@ -53,7 +56,9 @@ public class Constants {
 			// 9 front-left
 			// 5 front-right
 			};
-	public static final CANTalon[] talons = new CANTalon[motors.length];
+	public static final WPI_TalonSRX[] talons = new WPI_TalonSRX[motors.length];
+	public static final SpeedControllerGroup leftSide;
+	public static final SpeedControllerGroup rightSide;
 	public static double PICKUP_SPEED = 0.5, DROP_SPEED = 0.5, DRIVE_SPEED = 0.8, DRIVE_ROTATE_SPEED = 0.7;
 	public static int BUTTON_ID_OPEN_CLAMP = 2,
 			BUTTON_ID_CLOSE_CLAMP = 1,
@@ -72,7 +77,7 @@ public class Constants {
 			SOLENOID_ID_OPEN_CLOSE_R = 2,
 			SOLENOID_ID_OPEN_CLOSE_REVERSE_R = 5,
 			MOTOR_ID_CLIMB = 11;
-	
+
 	/** Constants for driving straight forward (center)*/
 	//Driving forward
 	public static double DRIVE_FORWARD_START;
@@ -84,12 +89,11 @@ public class Constants {
 	public static Joystick jsDriver, jsCoDriver;
 	public static DoubleSolenoid upDownGripper, openCloseGripper, openCloseGripperR;
 	public static NetworkTable visionTable = null;
-	NetworkTable table;
 	public static NetworkTable pydashboardTable = null;
 	public static double AUTO_FINAL_DIST = 0.2d, AUTO_SECOND_STEP_DIST = 2;
 	public static long startuptime;
 	
-	public static RobotDrive rd;
+	public static DifferentialDrive rd;
 	
 	public static boolean dropGear;
 	
@@ -128,12 +132,13 @@ public class Constants {
 	
 	public static void init() {
 		for(int i = 0; i < talons.length; i++) {
-			talons[i] = new CANTalon(motors[i]);
+			talons[i] = new WPI_TalonSRX(motors[i]);
 		}
-		
+		leftSide = new SpeedControllerGroup(talons[0], talons[2]);
+		rightSide = new SpeedControllerGroup(talons[1], talons[3]);
 		SmartDashboardUtils.firstTimeInit();
 		Scheduler.getInstance().run();
-		/*
+		
 		try {
 			applyPrintStreams(new Socket(SmartDashboardUtils.getDriverStationIP(), 5800));
 		} catch (Exception e) {
@@ -145,7 +150,7 @@ public class Constants {
 				ex.printStackTrace();
 			}
 		}
-		*/
+		
 		ALLIANCE_COLOR = DriverStation.getInstance().getAlliance();
 		STARTING_STATION = DriverStation.getInstance().getLocation();
 		autoDelay = SmartDashboard.getNumber("Autonomous Initial Delay", 0.0) * 1000;
@@ -166,20 +171,20 @@ public class Constants {
 		pydashboardTable = NetworkTable.getTable("PyDashboard");
 		
 		/** Autonomous commands */
-		for(CANTalon talon : talons) {
-			talon.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		for(WPI_TalonSRX talon : talons) {
+			talon.changeControlMode(ControlMode.PercentVbus);
 		}
 		
-		rd = new RobotDrive(talons[0], talons[2], talons[1], talons[3]);
+		rd = new DifferentialDrive(leftSide, rightSide);
 		rd.setSafetyEnabled(false);
-		for(CANTalon talon : talons) {
+		for(WPI_TalonSRX talon : talons) {
 			talon.enable();
 		}
 		//Setup Step2 Commands.
-		CANTalon slaves[] = {talons[0], talons[2], talons[3]};
+		WPI_TalonSRX slaves[] = {talons[0], talons[2], talons[3]};
 
 		mpc = new MotionProfileCommand(talons[1], slaves);
-		ec = new EncoderCommand(talons[1], slaves, rd, 2.052, false);
+		ec = new EncoderCommand(talons[1], slaves, rd, 2.3, false);
 		dftc = new DriveForTimeCommand(1, rd, 0.3d, 0.0d, 2.4E9);
 		
 		//Setup Step3 Commands.
@@ -189,11 +194,11 @@ public class Constants {
 
 		//Setup Step4 Commands.
 		vc2 = new VisionCommand(rd, visionTable);
-		ec2 = new EncoderCommand(talons[1], slaves, rd, 2.052, false);
+		ec2 = new EncoderCommand(talons[1], slaves, rd, 0.975, false);
 		dftc3 = new DriveForTimeCommand(3, rd, 0.3d, 0.0d, 1.70E9);
 		
 		//End of autonomous commands
-		pgc = new PlaceGearCommand(upDownGripper, openCloseGripper, openCloseGripperR, pydashboardTable);
+		pgc = new PlaceGearCommand(upDownGripper, openCloseGripper, openCloseGripperR);
 		
 		//Setup autonomous stages
 		as2 = new AutonomousStage(pydashboardTable);
